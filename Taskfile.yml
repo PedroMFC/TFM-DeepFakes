@@ -1,0 +1,42 @@
+version: '3'
+
+tasks:
+  docker-build:
+    desc: construir imagen de Docker
+    summary: |
+      construir imagen de Docker a partir del Dockerfile de este directorio con nombre
+      faceforensics
+    cmds:
+      - docker build -t faceforensics .
+
+  docker-run:
+    desc: corre imagen de Docker
+    summary: |
+      Ejecuta el contenedor Docker creado mediante la orden docker-build
+    cmds:
+      - xhost +local:docker
+      - docker run --rm -it --net=host -e DISPLAY=$IP:1 -v /tmp/.X11-unix:/tmp/.X11-unix -v `pwd`:/app -e VIDEO=003_000.mp4 -e MODEL=ffpp_c40.pth faceforensics
+  
+  docker-consola:
+    desc: corre imagen de Docker pero no ejecuta el código
+    summary: |
+      Ejecuta el contenedor Docker (COMO ROOT) creado mediante la orden docker-build pero no ejecuta el código, si no que mantiene disponible la consola
+    cmds:
+      - docker run -u 0 --rm -it --net=host -e DISPLAY=$IP:1 -v /tmp/.X11-unix:/tmp/.X11-unix -v `pwd`:/app -e VIDEO=003_000.mp4 -e MODEL=ffpp_c40.pth faceforensics /bin/bash
+
+  docker-rm:
+    desc: elimina contenedores
+    summary: |
+      Eliminar totalmente los contenedores que se están ejecutando
+    cmds: 
+      - docker stop $(docker ps -aq)
+      - docker rm $(docker ps -aq)
+  
+  docker-rmi-none:
+    desc: elimina <none> images
+    summary: |
+      Eliminar las imágenes que se han quedado como <none> para
+    deps:
+     - docker-rm
+    cmds:
+      - docker rmi $(docker images -f "dangling=true" -q)
