@@ -1,20 +1,16 @@
-FROM python:3.6 
+# Ocupa 3.38GB y funciona
+FROM python:3.6-slim
 LABEL maintainer="Pedro Flores <pedro_23_96@hotmail.com>" 
-LABEL version="0.1.0"
+LABEL version="0.2.0"
 
 # Actualizamos e instalamos algunas librerías necesarias
 RUN apt-get update \
-    && apt-get install -y libgl1-mesa-dev
+    && apt-get install -y libgl1-mesa-dev build-essential libglib2.0-0 qt5-default 
 
-# Insatalamos requerimientos para ejecutar la aplicación
-RUN python -m pip install cmake 
-RUN python -m pip install dlib==19.18.0
-RUN python -m pip install opencv-python
-RUN python -m pip install tqdm
-RUN python -m pip install torch
-RUN python -m pip install torchvision
-# RUN python -m pip install numpy==1.17.3
-RUN python -m pip install pillow>=6.2.2
+# Tenemos que instalar cmake aparte para dblib
+COPY requirements.txt .
+RUN python -m pip install cmake==3.18.4.post1 \ 
+    && python -m pip install -r requirements.txt
 
 # Creamos un usuario no root que ejecute la aplicación
 RUN useradd -m faceforensics
