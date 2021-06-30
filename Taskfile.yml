@@ -1,13 +1,15 @@
 version: '3'
 
 tasks:
+
+  # Faceforensics++
   docker-build:
     desc: construir imagen de Docker
     summary: |
       construir imagen de Docker a partir del Dockerfile de este directorio con nombre
       faceforensics
     cmds:
-      - cd faceforensics; docker build -t faceforensics .
+      - cd faceforensics; docker build -t faceforensics-0.4.0 .
 
   docker-run:
     desc: corre imagen de Docker
@@ -15,15 +17,44 @@ tasks:
       Ejecuta el contenedor Docker creado mediante la orden docker-build
     cmds:
       - xhost +local:docker
-      - docker run --rm -it --net=host -e DISPLAY=$IP:1 -v /tmp/.X11-unix:/tmp/.X11-unix -v `pwd`:/app -e VIDEO=003_000.mp4 -e MODEL=ffpp_c40.pth faceforensics
+      - cd faceforensics/src; docker run --rm -it -p 8080:8080 -e PORT=8080 faceforensics-0.4.0
   
   docker-consola:
     desc: corre imagen de Docker pero no ejecuta el código
     summary: |
       Ejecuta el contenedor Docker (COMO ROOT) creado mediante la orden docker-build pero no ejecuta el código, si no que mantiene disponible la consola
     cmds:
-      - docker run -u 0 --rm -it --net=host -e DISPLAY=$IP:1 -v /tmp/.X11-unix:/tmp/.X11-unix -v `pwd`:/app -e VIDEO=003_000.mp4 -e MODEL=ffpp_c40.pth faceforensics /bin/bash
+      - docker run -u 0 --rm -it -p 5000:5000 -e DISPLAY=$IP:1 -v /tmp/.X11-unix:/tmp/.X11-unix -v `pwd`:/app -e VIDEO=003_000.mp4 -e MODEL=ffpp_c40.pth faceforensics-0.2.1 /bin/bash
 
+
+  request-api:
+    desc: lanzar la petición a la api que detecta vídeos
+    summary: |
+      Lanza una petición para la detección de si un vídeo es un deepfake
+    cmds:
+      - curl -X POST -H "Content-Type:application/json" -d '{"video_path":"https://www.youtube.com/watch?v=xLecwguQOIc", "start_frame":0, "end_frame":2, "model_path":"ffpp_c40.pth"}' http://localhost:8080
+
+  request-api-gcr:
+    cmds:
+      - curl -X POST -H "Content-Type:application/json" -d '{"video_path":"https://www.youtube.com/watch?v=xLecwguQOIc", "start_frame":0, "end_frame":2, "model_path":"ffpp_c40.pth"}' https://faceforensics-utoehvsqvq-ew.a.run.app
+
+  gcloud-build:
+    cmds:
+      - gcloud builds submit --timeout=1200 --tag gcr.io/deepfakes-317408/faceforensics
+
+  gcloud-send:
+    deps:
+      - docker-build
+    cmds:
+      - docker tag faceforensics-0.4.0  gcr.io/deepfakes-317408/faceforensics
+      - docker push gcr.io/deepfakes-317408/faceforensics
+      - gcloud run deploy faceforensics --image gcr.io/deepfakes-317408/faceforensics --platform managed --allow-unauthenticated
+
+  test:
+    cmds:
+      - docker run -it --rm --entrypoint=/bin/bash -v `pwd`/faceforensics:/app faceforensics-0.4.0 -c 'python /app/src/tests.py'
+
+  # Generales 
   docker-rm:
     desc: elimina contenedores
     summary: |
@@ -37,6 +68,6 @@ tasks:
     summary: |
       Eliminar las imágenes que se han quedado como <none> para
     deps:
-     - docker-rm
+     # - docker-rm
     cmds:
       - docker rmi $(docker images -f "dangling=true" -q)
