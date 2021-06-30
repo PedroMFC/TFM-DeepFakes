@@ -7,7 +7,7 @@ tasks:
       construir imagen de Docker a partir del Dockerfile de este directorio con nombre
       faceforensics
     cmds:
-      - docker build -t faceforensics .
+      - cd faceforensics; docker build -t faceforensics .
 
   docker-run:
     desc: corre imagen de Docker

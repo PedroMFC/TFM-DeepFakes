@@ -16,8 +16,13 @@ RUN python -m pip install cmake==3.18.4.post1 \
 RUN useradd -m faceforensics
 USER faceforensics
 
-# Establecemos directorio de trabajo
+# Establecemos directorio de trabajo y copiamos los archivos necesarios
 WORKDIR /app
 
+COPY ./src ./src
+COPY ./pretrained_model ./pretrained_model
+
+WORKDIR /app/src
+
 # Comando a ejecutar
-CMD [ "sh", "-c", "python ./src/detect_from_video.py --video_path ./videos/$VIDEO --model_path ./pretrained_model/$MODEL -o ./output"]
+CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 api:app
