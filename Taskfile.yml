@@ -54,6 +54,51 @@ tasks:
     cmds:
       - docker run -it --rm --entrypoint=/bin/bash -v `pwd`/faceforensics:/app faceforensics-0.4.0 -c 'python /app/src/tests.py'
 
+  # Reverse Engineering GM
+  docker-build-re:
+    desc: construir imagen de Docker
+    summary: |
+      construir imagen de Docker a partir del Dockerfile de este directorio con nombre
+      faceforensics
+    cmds:
+      - cd reverse-eng; docker build -t reverse-0.0.1 .
+
+  docker-console-re:
+    cmds:
+      - docker run -it --rm --entrypoint=/bin/bash -v `pwd`:/code reverse-0.0.1 -i
+
+  request-api-re:
+    desc: lanzar la petición a la api que detecta vídeos
+    summary: |
+      Lanza una petición para la detección de si un vídeo es un deepfake
+    cmds:
+      - curl -X POST -H "Content-Type:application/json" -d '{"image_path":"http://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"}' http://localhost:8080
+
+  request-api-gcr-re:
+    cmds:
+      - curl -X POST -H "Content-Type:application/json" -d '{"image_path":"http://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"}' https://reverse-utoehvsqvq-ew.a.run.app
+
+
+  docker-run-re:
+    desc: corre imagen de Docker
+    summary: |
+      Ejecuta el contenedor Docker creado mediante la orden docker-build
+    cmds:
+      - xhost +local:docker
+      - docker run --rm -it -p 8080:8080 -e PORT=8080 reverse-0.0.1
+
+  gcloud-send-re:
+    deps:
+      - docker-build-re
+    cmds:
+      - docker tag reverse-0.0.1  gcr.io/deepfakes-317408/reverse
+      - docker push gcr.io/deepfakes-317408/reverse
+      - gcloud run deploy reverse --image gcr.io/deepfakes-317408/reverse --platform managed --allow-unauthenticated
+
+  test-re:
+    cmds:
+      - docker run -it --rm --entrypoint=/bin/bash -v `pwd`/reverse-eng/src:/code reverse-0.0.1 -c 'python /code/tests.py'
+
   # Generales 
   docker-rm:
     desc: elimina contenedores
