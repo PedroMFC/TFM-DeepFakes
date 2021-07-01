@@ -21,19 +21,31 @@ def home():
     if 'model_path' in request.json:
         model_path = request.json['model_path']
 
+        if model_path != "ffpp_c40.pth":
+            return {"Error": "El modelo no se encuentra disponible"}, 400
+
     if 'start_frame' in request.json:
         start_frame = request.json['start_frame']
+
+        if not isinstance(start_frame, int) or not start_frame >= 0:
+            return {"Error": "El parámetro 'start_frame' frame no es correcto"}, 400
 
     if 'end_frame' in request.json:
         end_frame = request.json['end_frame']
 
+        if not isinstance(end_frame, int) or not end_frame >= 0:
+            return {"Error": "El parámetro 'end_frame' frame no es correcto"}, 400
+
     name = video_path[video_path.find('=')+1:len(video_path)]
 
-    download.download_youtube(video_path, name)
+    ok = download.download_youtube(video_path, name)
+
+    if ok < 0:
+        return {"Error": "Hahabido algún problema al descargar el vídeo"}, 400
 
     result = detect.test_full_image_network("/home/faceforensics/videos/" + name + ".mp4", "../pretrained_model/" + model_path, "", start_frame, end_frame, False)
-    #result = {}
-    '''
+
+    ''' 
     response = app.response_class(
         response=jsonify(result),
         status=200,
@@ -41,7 +53,7 @@ def home():
     )
     '''
 
-    return result
+    return result, 200
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get("PORT", 8080)))
