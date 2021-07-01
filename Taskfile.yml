@@ -72,11 +72,11 @@ tasks:
     summary: |
       Lanza una petición para la detección de si una imagen es un deepfake
     cmds:
-      - curl -X POST -H "Content-Type:application/json" -d '{"image_path":"http://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"}' http://localhost:8080
+      - curl -X POST -H "Content-Type:application/json" -d '{"image_path":"http://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300", "model_path":"0_32000_model_31_70-23.pickle"}' http://localhost:8080
 
   request-api-gcr-re:
     cmds:
-      - curl -X POST -H "Content-Type:application/json" -d '{"image_path":"http://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"}' https://reverse-utoehvsqvq-ew.a.run.app
+      - curl -X POST -H "Content-Type:application/json" -d '{"image_path":"http://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300", "model_path":"0_32000_model_31_70-23.pickle"}' https://reverse-utoehvsqvq-ew.a.run.app
 
   docker-run-re:
     desc: corre imagen de Docker
