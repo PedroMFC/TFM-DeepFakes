@@ -26,6 +26,9 @@ def home():
 
             return {"Error": "El modelo no se encuentra disponible"}, 400
 
+    else:
+        model_path = '0_32000_model_31_70-23.pickle'
+
     download.downloadImage(image_path)
 
     print('DESCARGADO')
