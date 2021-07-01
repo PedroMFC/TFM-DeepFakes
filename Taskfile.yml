@@ -45,6 +45,7 @@ tasks:
   gcloud-send:
     deps:
       - docker-build
+      - test
     cmds:
       - docker tag faceforensics-0.4.0  gcr.io/deepfakes-317408/faceforensics
       - docker push gcr.io/deepfakes-317408/faceforensics
@@ -58,8 +59,7 @@ tasks:
   docker-build-re:
     desc: construir imagen de Docker
     summary: |
-      construir imagen de Docker a partir del Dockerfile de este directorio con nombre
-      faceforensics
+      construir imagen de Docker a partir del Dockerfile de este directorio con nombre reverse
     cmds:
       - cd reverse-eng; docker build -t reverse-0.0.1 .
 
@@ -68,9 +68,9 @@ tasks:
       - docker run -it --rm --entrypoint=/bin/bash -v `pwd`:/code reverse-0.0.1 -i
 
   request-api-re:
-    desc: lanzar la petición a la api que detecta vídeos
+    desc: lanzar la petición a la api que detecta imágenes
     summary: |
-      Lanza una petición para la detección de si un vídeo es un deepfake
+      Lanza una petición para la detección de si una imagen es un deepfake
     cmds:
       - curl -X POST -H "Content-Type:application/json" -d '{"image_path":"http://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"}' http://localhost:8080
 
@@ -78,18 +78,17 @@ tasks:
     cmds:
       - curl -X POST -H "Content-Type:application/json" -d '{"image_path":"http://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"}' https://reverse-utoehvsqvq-ew.a.run.app
 
-
   docker-run-re:
     desc: corre imagen de Docker
     summary: |
       Ejecuta el contenedor Docker creado mediante la orden docker-build
     cmds:
-      - xhost +local:docker
       - docker run --rm -it -p 8080:8080 -e PORT=8080 reverse-0.0.1
 
   gcloud-send-re:
     deps:
       - docker-build-re
+      - test-re
     cmds:
       - docker tag reverse-0.0.1  gcr.io/deepfakes-317408/reverse
       - docker push gcr.io/deepfakes-317408/reverse
@@ -98,6 +97,43 @@ tasks:
   test-re:
     cmds:
       - docker run -it --rm --entrypoint=/bin/bash -v `pwd`/reverse-eng/src:/code reverse-0.0.1 -c 'python /code/tests.py'
+
+  #API
+  docker-build-api:
+    cmds:
+      - cd api; docker build -t api .
+  docker-run-api:
+    cmds:
+      - docker run -e PORT=8081 -p 8081:8081 api
+
+  test-api:
+    cmds:
+      - cd api; go test -v ./tests
+
+  request-api-api-img:
+    cmds:
+      - curl -X POST -H "Content-Type:application/json" -d '{"service":1, "image_path":"http://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"}' http://localhost:8081
+
+  request-api-api-gcr-img:
+    cmds:
+      - curl -X POST -H "Content-Type:application/json" -d '{"service":1, "image_path":"http://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"}' https://api-utoehvsqvq-ew.a.run.app
+
+  request-api-api-video:
+    cmds:
+      - curl -X POST -H "Content-Type:application/json" -d '{"service":2, "video_path":"https://www.youtube.com/watch?v=xLecwguQOIc", "start_frame":0, "end_frame":2, "model_path":"ffpp_c40.pth"}' http://localhost:8081
+
+  request-api-api-gcr-video:
+    cmds:
+      - curl -X POST -H "Content-Type:application/json" -d '{"service":2, "video_path":"https://www.youtube.com/watch?v=xLecwguQOIc", "start_frame":0, "end_frame":2, "model_path":"ffpp_c40.pth"}' https://api-utoehvsqvq-ew.a.run.app
+
+  send-api3:
+    deps:
+      - docker-build-api
+      - test-api
+    cmds:
+      - docker tag api gcr.io/deepfakes-317408/api
+      - docker push gcr.io/deepfakes-317408/api
+      - gcloud run deploy api --image gcr.io/deepfakes-317408/api --platform managed --allow-unauthenticated
 
   # Generales 
   docker-rm:
