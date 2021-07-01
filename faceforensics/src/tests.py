@@ -24,6 +24,7 @@ class TestMethods(unittest.TestCase):
         mock_detect.return_value = '{"fake": 1}'
 
         app.post_json('/', dict(video_path='http://some_path', start_frame=1, end_frame=2, model_path='ffpp_c4.pth'), status=400)
+        app.post_json('/', dict(video_path='http://some_path', start_frame=1, end_frame=2), status=200)
 
     @patch('download.download_youtube')
     @patch('detect.test_full_image_network')

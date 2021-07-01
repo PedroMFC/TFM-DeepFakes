@@ -23,6 +23,8 @@ def home():
 
         if model_path != "ffpp_c40.pth":
             return {"Error": "El modelo no se encuentra disponible"}, 400
+    else:
+        model_path = "ffpp_c40.pth"
 
     if 'start_frame' in request.json:
         start_frame = request.json['start_frame']
