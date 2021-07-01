@@ -23,7 +23,7 @@ func (a *applicationGin) Start() {
 }
 
 type Service struct{
-	Service int `json:"service"`
+	Service int `json:"servicio"`
 }
 
 
@@ -62,20 +62,19 @@ func DefineLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		requestBody, _ := ioutil.ReadAll(c.Request.Body)
 		json.Unmarshal([]byte(string(requestBody)), &service)
 
-		log.Println(service)
-
-		if service.Service == 1{
+		switch service.Service {
+		case 1: // Reverse Engineering GM
 			var input ImageInput
 
 			json.Unmarshal([]byte(string(requestBody)), &input)
 
 			jsonData = []byte(`{
 				"image_path":"` + input.ImagePath + `",
-				"job": "leader"
 			}`)
+
 			url = "https://reverse-utoehvsqvq-ew.a.run.app"
-			
-		} else if service.Service == 2{
+
+		case 2: // FaceForensics
 			var input VideoInput
 
 			json.Unmarshal([]byte(string(requestBody)), &input)
@@ -88,10 +87,13 @@ func DefineLogic(client restclient.HTTPClient) gin.HandlerFunc{
 				"end_frame":`+ strconv.Itoa(input.EndFrame)  +`,
 				"model_path":"` + input.ModelPath + `"
 			}`)
+			
 			log.Println(string(jsonData))
 			url = "https://faceforensics-utoehvsqvq-ew.a.run.app"
 			//url = "http://localhost:8080"
-
+		default:
+			c.JSON(http.StatusBadRequest, "El servicio indicado no corresponde con ninguno almacenado")
+			return
 		}
 		
 		request, _ = http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
@@ -107,6 +109,6 @@ func DefineLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		log.Println("response Headers:", response.Header)
 		body, _ := ioutil.ReadAll(response.Body)
 		log.Println("response Body:", string(body))
-		c.JSON(http.StatusOK, string(body))
+		c.JSON(response.StatusCode, string(body))
 	}
 }
