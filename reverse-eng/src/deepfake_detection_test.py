@@ -45,7 +45,7 @@ def test(batch, labels):
     
     return y, loss.item(), loss1.item(),loss2.item(),loss3.item(),loss_c.item(),loss5.item(),y_orig, features,residual,torch.max(classes, dim=1)[1], classes[:,1]
 
-def detect():
+def detect(model_path):
 
     param_lr = 0.0001
     param_data_test = '/home/reverse/data_test'
@@ -53,7 +53,7 @@ def detect():
     param_seed = 1
     param_batch_size = 16
     param_savedir = '/home/reverse/runs'
-    param_model_dir =  './models/0_32000_model_31_70-23.pickle'
+    param_model_dir =  './models/' + model_path
 
     print("Random Seed: ", param_seed)
 
@@ -63,9 +63,6 @@ def detect():
 
     sig = str(datetime.datetime.now())
 
-
-        
-        
 
     test_path=param_data_test
     save_dir=param_savedir
