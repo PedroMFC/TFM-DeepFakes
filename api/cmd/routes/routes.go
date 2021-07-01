@@ -3,7 +3,7 @@ package routes
 import (
 	"api/cmd/restclient"
 	"net/http"
-	//"strconv"
+	"strconv"
 	"bytes"
 
 	"encoding/json"
@@ -30,6 +30,15 @@ type Service struct{
 type ImageInput struct{
 	ImagePath string `json:"image_path"`
 }
+
+
+type VideoInput struct{
+	VideoPath string `json:"video_path"`
+	StartFrame int `json:"start_frame"`
+	EndFrame int `json:"end_frame"`
+	ModelPath string `json:"model_path"`
+}
+
 
 func NewAppGin(client restclient.HTTPClient) *applicationGin {
 	router := gin.New()
@@ -66,11 +75,28 @@ func DefineLogic(client restclient.HTTPClient) gin.HandlerFunc{
 			}`)
 			url = "https://reverse-utoehvsqvq-ew.a.run.app"
 			
-		} 
+		} else if service.Service == 2{
+			var input VideoInput
+
+			json.Unmarshal([]byte(string(requestBody)), &input)
+
+			log.Println(input.EndFrame)
+
+			jsonData = []byte(`{
+				"video_path":"` + input.VideoPath + `",
+				"start_frame":`+ strconv.Itoa(input.StartFrame)  +`,
+				"end_frame":`+ strconv.Itoa(input.EndFrame)  +`,
+				"model_path":"` + input.ModelPath + `"
+			}`)
+			log.Println(string(jsonData))
+			url = "https://faceforensics-utoehvsqvq-ew.a.run.app"
+			//url = "http://localhost:8080"
+
+		}
 		
 		request, _ = http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 		request.Header.Set("Content-Type", "application/json; charset=UTF-8")
-		
+
 		response, error := client.Do(request)
 		if error != nil {
 			panic(error)
