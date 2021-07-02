@@ -24,6 +24,7 @@ class TestMethods(unittest.TestCase):
         app.post_json('/', dict(image_path='http://some_path', model_path='0_32000_model_29.pickle'), status=200)
         app.post_json('/', dict(image_path='http://some_path', model_path='0_64000_model_30.pickle'), status=200)
         app.post_json('/', dict(image_path='http://some_path', model_path='0_32000_model_31_70-.pickle'), status=400)
+        app.post_json('/', dict(image_path='http://some_path', model_path=''), status=200)
         app.post_json('/', dict(image_path='http://some_path'), status=200)
 
 

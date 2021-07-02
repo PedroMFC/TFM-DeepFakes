@@ -12,22 +12,21 @@ app.config["DEBUG"] = True
 def home():
 
     image_path = ""
+    model_path = "0_32000_model_31_70-23.pickle"
 
     if 'image_path' in request.json:
         image_path = request.json['image_path']
 
-    if 'model_path' in request.json:
+
+    if 'model_path' in request.json and request.json['model_path'] != "":
         model_path = request.json['model_path']
 
-        if (model_path != '0_32000_model_31_70-23.pickle' and
-            model_path != '0_32000_model_29.pickle' and 
-            model_path != '0_64000_model_30.pickle'
+        if (model_path != "0_32000_model_31_70-23.pickle" and
+            model_path != "0_32000_model_29.pickle" and 
+            model_path != "0_64000_model_30.pickle"
            ):
 
             return {"Error": "El modelo no se encuentra disponible"}, 400
-
-    else:
-        model_path = '0_32000_model_31_70-23.pickle'
 
     download.downloadImage(image_path)
 
