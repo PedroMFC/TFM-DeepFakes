@@ -29,6 +29,7 @@ type Service struct{
 
 type ImageInput struct{
 	ImagePath string `json:"image_path"`
+	ModelPath string `json:"model_path"`
 }
 
 
@@ -70,9 +71,12 @@ func DefineLogic(client restclient.HTTPClient) gin.HandlerFunc{
 
 			jsonData = []byte(`{
 				"image_path":"` + input.ImagePath + `",
+				"model_path":"`+ input.ModelPath  +`"
 			}`)
-
+ 
+			log.Println(string(jsonData))
 			url = "https://reverse-utoehvsqvq-ew.a.run.app"
+			//url = "http://localhost:8080"
 
 		case 2: // FaceForensics
 			var input VideoInput
@@ -110,5 +114,6 @@ func DefineLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		body, _ := ioutil.ReadAll(response.Body)
 		log.Println("response Body:", string(body))
 		c.JSON(response.StatusCode, string(body))
+		// c.JSON(http.StatusOK, "OK")
 	}
 }
