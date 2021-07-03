@@ -55,7 +55,7 @@ def home():
     )
     '''
 
-    return result, 200
+    return {"result":result}, 200
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get("PORT", 8080)))
