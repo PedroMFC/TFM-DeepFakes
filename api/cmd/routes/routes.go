@@ -96,7 +96,7 @@ func DefineLogic(client restclient.HTTPClient) gin.HandlerFunc{
 			url = "https://faceforensics-utoehvsqvq-ew.a.run.app"
 			//url = "http://localhost:8080"
 		default:
-			c.JSON(http.StatusBadRequest, "El servicio indicado no corresponde con ninguno almacenado")
+			c.JSON(http.StatusBadRequest, gin.H{"Error":"El servicio indicado no corresponde con ninguno almacenado"} )
 			return
 		}
 		
