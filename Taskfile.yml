@@ -29,7 +29,7 @@ tasks:
       Ejecuta el contenedor Docker creado mediante la orden docker-build
     cmds:
       - xhost +local:docker
-      - cd faceforensics/src; docker run --rm -it -p 8080:8080 -e PORT=8080 {{.GCR_FF}}
+      - docker run --rm -it -p 8080:8080 -e PORT=8080 -v `pwd`/faceforensics/src:/app/src {{.GCR_FF}}
   
   docker-consola-ff:
     desc: corre imagen de Docker pero no ejecuta el código
@@ -56,16 +56,12 @@ tasks:
 
   gcloud-send-ff:
     cmds:
+      - task: test-ff
       - task: docker-build
-      - task: test
       - docker push {{.GCR_FF}}
       - gcloud run deploy {{.SRV_FF}} --image {{.GCR_FF}} --platform managed --allow-unauthenticated --region {{.REGION}}
 
-  prueba:
-    cmds:
-      - gcloud run deploy {{.SRV_FF}} --image {{.GCR_FF}} --platform managed --allow-unauthenticated --region {{.REGION}}
-
-  test:
+  test-ff:
     cmds:
       - docker run -it --rm --entrypoint=/bin/bash -v `pwd`/faceforensics:/app {{.GCR_FF}} -c 'python /app/src/tests.py'
 
@@ -102,8 +98,8 @@ tasks:
 
   gcloud-send-re:
     cmds:
-      - task: docker-build-re
       - task: test-re
+      - task: docker-build-re
       - docker push {{.GCR_RE}} 
       - gcloud run deploy {{.SRV_RE}} --image {{.GCR_RE}}  --platform managed --allow-unauthenticated --region {{.REGION}}
 
@@ -144,8 +140,8 @@ tasks:
 
   gcloud-send-api:
     cmds:
-      - task: docker-build-api
       - task: test-api
+      - task: docker-build-api
       - docker push {{.GCR_API}}
       - gcloud run deploy {{.SRV_API}} --image {{.GCR_API}} --platform managed --allow-unauthenticated --region {{.REGION}}
 
