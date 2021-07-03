@@ -57,7 +57,7 @@ tasks:
   gcloud-send-ff:
     cmds:
       - task: test-ff
-      - task: docker-build
+      - task: docker-build-ff
       - docker push {{.GCR_FF}}
       - gcloud run deploy {{.SRV_FF}} --image {{.GCR_FF}} --platform managed --allow-unauthenticated --region {{.REGION}}
 
