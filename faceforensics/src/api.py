@@ -21,7 +21,7 @@ def home():
     if 'model_path' in request.json:
         model_path = request.json['model_path']
 
-        if model_path != "ffpp_c40.pth":
+        if model_path != "ffpp_c40.pth" and model_path != "ffpp_c23.pth":
             return {"Error": "El modelo no se encuentra disponible"}, 400
     else:
         model_path = "ffpp_c40.pth"
