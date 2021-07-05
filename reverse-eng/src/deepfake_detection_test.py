@@ -120,23 +120,6 @@ def detect(model_path):
 
             print("Result: ", pred_1[0].cpu().numpy())
             return {'result': pred_1[0].cpu().numpy().tolist() }
-            print(pred_1, " ", labels_test)
-            if flag1==0:
-                all_y_test=labels_test
-                all_y_pred_test=pred_1.detach()
-                all_scores=scores.detach()
-                flag1=1
-
-            else:
-                all_y_pred_test=torch.cat([all_y_pred_test,pred_1.detach()], dim=0)
-                all_y_test=torch.cat([all_y_test,labels_test], dim=0)
-                all_scores=torch.cat([all_scores,scores], dim=0)
-        fpr1, tpr1, thresholds1 = metrics.roc_curve(all_y_test, np.asarray(all_scores.cpu()), pos_label=1)
-        print("testing AUC is:", metrics.auc(fpr1, tpr1))
-                
-        
-            
-        print('epoch=',epoch)
         
     
    
