@@ -2,17 +2,15 @@ from pytube import YouTube
 
 def download_youtube(link, name):
     try: 
-        # object creation using YouTube
-        # which was imported in the beginning 
+        # Creción del objeto usando Youtube
         yt = YouTube(link) 
     except: 
-        print("Connection Error") #to handle exception 
+        print("Connection Error") # Manejar la excepción
     
-    # get the video with the extension and
-    # resolution passed in the get() function 
+    # Obtener el vídeo con la extensión y resolución
     d_video = yt.streams.first()
     try: 
-        # downloading the video 
+        # Descargar el vídeo
         d_video.download("/home/faceforensics/videos", filename=name) 
     except: 
         print("Ha habido algún error")
