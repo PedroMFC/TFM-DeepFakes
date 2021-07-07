@@ -36,12 +36,16 @@ type VideoInput struct{
 	Full int `json:"full"`
 }
 
+type KerasIOInput struct{
+	VideoPath string `json:"video_path"`
+}
 
 func NewAppGin(client restclient.HTTPClient) *applicationGin {
 	router := gin.New()
 
 	router.POST("/faceforensics", FaceForensicsLogic(client))
 	router.POST("/reverse", ReverseLogic(client))
+	router.POST("/kerasio", KerasIOLogic(client))
 
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, "OK")
@@ -97,6 +101,42 @@ func FaceForensicsLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		log.Println("response Body:", string(body))
 		c.JSON(response.StatusCode, string(body))
 		// c.JSON(http.StatusOK, "OK")
+	}
+}
+
+func KerasIOLogic(client restclient.HTTPClient) gin.HandlerFunc{
+	return func(c *gin.Context) {
+		var request *http.Request
+		var url string
+		var jsonData []byte
+		var input KerasIOInput
+
+		requestBody, _ := ioutil.ReadAll(c.Request.Body)
+
+		json.Unmarshal([]byte(string(requestBody)), &input)
+
+		jsonData = []byte(`{
+			"video_path":"` + input.VideoPath + `"
+		}`)
+ 
+		log.Println(string(jsonData))
+		url = "https://kerasio-utoehvsqvq-ew.a.run.app"
+		//url = "http://localhost:8083"
+
+		request, _ = http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
+		request.Header.Set("Content-Type", "application/json; charset=UTF-8")
+
+		response, error := client.Do(request)
+		if error != nil {
+			panic(error)
+		}
+		defer response.Body.Close()
+
+		log.Println("response Status:", response.Status)
+		log.Println("response Headers:", response.Header)
+		body, _ := ioutil.ReadAll(response.Body)
+		log.Println("response Body:", string(body))
+		c.JSON(response.StatusCode, string(body))
 	}
 }
 

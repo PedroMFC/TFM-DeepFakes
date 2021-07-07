@@ -178,6 +178,20 @@ tasks:
     cmds:
       - curl -X POST -H "Content-Type:application/json" -d '{"video_path":"https://www.youtube.com/watch?v=xLecwguQOIc", "start_frame":0, "end_frame":2, "model_path":"ffpp_c40.pth"}' https://api-utoehvsqvq-ew.a.run.app/faceforensics
 
+  request-api-api-keras:
+    desc: Petición para API en local del servicio de clasificación de vídeo con Keras.
+    summary: |
+      Ejemplo de una petición a la API en local del servicio de clasificación de vídeo con Keras corriendo en local.
+    cmds:
+      - curl -X POST -H "Content-Type:application/json" -d '{"video_path":"https://www.youtube.com/watch?v=xLecwguQOIc"}' http://localhost:8081/kerasio
+
+  request-api-api-gcr-keras:
+    desc: Petición para API en Google Cloud del servicio de clasificación de vídeo con Keras.
+    summary: |
+      Ejemplo de una petición a la API en Google Cloud del servicio de clasificación de vídeo con Keras.
+    cmds:
+      - curl -X POST -H "Content-Type:application/json" -d '{"video_path":"https://www.youtube.com/watch?v=xLecwguQOIc"}' https://api-utoehvsqvq-ew.a.run.app/kerasio
+
   gcloud-send-api:
     desc: CI/CD API entrada.
     summary: |
@@ -232,7 +246,7 @@ tasks:
     cmds:
       - task: test-kio
       - task: docker-build-kio
-      - docker push {{.GCR_FF}}
+      - docker push {{.GCR_KIO}}
       - gcloud run deploy {{.SRV_KIO}} --image {{.GCR_KIO}} --platform managed --allow-unauthenticated --region {{.REGION}}
 
   test-kio:

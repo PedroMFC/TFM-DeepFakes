@@ -121,6 +121,53 @@ func TestFaceForensicsError(t *testing.T) {
 		End()
 }
 
+
+func TestKerasOK(t *testing.T) {
+	client := &mocks.MockClient{} 
+	handler := routes.NewAppGin(client).Router
+
+	
+	json := `[{"0":"fake"}]`
+	// create a new reader with that JSON
+	r := ioutil.NopCloser(bytes.NewReader([]byte(json)))
+	mocks.GetDoFunc = func(*http.Request) (*http.Response, error) {
+		return &http.Response{
+			StatusCode: 200,
+			Body:       r,
+		}, nil
+	}
+
+	apitest.New().
+		Handler(handler).
+		Post("/kerasio").
+		Expect(t).
+		Status(http.StatusOK).
+		End()
+}
+
+func TestKerasError(t *testing.T) {
+	client := &mocks.MockClient{} 
+	handler := routes.NewAppGin(client).Router
+
+	
+	json := `{"Error":"Un error"}`
+	// create a new reader with that JSON
+	r := ioutil.NopCloser(bytes.NewReader([]byte(json)))
+	mocks.GetDoFunc = func(*http.Request) (*http.Response, error) {
+		return &http.Response{
+			StatusCode: 400,
+			Body:       r,
+		}, nil
+	}
+
+	apitest.New().
+		Handler(handler).
+		Post("/kerasio").
+		Expect(t).
+		Status(http.StatusBadRequest).
+		End()
+}
+
 func TestNoService(t *testing.T) {
 	client := &mocks.MockClient{} 
 	handler := routes.NewAppGin(client).Router
