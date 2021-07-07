@@ -119,7 +119,10 @@ def detect(model_path):
             out,loss,loss1,loss2,loss3,loss4,loss5, out_orig,features,residual,pred_1,scores=test( Variable(torch.FloatTensor(inputs_test)),Variable(torch.LongTensor(labels_test)))
 
             print("Result: ", pred_1[0].cpu().numpy())
-            return {'result': pred_1[0].cpu().numpy().tolist() }
+            resInt = pred_1[0].cpu().numpy().tolist()
+            label = 'fake' if resInt == 1 else 'real'
+
+            return {'result': [{"0": label}] }
         
     
    
