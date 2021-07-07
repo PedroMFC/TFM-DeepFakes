@@ -30,6 +30,22 @@ Para llamar al servicio desplegado en Google Cloud utilizamos:
  > task request-api-gcr-ff  # Realizar la petición
 ```
 
+## Clasificación de vídeo con Keras
+
+Para la clasificación de vídeo con una arquitectura CNN-RNN usamos la biblioteca Keras a partir del código disponible en [esta página](https://keras.io/examples/vision/video_classification/). El código modificado en nuestro repositorio se encuentra en la carpeta [kerasio](./kerasio). Para ejecutarlo en local utilizamos las órdenes:
+
+```
+ > task docker-build-kio # Construir el contenedor
+ > task docker-run-kio   # Lanzar el contenedor 
+ > task request-api-kio  # Realizar la petición
+```
+
+Para llamar al servicio desplegado en Google Cloud utilizamos:
+
+```
+ > task request-api-gcr-kio  # Realizar la petición
+```
+
 
 ## Reverse Engineering
 
