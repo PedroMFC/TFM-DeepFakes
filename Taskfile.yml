@@ -153,28 +153,28 @@ tasks:
     summary: |
       Ejemplo de una petición a la API en local del servicio ReverseEngineering_GM corriendo en local.
     cmds:
-      - curl -X POST -H "Content-Type:application/json" -d '{"servicio":1, "image_path":"http://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"}' http://localhost:8081
+      - curl -X POST -H "Content-Type:application/json" -d '{"image_path":"http://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"}' http://localhost:8081/reverse
 
   request-api-api-gcr-img:
     desc: Petición para API en Google Cloud del servicio ReverseEngineering_GM.
     summary: |
       Ejemplo de una petición a la API en Google Cloud del servicio ReverseEngineering_GM.
     cmds:
-      - curl -X POST -H "Content-Type:application/json" -d '{"servicio":1, "image_path":"http://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"}' https://api-utoehvsqvq-ew.a.run.app
+      - curl -X POST -H "Content-Type:application/json" -d '{"image_path":"http://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"}' https://api-utoehvsqvq-ew.a.run.app/reverse
 
   request-api-api-video:
     desc: Petición para API en local del servicio FaceForensics.
     summary: |
       Ejemplo de una petición a la API en local del servicio FaceForensics corriendo en local.
     cmds:
-      - curl -X POST -H "Content-Type:application/json" -d '{"servicio":2, "video_path":"https://www.youtube.com/watch?v=xLecwguQOIc", "start_frame":0, "end_frame":2, "model_path":"ffpp_c40.pth"}' http://localhost:8081
+      - curl -X POST -H "Content-Type:application/json" -d '{"video_path":"https://www.youtube.com/watch?v=xLecwguQOIc", "start_frame":0, "end_frame":2, "model_path":"ffpp_c40.pth"}' http://localhost:8081/faceforensics
 
   request-api-api-gcr-video:
     desc: Petición para API en Google Cloud del servicio FaceForensics.
     summary: |
       Ejemplo de una petición a la API en Google Cloud del servicio FaceForensics.
     cmds:
-      - curl -X POST -H "Content-Type:application/json" -d '{"servicio":2, "video_path":"https://www.youtube.com/watch?v=xLecwguQOIc", "start_frame":0, "end_frame":2, "model_path":"ffpp_c40.pth"}' https://api-utoehvsqvq-ew.a.run.app
+      - curl -X POST -H "Content-Type:application/json" -d '{"video_path":"https://www.youtube.com/watch?v=xLecwguQOIc", "start_frame":0, "end_frame":2, "model_path":"ffpp_c40.pth"}' https://api-utoehvsqvq-ew.a.run.app/faceforensics
 
   gcloud-send-api:
     desc: CI/CD API entrada.
