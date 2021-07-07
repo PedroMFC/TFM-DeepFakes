@@ -32,7 +32,7 @@ func TestRevEngOK(t *testing.T) {
 	handler := routes.NewAppGin(client).Router
 
 	
-	json := `{"fake":1}`
+	json := `[{"0":"fake"}]`
 	// create a new reader with that JSON
 	r := ioutil.NopCloser(bytes.NewReader([]byte(json)))
 	mocks.GetDoFunc = func(*http.Request) (*http.Response, error) {
@@ -44,8 +44,8 @@ func TestRevEngOK(t *testing.T) {
 
 	apitest.New().
 		Handler(handler).
-		Post("/").
-		Body("{ \"servicio\":1 }").
+		Post("/reverse").
+		// Body("{ \"servicio\":1 }").
 		Expect(t).
 		Status(http.StatusOK).
 		End()
@@ -68,8 +68,7 @@ func TestRevEngError(t *testing.T) {
 
 	apitest.New().
 		Handler(handler).
-		Post("/").
-		Body("{ \"servicio\":1 }").
+		Post("/reverse").
 		Expect(t).
 		Status(http.StatusBadRequest).
 		End()
@@ -81,7 +80,7 @@ func TestFaceForensicsOK(t *testing.T) {
 	handler := routes.NewAppGin(client).Router
 
 	
-	json := `{"fake":1}`
+	json := `[{"0":"fake"}]`
 	// create a new reader with that JSON
 	r := ioutil.NopCloser(bytes.NewReader([]byte(json)))
 	mocks.GetDoFunc = func(*http.Request) (*http.Response, error) {
@@ -93,8 +92,7 @@ func TestFaceForensicsOK(t *testing.T) {
 
 	apitest.New().
 		Handler(handler).
-		Post("/").
-		Body("{ \"servicio\":2 }").
+		Post("/faceforensics").
 		Expect(t).
 		Status(http.StatusOK).
 		End()
@@ -117,8 +115,7 @@ func TestFaceForensicsError(t *testing.T) {
 
 	apitest.New().
 		Handler(handler).
-		Post("/").
-		Body("{ \"servicio\":2 }").
+		Post("/faceforensics").
 		Expect(t).
 		Status(http.StatusBadRequest).
 		End()
@@ -129,7 +126,7 @@ func TestNoService(t *testing.T) {
 	handler := routes.NewAppGin(client).Router
 
 	
-	json := `{"fake":1}`
+	json := `[{"0":"fake"}]`
 	// create a new reader with that JSON
 	r := ioutil.NopCloser(bytes.NewReader([]byte(json)))
 	mocks.GetDoFunc = func(*http.Request) (*http.Response, error) {
@@ -141,9 +138,8 @@ func TestNoService(t *testing.T) {
 
 	apitest.New().
 		Handler(handler).
-		Post("/").
-		Body("{ \"servicio\":3 }").
+		Post("/otroservicio").
 		Expect(t).
-		Status(http.StatusBadRequest).
+		Status(http.StatusNotFound).
 		End()
 }

@@ -167,7 +167,7 @@ tasks:
     summary: |
       Ejemplo de una petición a la API en local del servicio FaceForensics corriendo en local.
     cmds:
-      - curl -X POST -H "Content-Type:application/json" -d '{"video_path":"https://www.youtube.com/watch?v=xLecwguQOIc", "start_frame":0, "end_frame":2, "model_path":"ffpp_c40.pth"}' http://localhost:8081/faceforensics
+      - curl -X POST -H "Content-Type:application/json" -d '{"video_path":"https://www.youtube.com/watch?v=xLecwguQOIc", "start_frame":0, "end_frame":2, "model_path":"ffpp_c40.pth", "full":1}' http://localhost:8081/faceforensics
 
   request-api-api-gcr-video:
     desc: Petición para API en Google Cloud del servicio FaceForensics.

@@ -33,6 +33,7 @@ type VideoInput struct{
 	StartFrame int `json:"start_frame"`
 	EndFrame int `json:"end_frame"`
 	ModelPath string `json:"model_path"`
+	Full int `json:"full"`
 }
 
 
@@ -66,18 +67,20 @@ func FaceForensicsLogic(client restclient.HTTPClient) gin.HandlerFunc{
 				"video_path":"` + input.VideoPath + `",
 				"start_frame":`+ strconv.Itoa(input.StartFrame)  +`,
 				"end_frame":`+ strconv.Itoa(input.EndFrame)  +`,
-				"model_path":"` + input.ModelPath + `"
+				"model_path":"` + input.ModelPath + `",
+				"full":`+ strconv.Itoa(input.Full)  +`
 			}`)
 		} else {
 			jsonData = []byte(`{
 				"video_path":"` + input.VideoPath + `",
-				"model_path":"` + input.ModelPath + `"
+				"model_path":"` + input.ModelPath + `",
+				"full":"` + strconv.Itoa(input.Full) + `
 			}`)	
 		}
 			
 		log.Println(string(jsonData))
-		//url = "https://faceforensics-utoehvsqvq-ew.a.run.app"
-		url = "http://localhost:8080"
+		url = "https://faceforensics-utoehvsqvq-ew.a.run.app"
+		//url = "http://localhost:8080"
 
 		request, _ = http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 		request.Header.Set("Content-Type", "application/json; charset=UTF-8")
@@ -115,8 +118,8 @@ func ReverseLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		}`)
  
 		log.Println(string(jsonData))
-		//url = "https://reverse-utoehvsqvq-ew.a.run.app"
-		url = "http://localhost:8082"
+		url = "https://reverse-utoehvsqvq-ew.a.run.app"
+		//url = "http://localhost:8082"
 
 		request, _ = http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 		request.Header.Set("Content-Type", "application/json; charset=UTF-8")
