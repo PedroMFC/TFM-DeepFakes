@@ -117,8 +117,8 @@ def test_full_image_network(video_path, model_path, output_path,
     :return:
     """
     # Resultados
-    result = {}
-
+    result = []
+    
     # Read and write
     reader = cv2.VideoCapture(video_path)
 
@@ -179,7 +179,7 @@ def test_full_image_network(video_path, model_path, output_path,
             output_list = ['{0:.2f}'.format(float(x)) for x in
                            output.detach().cpu().numpy()[0]]
             # print(label, "=>", prediction, " ", output_list)
-            result[str(frame_num)] = label
+            result.append({str(frame_num-1): label})
 
         if frame_num >= end_frame:
             break
