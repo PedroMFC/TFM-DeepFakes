@@ -4,10 +4,12 @@ vars:
   GCR_FF:  gcr.io/deepfakes-317408/faceforensics
   GCR_RE:  gcr.io/deepfakes-317408/reverse
   GCR_API: gcr.io/deepfakes-317408/api
+  GCR_KIO: gcr.io/deepfakes-317408/kerasio
 
   SRV_FF:  faceforensics
   SRV_RE:  reverse
   SRV_API: api
+  SRV_KIO: kerasio
 
   REGION: europe-west1
 
@@ -185,6 +187,60 @@ tasks:
       - task: docker-build-api
       - docker push {{.GCR_API}}
       - gcloud run deploy {{.SRV_API}} --image {{.GCR_API}} --platform managed --allow-unauthenticated --region {{.REGION}}
+
+  # Keras IO
+  docker-build-kio:
+    desc: Imagen para la clasificación de vídeo con Keras.
+    summary: |
+      Construir imagen de docker para la clasificación de vídeo con Keras.
+    dir: ./kerasio
+    cmds:
+      - docker build -t {{.GCR_KIO}}  .
+
+  docker-run-kio:
+    desc: Correr imagen de clasificación de vídeo con Keras.
+    summary: |
+      Ejecuta la imagen con la clasificación de vídeo con Keras. Monta el volúmen con los archivos necesarios (sobreescribe los alamcenados) y escucha en el puerto 8082.
+    cmds:
+      - docker run --rm -it -p 8083:8083 -e PORT=8083 -v `pwd`/kerasio:/app {{.GCR_KIO}}
+  
+  docker-console-kio:
+    desc: Correr imagen de clasificación de vídeo con Keras en consola.
+    summary: |
+      Ejecuta el contenedor para clasificación de vídeo con Keras accediendo mediante consola
+    cmds:
+      - docker run --rm -it -p 8083:8083 -e PORT=8083 --entrypoint=/bin/bash -v `pwd`/kerasio:/app {{.GCR_KIO}}
+
+  request-api-kio:
+    desc: Petición para clasificación de vídeo con Keras en local.
+    summary: |
+      Ejemplo de una petición al algoritmo de clasificación de vídeo con Keras corriendo en local.
+    cmds:
+      - curl -X POST -H "Content-Type:application/json" -d '{"video_path":"https://www.youtube.com/watch?v=xLecwguQOIc"}' http://localhost:8083
+
+  request-api-gcr-kio:
+    desc: Petición para clasificación de vídeo con Keras en Google Cloud.
+    summary: |
+      Ejemplo de una petición al algoritmo de clasificación de vídeo con Keras disponible en Googgle Cloud.
+    cmds:
+      - curl -X POST -H "Content-Type:application/json" -d '{"video_path":"https://www.youtube.com/watch?v=xLecwguQOIc"}' https://kerasio-utoehvsqvq-ew.a.run.app
+
+  gcloud-send-kio:
+    desc: CI/CD clasificación de vídeo con Keras.
+    summary: |
+      Orden para llevar a la cabo la CI/CD para el servicio de clasificación de vídeo con Keras. Primero realiza los test, luego construye el contenedor y por último lo despliega.
+    cmds:
+      - task: test-kio
+      - task: docker-build-kio
+      - docker push {{.GCR_FF}}
+      - gcloud run deploy {{.SRV_KIO}} --image {{.GCR_KIO}} --platform managed --allow-unauthenticated --region {{.REGION}}
+
+  test-kio:
+    desc: Tests clasificación de vídeo con Keras.
+    summary: |
+      Ejecutar los test para el servicio clasificación de vídeo con Keras. Destacamos que monta el volúmen con el código y sobreescribe el que tenía por defecto el contenedor.
+    cmds:
+      - docker run -it --rm --entrypoint=/bin/bash -v `pwd`/kerasio:/app {{.GCR_KIO}} -c 'python /app/src/tests.py'
 
   # Generales 
   docker-rm:
