@@ -1,0 +1,119 @@
+openapi: 3.0.1
+info:
+  title: DeepFakes API
+  description: Aplicación que ofrece una API para poder detectar deepfakes usando varios algoritmos
+  contact:
+    email: pedro_23_96@hotmail.com
+  license:
+    name: GNU General Public License v3.0
+    url: 'http://www.gnu.org/licenses/gpl-3.0.html'
+  version: 1.0.0
+externalDocs:
+  description: Encuentra más de la aplicación 
+  url: 'https://github.com/PedroMFC/TFM-DeepFakes'
+servers:
+  - url: 'https://api-utoehvsqvq-ew.a.run.app'
+tags:
+  - name: api
+    description: Mandar información para el análisis de vídeos e imágenes 
+
+paths:
+  /faceforensics:
+    post:
+      tags:
+        - api
+      summary: Análisis de vídeo mediante el algoritmo FaceForensics++
+      operationId: postFaceForensics
+      requestBody:
+        description: FaceForensicsInput tiene que ser enviada
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FaceForensicsInput'
+              
+        required: true
+        
+      responses:
+        '200':
+            description: Operación exitosa
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: Argumentos inválidos
+          content: {}
+          
+  /reverse:
+    post:
+      tags:
+        - api
+      summary: Análisis de imágenes mediante el algoritmo ReverseEngineering
+      operationId: postReverse
+      requestBody:
+        description: ReverseEnginneringInput tiene que ser enviada
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReverseEnginneringInput'
+              
+        required: true
+        
+      responses:
+        '200':
+            description: Operación exitosa
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ApiResponse'
+        '404':
+          description: Argumentos inválidos
+          content: {}
+  
+components:
+  schemas:
+    FaceForensicsInput:
+      required:
+        - video_path
+      type: object
+      properties:
+        video_path:
+          type: string
+        start_frame:
+          type: integer
+        end_frame:
+          type: integer
+        model_path:
+          type: string
+      xml:
+        name: FaceForensicsInput
+        
+    ReverseEnginneringInput:
+      required:
+        - image_path
+      type: object
+      properties:
+        image_path:
+          type: string
+        model_path:
+          type: string
+      xml:
+        name: ReverseEnginneringInput
+        
+    ApiResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/Result'
+      xml:
+        name: ApiResponse
+        
+    Result:
+      type: object
+      additionalProperties:
+        type: string
+      example:
+        0: fake
+
