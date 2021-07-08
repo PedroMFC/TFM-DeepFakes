@@ -40,7 +40,7 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/ApiResponse'
-        '404':
+        '400':
           description: Argumentos inválidos
           content: {}
           
@@ -66,10 +66,37 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/ApiResponse'
-        '404':
+        '400':
           description: Argumentos inválidos
           content: {}
+          
   
+  /kerasio:
+    post:
+      tags:
+        - api
+      summary: Análisis de vídeo mediante clasificación CNN-RNN con Keras
+      operationId: postKerasIO
+      requestBody:
+        description: KerasIOInput tiene que ser enviada
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KerasIOInput'
+              
+        required: true
+        
+      responses:
+        '200':
+            description: Operación exitosa
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Argumentos inválidos
+          content: {}
+          
 components:
   schemas:
     FaceForensicsInput:
@@ -99,6 +126,16 @@ components:
           type: string
       xml:
         name: ReverseEnginneringInput
+        
+    KerasIOInput:
+      required:
+        - video_path
+      type: object
+      properties:
+        video_path:
+          type: string
+      xml:
+        name: KerasIOInput
         
     ApiResponse:
       type: object
