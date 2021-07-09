@@ -5,6 +5,7 @@ import Home from './components/pages/HomePage/Home'
 import Footer from './components/pages/Footer/Footer';
 import Faceforensics from './components/pages/Faceforensics/Faceforensics';
 import Reverse from './components/pages/Reverse/Reverse';
+import Keras from './components/pages/Keras/Keras';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path='/' exact component={Home} />
         <Route path='/faceforensics' component={Faceforensics} />
         <Route path='/reverse' component={Reverse} />
+        <Route path='/keras' component={Keras} />
       </Switch>
       <Footer />
     </Router>
