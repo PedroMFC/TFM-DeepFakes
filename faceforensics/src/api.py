@@ -19,7 +19,7 @@ def home():
     if 'video_path' in request.json:
         video_path = request.json['video_path']
 
-    if 'model_path' in request.json:
+    if 'model_path' in request.json and request.json['model_path'] != "":
         model_path = request.json['model_path']
 
         if model_path != "ffpp_c40.pth" and model_path != "ffpp_c23.pth":

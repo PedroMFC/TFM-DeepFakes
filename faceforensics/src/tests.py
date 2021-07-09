@@ -25,6 +25,7 @@ class TestMethods(unittest.TestCase):
 
         app.post_json('/', dict(video_path='http://some_path', start_frame=1, end_frame=2, model_path='ffpp_c4.pth'), status=400)
         app.post_json('/', dict(video_path='http://some_path', start_frame=1, end_frame=2, model_path='ffpp_c23.pth'), status=200)
+        app.post_json('/', dict(video_path='http://some_path', start_frame=1, end_frame=2, model_path=''), status=200)
         app.post_json('/', dict(video_path='http://some_path', start_frame=1, end_frame=2), status=200)
 
     @patch('download.download_youtube')
