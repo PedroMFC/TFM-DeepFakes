@@ -103,7 +103,7 @@ func FaceForensicsLogic(client restclient.HTTPClient) gin.HandlerFunc{
 			jsonData = []byte(`{
 				"video_path":"` + input.VideoPath + `",
 				"model_path":"` + input.ModelPath + `",
-				"full":"` + strconv.Itoa(input.Full) + `
+				"full":`+ strconv.Itoa(input.Full)  +`
 			}`)	
 		}
 			
