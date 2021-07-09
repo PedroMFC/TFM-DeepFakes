@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useForm = (callback, validate) => {
+const useForm = (callback, callback2, validate, path) => {
   const [values, setValues] = useState({
     video_path: '',
   });
@@ -17,9 +17,41 @@ const useForm = (callback, validate) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-
+    
     setErrors(validate(values));
-    setIsSubmitting(true);
+    if (Object.keys(errors).length === 0 ){
+      fetch("http://localhost:8081/" + path + "/", {
+              "method": "POST",
+              "headers": {
+                  "content-type": "application/json",
+                  "accept": "application/json"
+              },
+              "body": JSON.stringify({
+                video_path: values.video_path,
+              })
+          })
+          .then(response => response.json())
+          .then(response => {
+              var responseJSON = JSON.parse(response)
+
+              //console.log(responseJSON)
+              
+              if (responseJSON.result[0]["0"] === "real" ){
+                console.log("Pues es real")
+                callback2("real")
+              } else{
+                console.log("Que nos han timado....")
+                callback2("fake")
+              }
+
+              //console.log(responseJSON.result[0])
+          })
+          .catch(err => {
+              console.log(err);
+          });
+
+      setIsSubmitting(true);
+    }
   };
 
   useEffect(

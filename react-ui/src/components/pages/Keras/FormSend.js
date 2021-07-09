@@ -3,10 +3,12 @@ import validate from './validateInfo';
 import useForm from './useForm';
 import { Button } from '../../Button'
 
-const FormSend = ({ submitForm }) => {
+const FormSend = ({ submitForm , setFinalResult }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(
     submitForm,
-    validate
+    setFinalResult,
+    validate,
+    "kerasio"
   );
 
   return (
