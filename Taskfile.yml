@@ -5,11 +5,13 @@ vars:
   GCR_RE:  gcr.io/deepfakes-317408/reverse
   GCR_API: gcr.io/deepfakes-317408/api
   GCR_KIO: gcr.io/deepfakes-317408/kerasio
+  GCR_RUI: gcr.io/deepfakes-317408/reactui
 
   SRV_FF:  faceforensics
   SRV_RE:  reverse
   SRV_API: api
   SRV_KIO: kerasio
+  SRV_KIO: reactui
 
   REGION: europe-west1
 
@@ -255,6 +257,32 @@ tasks:
       Ejecutar los test para el servicio clasificación de vídeo con Keras. Destacamos que monta el volúmen con el código y sobreescribe el que tenía por defecto el contenedor.
     cmds:
       - docker run -it --rm --entrypoint=/bin/bash -v `pwd`/kerasio:/app {{.GCR_KIO}} -c 'python /app/src/tests.py'
+
+  # React
+  docker-build-rui:
+    desc: Imagen con React.
+    summary: |
+      Construir imagen de docker para la interfaz de usuario creada con React y servida mediante Nginx.
+    dir: ./react-ui
+    cmds:
+      - docker build -t {{.GCR_RUI}}  .
+
+  docker-run-rui:
+    desc: Correr imagen de React.
+    summary: |
+      Ejecuta la imagen con con la interfaz de usuario creada con React.
+    cmds:
+      - docker run --rm -it -p 80:80 {{.GCR_RUI}}
+
+  gcloud-send-rui:
+    desc: CI/CD React.
+    summary: |
+      Llevar a la cabo la CI/CD para la interfaz de usuario con React.
+    cmds:
+      # - task: docker-build-rui
+      - docker push {{.GCR_RUI}}
+      - gcloud run deploy {{.SRV_RUI}} --image {{.GCR_RUI}} --platform managed --allow-unauthenticated --region {{.REGION}} --port=80
+
 
   # Generales 
   docker-rm:
