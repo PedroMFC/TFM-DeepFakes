@@ -5,6 +5,7 @@ import FormLoading from '../../FormLoading';
 import FormSend from './FormSend';
 import FormReal from '../../FormReal';
 import FormFake from '../../FormFake';
+import FormError from '../../FormError';
 
 const Form = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -21,9 +22,12 @@ const Form = () => {
         {!isSubmitted ? (
           <FormInitial/>
         ) : [(finalResult === "" ?
-              <FormLoading /> : [(finalResult == "real" ?
-              <FormReal /> :
-              <FormFake />
+              <FormLoading /> : [(finalResult === "real" ?
+              <FormReal /> : [(finalResult === "fake" ?
+              <FormFake /> : 
+              <FormError />
+              )]
+              
               )]
         ) ]}
         </div>

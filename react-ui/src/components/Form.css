@@ -19,12 +19,7 @@
 }
 
 .form-content-left {
-  background: linear-gradient(
-    90deg,
-    
-    rgb(39, 176, 255) 0%,
-    rgb(0, 232, 236) 100%
-  );
+  background: #ffffff;
   position: relative;
 }
 

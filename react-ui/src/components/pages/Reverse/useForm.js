@@ -21,7 +21,7 @@ const useForm = (callback, callback2, validate, path) => {
     setErrors(validate(values));
     
     if (Object.keys(errors).length === 0 ){
-      fetch("http://localhost:8081/" + path + "/", {
+      fetch("https://api-utoehvsqvq-ew.a.run.app/" + path + "/", {
               "method": "POST",
               "headers": {
                   "content-type": "application/json",
@@ -49,6 +49,7 @@ const useForm = (callback, callback2, validate, path) => {
           })
           .catch(err => {
               console.log(err);
+              callback2("error")
           });
 
       setIsSubmitting(true);

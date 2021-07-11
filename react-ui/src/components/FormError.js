@@ -1,7 +1,7 @@
 import React from 'react';
 import './Form.css';
 
-const FormFake = () => {
+const FormError = () => {
   return (
     <>
       <div
@@ -10,9 +10,9 @@ const FormFake = () => {
         <div className='container'>
           <div className='row home__hero-row' style={{true: 'flex', flexDirection: 'row' }} >
               <div className='home__hero-text-wrapper'>
-                <h1 className='heading dark'>El contenido ha sido manipulado</h1>
+                <h1 className='heading dark'>Parece que ha ocurrido algún error</h1>
                 <div className='home__hero-img-wrapper'>
-                  <img src='img/fake.svg' className='home__hero-img' />
+                  <img src='img/error.svg' className='home__hero-img' />
                 </div>
             </div>
           </div>
@@ -22,4 +22,4 @@ const FormFake = () => {
   );
 };
 
-export default FormFake;
+export default FormError;

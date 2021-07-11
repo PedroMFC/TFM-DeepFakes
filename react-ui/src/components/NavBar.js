@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
-import { MdFingerprint } from 'react-icons/md'
+import { BiFace } from 'react-icons/bi'
 import { FaBars, FaTimes } from 'react-icons/fa'
 import './NavBar.css'
 import { IconContext } from 'react-icons/lib'
@@ -32,7 +32,7 @@ function NavBar() {
             <nav className='navbar'>
               <div className='navbar-container container'>
                 <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
-                  <MdFingerprint className='navbar-icon' />
+                  <BiFace className='navbar-icon' />
                   Análisis de DeepFakes
                 </Link>
                 <div className='menu-icon' onClick={handleClick}>

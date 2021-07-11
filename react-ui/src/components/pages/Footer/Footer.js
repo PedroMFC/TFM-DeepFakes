@@ -5,7 +5,7 @@ import {
   FaLinkedin,
   FaGithub
 } from 'react-icons/fa';
-import { MdFingerprint } from 'react-icons/md';
+import { BiFace } from 'react-icons/bi';
 
 function Footer() {
   return (
@@ -14,7 +14,7 @@ function Footer() {
         <div className='social-media-wrap'>
           <div className='footer-logo'>
             <Link to='/' className='social-logo'>
-              <MdFingerprint className='navbar-icon' />
+              <BiFace className='navbar-icon' />
               Análisis de DeepFakes
             </Link>
           </div>
