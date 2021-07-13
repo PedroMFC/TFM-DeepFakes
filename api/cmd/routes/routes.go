@@ -41,6 +41,10 @@ type KerasIOInput struct{
 	VideoPath string `json:"video_path"`
 }
 
+type ResultOut struct{
+	Result []map[string]string `json:"result"`
+}
+
 func CORS(c *gin.Context) {
 
 	// First, we add the headers with need to enable CORS
@@ -123,9 +127,15 @@ func FaceForensicsLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		log.Println("response Status:", response.Status)
 		log.Println("response Headers:", response.Header)
 		body, _ := ioutil.ReadAll(response.Body)
-		log.Println("response Body:", string(body))
-		c.JSON(response.StatusCode, string(body))
-		// c.JSON(http.StatusOK, "OK")
+		//log.Println("response Body:", string(body))
+
+		var ResultJSON ResultOut
+
+		json.Unmarshal([]byte(string(body)), &ResultJSON)
+		log.Println(ResultJSON)
+		c.JSON(response.StatusCode, gin.H{
+			"result": ResultJSON.Result,
+		})
 	}
 }
 
@@ -160,8 +170,15 @@ func KerasIOLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		log.Println("response Status:", response.Status)
 		log.Println("response Headers:", response.Header)
 		body, _ := ioutil.ReadAll(response.Body)
-		log.Println("response Body:", string(body))
-		c.JSON(response.StatusCode, string(body))
+		//log.Println("response Body:", string(body))
+
+		var ResultJSON ResultOut
+
+		json.Unmarshal([]byte(string(body)), &ResultJSON)
+		log.Println(ResultJSON)
+		c.JSON(response.StatusCode, gin.H{
+			"result": ResultJSON.Result,
+		})
 	}
 }
 
@@ -198,8 +215,14 @@ func ReverseLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		log.Println("response Status:", response.Status)
 		log.Println("response Headers:", response.Header)
 		body, _ := ioutil.ReadAll(response.Body)
-		log.Println("response Body:", string(body))
-		c.JSON(response.StatusCode, string(body))
-		// c.JSON(http.StatusOK, "OK")
+		//log.Println("response Body:", string(body))
+
+		var ResultJSON ResultOut
+
+		json.Unmarshal([]byte(string(body)), &ResultJSON)
+		log.Println(ResultJSON)
+		c.JSON(response.StatusCode, gin.H{
+			"result": ResultJSON.Result,
+		})
 	}
 }
