@@ -140,7 +140,7 @@ namespace FocaPluginExample
             "0_32000_model_31_70-23.pickle",
             "0_32000_model_29.pickle",
             "0_64000_model_30.pickle"});
-            this.BoxModelRE.Location = new System.Drawing.Point(28, 94);
+            this.BoxModelRE.Location = new System.Drawing.Point(28, 84);
             this.BoxModelRE.Name = "BoxModelRE";
             this.BoxModelRE.Size = new System.Drawing.Size(121, 21);
             this.BoxModelRE.TabIndex = 4;
@@ -326,7 +326,7 @@ namespace FocaPluginExample
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(281, 161);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(101, 13);
+            this.label6.Size = new System.Drawing.Size(111, 13);
             this.label6.TabIndex = 0;
             this.label6.Text = "El contenido es REAL";
             // 
@@ -354,7 +354,7 @@ namespace FocaPluginExample
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(281, 161);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(100, 13);
+            this.label7.Size = new System.Drawing.Size(110, 13);
             this.label7.TabIndex = 0;
             this.label7.Text = "El contenido es FAKE";
             // 
@@ -389,14 +389,14 @@ namespace FocaPluginExample
             // panel
             // 
             this.panel.Controls.Add(this.label1);
-            this.panel.Controls.Add(this.panelFaceforensics);
-            this.panel.Controls.Add(this.panelKeras);
             this.panel.Controls.Add(this.panelReverse);
             this.panel.Controls.Add(this.comboAlgoritmo);
             this.panel.Controls.Add(this.panelFake);
             this.panel.Controls.Add(this.panelError);
             this.panel.Controls.Add(this.panelLoading);
             this.panel.Controls.Add(this.panelReal);
+            this.panel.Controls.Add(this.panelFaceforensics);
+            this.panel.Controls.Add(this.panelKeras);
             this.panel.Location = new System.Drawing.Point(2, 2);
             this.panel.Name = "panel";
             this.panel.Size = new System.Drawing.Size(694, 432);

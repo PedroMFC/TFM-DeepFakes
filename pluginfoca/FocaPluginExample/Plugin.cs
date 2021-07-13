@@ -9,8 +9,8 @@ namespace FocaPluginExample
 {
     public class Plugin
     {
-        private string _name = "Foca Plugin Example";
-        private string _description = "Description Foca Plugin Example";
+        private string _name = "DeepFakeAnalisis";
+        private string _description = "Herramienta para la detección de DeepFakes";
         private Form1 main = new Form1();
         
         public static Form1 mainForm;

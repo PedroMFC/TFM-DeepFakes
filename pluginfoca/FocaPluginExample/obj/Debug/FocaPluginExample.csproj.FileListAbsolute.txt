@@ -46,7 +46,6 @@ C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca-old\FocaPluginExample\obj\Debug\
 C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca-old\FocaPluginExample\obj\Debug\FocaPluginExample.csproj.CopyComplete
 C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca-old\FocaPluginExample\obj\Debug\FocaPluginExample.dll
 C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca-old\FocaPluginExample\obj\Debug\FocaPluginExample.pdb
-C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\bin\Debug\FocaPluginExample.pdb
 C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\bin\Debug\PluginsAPI.dll
 C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
@@ -57,7 +56,8 @@ C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\obj\Debug\Foca
 C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\obj\Debug\FocaPluginExample.csproj.GenerateResource.cache
 C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\obj\Debug\FocaPluginExample.csproj.CoreCompileInputs.cache
 C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\obj\Debug\FocaPluginExample.csproj.CopyComplete
-C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\obj\Debug\FocaPluginExample.pdb
-C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\bin\Debug\FocaPluginExample.dll.config
-C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\bin\Debug\FocaPluginExample.dll
-C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\obj\Debug\FocaPluginExample.dll
+C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\bin\Debug\DeepFakesAnalisis.exe.config
+C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\bin\Debug\DeepFakesAnalisis.exe
+C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\bin\Debug\DeepFakesAnalisis.pdb
+C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\obj\Debug\DeepFakesAnalisis.exe
+C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\obj\Debug\DeepFakesAnalisis.pdb
