@@ -15,10 +15,10 @@ const FormSend = ({ submitForm , setFinalResult }) => {
     <div className='form-content-right'>
       <form onSubmit={handleSubmit} className='form' noValidate>
         <h1>
-          Introduce la URL de la imagen
+          Introduce la URL del vídeo
         </h1>
         <div className='form-inputs'>
-          <label className='form-label'>URL de la imagen</label>
+          <label className='form-label'>URL del vídeo</label>
           <input
             className='form-input'
             type='text'
