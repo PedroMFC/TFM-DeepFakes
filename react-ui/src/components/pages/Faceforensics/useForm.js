@@ -28,15 +28,16 @@ const useForm = (callback, callback2, validate, path) => {
               },
               "body": JSON.stringify({
                 video_path: values.video_path,
+                full: 0,
               })
           })
           .then(response => response.json())
           .then(response => {
-              var responseJSON = JSON.parse(response)
+              //var responseJSON = JSON.parse(response)
 
-              //console.log(responseJSON)
+              console.log(response)
               
-              if (responseJSON.result[0]["0"] === "real" ){
+              if (response.result[0]["0"] === "real" ){
                 console.log("Pues es real")
                 callback2("real")
               } else{
