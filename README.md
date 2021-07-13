@@ -80,3 +80,9 @@ Para llamar al servicio desplegado en Google Cloud utilizamos:
  > task request-api-api-gcr-img     # Realizar la petición de prueba
  > task request-api-api--gcr-video  # Realizar la petición de prueba
 ```
+
+## Frontend
+
+Con la finalidad de hace más fácil el uso del sistema se han creado dos interfaces de usuario diferentes. La primera de ellas se encutra en la carpeta [react-ui](./react-ui). Se trata de una **interfaz web desarrollada mediente React**. Se puede ejecutar localmente pero también se ha desplegado en la nube y el servicio está disponible en [esta dirección](https://reactui-utoehvsqvq-ew.a.run.app).
+
+La segunda interfaz se ha creado como un plugin de [FOCA](https://github.com/ElevenPaths/FOCA), herramienta para encintrar metadatos e información oculta en documentos. En este caso, el código se encuentra en [pluginfoca](./pluginfoca). Para poder usarlo, hay que descargarse FOCA y añadir la librería [DeepFakes Analisis](./pluginfoca/FocaPluginExample/bin/Debug/DeepFakesAnalisis.exe).
