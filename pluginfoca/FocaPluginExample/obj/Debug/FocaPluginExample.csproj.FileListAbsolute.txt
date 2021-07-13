@@ -58,6 +58,6 @@ C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\obj\Debug\Foca
 C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\obj\Debug\FocaPluginExample.csproj.CoreCompileInputs.cache
 C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\obj\Debug\FocaPluginExample.csproj.CopyComplete
 C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\obj\Debug\FocaPluginExample.pdb
-C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\bin\Debug\FocaPluginExample.exe.config
-C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\bin\Debug\FocaPluginExample.exe
-C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\obj\Debug\FocaPluginExample.exe
+C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\bin\Debug\FocaPluginExample.dll.config
+C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\bin\Debug\FocaPluginExample.dll
+C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\obj\Debug\FocaPluginExample.dll

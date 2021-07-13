@@ -203,8 +203,8 @@ namespace FocaPluginExample
         private async void buttonKIO_Click_1(object sender, EventArgs e)
         {
             setLoading();
-            //string url = "https://api-utoehvsqvq-ew.a.run.app/kerasio";
-            string url = "https://kerasio-utoehvsqvq-ew.a.run.app";
+            string url = "https://api-utoehvsqvq-ew.a.run.app/kerasio";
+            //string url = "https://kerasio-utoehvsqvq-ew.a.run.app";
             var client = new HttpClient();
             Models.PostFaceforensics post;
 
