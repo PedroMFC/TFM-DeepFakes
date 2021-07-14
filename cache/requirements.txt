@@ -1,0 +1,4 @@
+firebase-admin
+flask
+gunicorn
+WebTest

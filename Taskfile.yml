@@ -6,12 +6,15 @@ vars:
   GCR_API: gcr.io/deepfakes-317408/api
   GCR_KIO: gcr.io/deepfakes-317408/kerasio
   GCR_RUI: gcr.io/deepfakes-317408/reactui
+  GCR_CH: gcr.io/deepfakes-317408/cache
+
 
   SRV_FF:  faceforensics
   SRV_RE:  reverse
   SRV_API: api
   SRV_KIO: kerasio
-  SRV_KIO: reactui
+  SRV_RUI: reactui
+  SRV_CH:  cache
 
   REGION: europe-west1
 
@@ -258,6 +261,75 @@ tasks:
     cmds:
       - docker run -it --rm --entrypoint=/bin/bash -v `pwd`/kerasio:/app {{.GCR_KIO}} -c 'python /app/src/tests.py'
 
+  #Cache
+  docker-build-ch:
+    desc: Imagen para el servicio cache.
+    summary: |
+      Construir imagen de docker para el servicio cache.
+    dir: ./cache
+    cmds:
+      - docker build -t {{.GCR_CH}}  .
+
+  docker-run-ch:
+    desc: Correr servicio cache.
+    summary: |
+      Ejecuta la imagen con el servicio cache. Monta el volúmen con los archivos necesarios (sobreescribe los alamcenados) y escucha en el puerto 8084.
+    cmds:
+      - docker run --rm -it -p 8084:8084 -e PORT=8084 -v `pwd`/cache:/app {{.GCR_CH}}
+
+  docker-console-ch:
+    desc: Correr el servicio cache en consola.
+    summary: |
+      Ejecuta el contenedor con el servicio cache accediendo mediante consola
+    cmds:
+      - docker run --rm -it -p 8084:8084 -e PORT=8084 --entrypoint=/bin/bash -v `pwd`/cache:/app {{.GCR_CH}}
+
+  request-put-ch:
+    desc: Petición para servicio de cache en local.
+    summary: |
+      Ejemplo de una petición para la cache corriendo en local.
+    cmds:
+      - curl -X PUT -H "Content-Type:application/json" -d '{"sha":"ej1", "result":"fake", "service":"faceforensics"}' http://localhost:8084/results
+
+  request-put-gcr-ch:
+    desc: Petición para servicio de cache en local.
+    summary: |
+      Ejemplo de una petición para la cache corriendo en local.
+    cmds:
+      - curl -X PUT -H "Content-Type:application/json" -d '{"sha":"ej2", "result":"real", "service":"kerasio"}' https://cache-utoehvsqvq-ew.a.run.app/results
+
+  request-get-ch:
+    desc: Petición para servicio de cache en local.
+    summary: |
+      Ejemplo de una petición para la cache corriendo en local.
+    cmds:
+      - curl -X GET -H "Content-Type:application/json" http://localhost:8084/results/ej1/faceforensics
+
+  request-get-gcr-ch:
+    desc: Petición para servicio de cache en la nube.
+    summary: |
+      Ejemplo de una petición para la cache corriendo en la nube.
+    cmds:
+      - curl -X GET -H "Content-Type:application/json" https://cache-utoehvsqvq-ew.a.run.app/results/ej2/kerasio
+
+  test-ch:
+    desc: Tests para el servicio cache.
+    summary: |
+      Ejecutar los test para el servicio cache. Destacamos que monta el volúmen con el código y sobreescribe el que tenía por defecto el contenedor.
+    cmds:
+      - docker run -it --rm --entrypoint=/bin/bash -v `pwd`/cache:/app {{.GCR_CH}} -c 'python /app/src/tests.py'
+
+  gcloud-send-ch:
+    desc: CI/CD cache.
+    summary: |
+      Orden para llevar a la cabo la CI/CD para el servicio de cache. Primero realiza los test, luego construye el contenedor y por último lo despliega.
+    cmds:
+      - task: test-ch
+      - task: docker-build-ch
+      - docker push {{.GCR_CH}}
+      - gcloud run deploy {{.SRV_CH }} --image {{.GCR_CH }} --platform managed --allow-unauthenticated --region {{.REGION}}
+
+
   # React
   docker-build-rui:
     desc: Imagen con React.
@@ -283,7 +355,6 @@ tasks:
       - docker push {{.GCR_RUI}}
       - gcloud run deploy {{.SRV_RUI}} --image {{.GCR_RUI}} --platform managed --allow-unauthenticated --region {{.REGION}} --port=80
 
-
   # Generales 
   docker-rm:
     desc: Elimina contenedores.
@@ -301,3 +372,6 @@ tasks:
      # - docker-rm
     cmds:
       - docker rmi $(docker images -f "dangling=true" -q)
+
+
+# vscode://vscode.github-authentication/did-authenticate?windowid=1&code=47ffa6b7dc387e0a1e0e&state=60d4e254-50f4-475d-9cf6-bd903c83bc09
