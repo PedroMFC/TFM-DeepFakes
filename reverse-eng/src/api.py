@@ -4,6 +4,7 @@ import os
 
 import download
 import deepfake_detection_test
+import connect_cache
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -32,7 +33,17 @@ def home():
 
     print('DESCARGADO')
 
+    path = "/home/reverse/data_test/0/image.jpg"
+    # Vemos si está en la cache
+    cache_result = connect_cache.get(path, 'reverse')
+
+    if cache_result != '':
+         return {"result": [{"0": cache_result}]}, 200
+
     result = deepfake_detection_test.detect(model_path)
+
+    #print(result['result'][0]['0'])
+    connect_cache.send(path, result['result'][0]['0'], 'reverse')
 
     return result, 200
 

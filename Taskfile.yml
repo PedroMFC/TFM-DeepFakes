@@ -90,7 +90,7 @@ tasks:
     summary: |
       Ejecuta el contenedor para ReverseEngineering_GM accediendo mediante consola
     cmds:
-      - docker run -it --rm --entrypoint=/bin/bash -v `pwd`:/code {{.GCR_RE}} -i
+      - docker run -it --rm -p 8082:8082 -e PORT=8082 --entrypoint=/bin/bash -v `pwd`/reverse-eng/src:/app/src {{.GCR_RE}} -i
 
   request-api-re:
     desc: Petición para ReverseEngineering_GM en local.
@@ -111,7 +111,7 @@ tasks:
     summary: |
       Ejecuta la imagen con el algoritmo de detección ReverseEngineering_GM. Monta el volúmen con los archivos necesarios (sobreescribe los alamcenados) y escucha en el puerto 8082.
     cmds:
-      - docker run --rm -it -p 8082:8082 -e PORT=8082 -v `pwd`/reverse-eng/src:/app {{.GCR_RE}} 
+      - docker run --rm -it -p 8082:8082 -e PORT=8082 -v `pwd`/reverse-eng/src:/app/src {{.GCR_RE}} 
 
   gcloud-send-re:
     desc: CI/CD ReverseEngineering_GM.
@@ -128,7 +128,7 @@ tasks:
     summary: |
       Ejecutar los test para el servicio ReverseEngineering_GM. Destacamos que monta el volúmen con el código y sobreescribe el que tenía por defecto el contenedor.
     cmds:
-      - docker run -it --rm --entrypoint=/bin/bash -v `pwd`/reverse-eng/src:/code {{.GCR_RE}}  -c 'python /code/tests.py'
+      - docker run -it --rm --entrypoint=/bin/bash -v `pwd`/reverse-eng/src:/app/src {{.GCR_RE}}  -c 'python /app/src/tests.py'
 
   #API
   docker-build-api:

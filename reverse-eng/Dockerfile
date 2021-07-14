@@ -10,10 +10,11 @@ RUN python -m pip install -r requirements.txt
 RUN useradd -m reverse
 USER reverse
 
-# Establecemos directorio de trabajo
 WORKDIR /app
 
-COPY ./src /app
+COPY ./src ./src
+
+WORKDIR /app/src
 
 # Comando a ejecutar
 CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 api:app
