@@ -1,5 +1,6 @@
 import flask
 from flask import request, json, jsonify
+import connect_cache 
 import video_clasification 
 import download
 import os
@@ -23,7 +24,17 @@ def home():
     if ok < 0:
         return {"Error": "Ha habido algún problema al descargar el vídeo"}, 400
 
-    result = video_clasification.detect("/home/kerasio/videos/" + name + ".mp4")
+    path = "/home/kerasio/videos/" + name + ".mp4"
+
+    # Vemos si está en la cache
+    cache_result = connect_cache.get(path, 'kerasio')
+
+    if cache_result != '':
+         return {"result": [{"0": cache_result}]}, 200
+
+    result = video_clasification.detect(path)
+
+    connect_cache.send(path, result[0]['0'], 'kerasio')
 
     return {"result":result}, 200
 
