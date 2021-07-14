@@ -7,7 +7,7 @@ from flask.wrappers import Request
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
-from firestore import get, save
+import firestore
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -15,7 +15,7 @@ app.config["DEBUG"] = True
 @app.route('/results/<sha>/<service>', methods=['GET'])
 def get_entry(sha, service):
 
-    result = get(sha, service)
+    result = firestore.get(sha, service)
 
     return {"result":result}, 200
 
@@ -41,7 +41,7 @@ def add_entry():
     else:
         return {"Error": "La petición es incorrecta. Falta el servicio"}, 400
 
-    save(sha, service, result)
+    firestore.save(sha, service, result)
 
     return {"result":"Creado correctamente"}, 201
 
