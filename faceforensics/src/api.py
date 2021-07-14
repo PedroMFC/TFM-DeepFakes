@@ -3,6 +3,7 @@ from flask import request, json, jsonify
 import detect 
 import download
 import os
+import connect_cache
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -47,17 +48,18 @@ def home():
     ok = download.download_youtube(video_path, name)
 
     if ok < 0:
-        return {"Error": "Hahabido algún problema al descargar el vídeo"}, 400
+        return {"Error": "Ha habido algún problema al descargar el vídeo"}, 400
 
-    result = detect.test_full_image_network("/home/faceforensics/videos/" + name + ".mp4", "../pretrained_model/" + model_path, "", start_frame, end_frame, False)
+    path = "/home/faceforensics/videos/" + name + ".mp4"
 
-    ''' 
-    response = app.response_class(
-        response=jsonify(result),
-        status=200,
-        mimetype='application/json'
-    )
-    '''
+    # Vemos si está en la cache
+    cache_result = connect_cache.get(path, 'faceforensics')
+
+    if cache_result != '':
+         return {"result": [{"0": cache_result}]}, 200
+
+    result = detect.test_full_image_network(path, "../pretrained_model/" + model_path, "", start_frame, end_frame, False)
+
 
     if not full: # Si queremos saber el resultado como media
         isFake = 0
@@ -74,6 +76,8 @@ def home():
         finalLabel = 'fake' if isFake > isReal else 'real'
         result = [{'0': finalLabel}]
         # print(result)
+
+    connect_cache.send(path, result[0]['0'], 'faceforensics')
 
     return {"result":result}, 200
 
