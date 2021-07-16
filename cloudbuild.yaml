@@ -54,7 +54,7 @@ steps:
   args:
     - '-c'
     - |
-      docker build ./faceforensics -t ${_REGISTRY}/${_PROJECT}/${_FF} --cache-from=${_REGISTRY}/${_PROJECT}/${_FF}
+      docker build ./faceforensics -t ${_REGISTRY}/${_PROJECT}/${_FF} --cache-from ${_REGISTRY}/${_PROJECT}/${_FF}
 
 # Push container
 - id: push-ff
@@ -111,7 +111,7 @@ steps:
   args:
     - '-c'
     - |
-      docker build ./kerasio -t ${_REGISTRY}/${_PROJECT}/${_KIO} --cache-from=${_REGISTRY}/${_PROJECT}/${_KIO}
+      docker build ./kerasio -t ${_REGISTRY}/${_PROJECT}/${_KIO} --cache-from ${_REGISTRY}/${_PROJECT}/${_KIO}
 
 # Push container
 - id: push-kio
@@ -168,7 +168,7 @@ steps:
   args:
     - '-c'
     - |
-      docker build ./reverse-eng -t ${_REGISTRY}/${_PROJECT}/${_RE} --cache-from=${_REGISTRY}/${_PROJECT}/${_RE}
+      docker build ./reverse-eng -t ${_REGISTRY}/${_PROJECT}/${_RE} --cache-from ${_REGISTRY}/${_PROJECT}/${_RE}
 
 # Push container
 - id: push-re
@@ -272,7 +272,7 @@ steps:
   args:
     - '-c'
     - |
-      docker build ./cache -t ${_REGISTRY}/${_PROJECT}/${_CH} --cache-from=${_REGISTRY}/${_PROJECT}/${_CH}
+      docker build ./cache -t ${_REGISTRY}/${_PROJECT}/${_CH} --cache-from ${_REGISTRY}/${_PROJECT}/${_CH}
 
 # Push container
 - id: push-ch
