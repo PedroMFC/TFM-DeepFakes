@@ -62,6 +62,13 @@ steps:
   name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: 'gcloud'
   args:
-    - '-c'
-    - |
-      run deploy ${_SRV_RE} --image ${_REGISTRY}/${_PROJECT}/${_RE} --region ${_REGION} --platform managed --allow-unauthenticated
+   - 'run'
+   - 'deploy'
+   - '${_SRV_RE}'
+   - '--image'
+   - '${_REGISTRY}/${_PROJECT}/${_RE}'
+   - '--region'
+   - '$_{_REGION}'
+   - '--platform'
+   - 'managed'
+   - '--allow-unauthenticated'
