@@ -1,3 +1,5 @@
+![Cloud Build](https://storage.googleapis.com/${GOOGLE_CLOUD_PROJECT}-badges/builds/tfm-deepfakes/branches/main.svg)
+
 # TFM-DeepFakes
 
 Repositorio para el Trabajo Fin de Máster sobre DeepFakes.
