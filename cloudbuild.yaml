@@ -73,6 +73,54 @@ steps:
    - 'managed'
    - '--allow-unauthenticated' 
 
+# ============================================================================ #
+#                      KERAS
+# ============================================================================ #
+
+# Pull image from cache
+- id: pull-image-kio
+  name: gcr.io/cloud-builders/docker
+  waitFor: [ '-' ]  # don't wait for any other steps
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker pull ${_REGISTRY}/${_PROJECT}/${_KIO} || exit 0
+
+# Run test
+- id: test-kio
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker run -entrypoint=/bin/bash -v `pwd`/kerasio:/app ${_REGISTRY}/${_PROJECT}/${_KIO} python tests.py
+
+# Build container
+- id: build-kio
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      cd kerasio \
+      docker build . -t ${_REGISTRY}/${_PROJECT}/${_KIO} --cache-from=${_REGISTRY}/${_PROJECT}/${_KIO}
+
+# Deploy
+- id: deploy-kio
+  name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'gcloud'
+  args:
+   - 'run'
+   - 'deploy'
+   - '${_SRV_KIO}'
+   - '--image'
+   - '${_REGISTRY}/${_PROJECT}/${_KIO}'
+   - '--region'
+   - '${_REGION}'
+   - '--platform'
+   - 'managed'
+   - '--allow-unauthenticated' 
 
 # ============================================================================ #
 #                      REVERSE ENGINEERING
