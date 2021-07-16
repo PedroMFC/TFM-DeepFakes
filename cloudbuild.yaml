@@ -47,15 +47,6 @@ steps:
     - |
       docker run -entrypoint=/bin/bash -v `pwd`/faceforensics:/app ${_REGISTRY}/${_PROJECT}/${_FF} python tests.py
 
-# Push container
-- id: push-ff
-  name: gcr.io/cloud-builders/docker
-  entrypoint: 'bash'
-  args:
-    - '-c'
-    - |
-      docker push ${_REGISTRY}/${_PROJECT}/${_FF}
-
 # Build container
 - id: build-ff
   name: gcr.io/cloud-builders/docker
@@ -64,6 +55,15 @@ steps:
     - '-c'
     - |
       docker build ./faceforensics -t ${_REGISTRY}/${_PROJECT}/${_FF} --cache-from=${_REGISTRY}/${_PROJECT}/${_FF}
+
+# Push container
+- id: push-ff
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker push ${_REGISTRY}/${_PROJECT}/${_FF}
 
 # Deploy
 - id: deploy-ff
