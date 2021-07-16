@@ -64,11 +64,11 @@ steps:
   args:
    - 'run'
    - 'deploy'
-   - '${_SRV_RE}'
+   - ${_SRV_RE}
    - '--image'
-   - '${_REGISTRY}/${_PROJECT}/${_RE}'
+   - ${_REGISTRY}/${_PROJECT}/${_RE}
    - '--region'
-   - '$_{_REGION}'
+   - $_{_REGION}
    - '--platform'
    - 'managed'
    - '--allow-unauthenticated'
