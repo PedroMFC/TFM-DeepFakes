@@ -36,7 +36,7 @@ steps:
   args:
     - '-c'
     - |
-      docker pull ${_} || exit 0
+      docker pull ${_REGISTRY}/${_PROJECT}/${_RE} || exit 0
 
 # Run test
 - id: test-re
@@ -64,4 +64,4 @@ steps:
   args:
     - '-c'
     - |
-    run deploy ${_SRV_RE} --image ${_REGISTRY}/${_PROJECT}/${_RE} --region ${_REGION} --platform managed --allow-unauthenticated
+      run deploy ${_SRV_RE} --image ${_REGISTRY}/${_PROJECT}/${_RE} --region ${_REGION} --platform managed --allow-unauthenticated
