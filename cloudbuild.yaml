@@ -63,3 +63,51 @@ steps:
    - 'managed'
    - '--allow-unauthenticated' 
 
+# ============================================================================ #
+#                      CACHE
+# ============================================================================ #
+
+# Pull image from cache
+- id: pull-image-ch
+  name: gcr.io/cloud-builders/docker
+  waitFor: [ '-' ]  # don't wait for any other steps
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker pull ${_REGISTRY}/${_PROJECT}/${_CH} || exit 0
+
+# Run test
+- id: test-ch
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker run -entrypoint=/bin/bash -v `pwd`/cache:/app ${_REGISTRY}/${_PROJECT}/${_CH} python tests.py
+
+# Build container
+- id: build-ff
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      cd cache \
+      docker build . -t ${_REGISTRY}/${_PROJECT}/${_CH} --cache-from=${_REGISTRY}/${_PROJECT}/${_CH}
+
+# Deploy
+- id: deploy-ch
+  name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'gcloud'
+  args:
+   - 'run'
+   - 'deploy'
+   - '${_SRV_CH}'
+   - '--image'
+   - '${_REGISTRY}/${_PROJECT}/${_CH}'
+   - '--region'
+   - '${_REGION}'
+   - '--platform'
+   - 'managed'
+   - '--allow-unauthenticated' 
