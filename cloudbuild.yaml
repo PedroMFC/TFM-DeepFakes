@@ -25,148 +25,41 @@ timeout: 3660s
 
 steps:
 # ============================================================================ #
-#                      FACEFORENSICS++
+#                      API
 # ============================================================================ #
 
-# Pull image from cache
-- id: pull-image-ff
-  name: gcr.io/cloud-builders/docker
-  waitFor: [ '-' ]  # don't wait for any other steps
-  entrypoint: 'bash'
-  args:
-    - '-c'
-    - |
-      docker pull ${_REGISTRY}/${_PROJECT}/${_FF} || exit 0
-
 # Run test
-- id: test-ff
-  name: gcr.io/cloud-builders/docker
-  entrypoint: 'bash'
+- id: test-api
+  name: 'golang'
+  entrypoint: '/bin/bash'
   args:
     - '-c'
     - |
-      docker run -entrypoint=/bin/bash -v `pwd`/faceforensics:/app ${_REGISTRY}/${_PROJECT}/${_FF} python tests.py
+      cd api; go test -v ./tests
 
 # Build container
-- id: build-ff
+- id: build-api
   name: gcr.io/cloud-builders/docker
   entrypoint: 'bash'
   args:
     - '-c'
     - |
-      cd faceforensics \
-      docker build . -t ${_REGISTRY}/${_PROJECT}/${_FF} --cache-from=${_REGISTRY}/${_PROJECT}/${_FF}
+      cd api \
+      docker build . -t ${_REGISTRY}/${_PROJECT}/${_API}
 
 # Deploy
-- id: deploy-ff
+- id: deploy-api
   name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: 'gcloud'
   args:
    - 'run'
    - 'deploy'
-   - '${_SRV_FF}'
+   - '${_SRV_API}'
    - '--image'
-   - '${_REGISTRY}/${_PROJECT}/${_FF}'
+   - '${_REGISTRY}/${_PROJECT}/${_API}'
    - '--region'
    - '${_REGION}'
    - '--platform'
    - 'managed'
    - '--allow-unauthenticated' 
 
-# ============================================================================ #
-#                      KERAS
-# ============================================================================ #
-
-# Pull image from cache
-- id: pull-image-kio
-  name: gcr.io/cloud-builders/docker
-  waitFor: [ '-' ]  # don't wait for any other steps
-  entrypoint: 'bash'
-  args:
-    - '-c'
-    - |
-      docker pull ${_REGISTRY}/${_PROJECT}/${_KIO} || exit 0
-
-# Run test
-- id: test-kio
-  name: gcr.io/cloud-builders/docker
-  entrypoint: 'bash'
-  args:
-    - '-c'
-    - |
-      docker run -entrypoint=/bin/bash -v `pwd`/kerasio:/app ${_REGISTRY}/${_PROJECT}/${_KIO} python tests.py
-
-# Build container
-- id: build-kio
-  name: gcr.io/cloud-builders/docker
-  entrypoint: 'bash'
-  args:
-    - '-c'
-    - |
-      cd kerasio \
-      docker build . -t ${_REGISTRY}/${_PROJECT}/${_KIO} --cache-from=${_REGISTRY}/${_PROJECT}/${_KIO}
-
-# Deploy
-- id: deploy-kio
-  name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: 'gcloud'
-  args:
-   - 'run'
-   - 'deploy'
-   - '${_SRV_KIO}'
-   - '--image'
-   - '${_REGISTRY}/${_PROJECT}/${_KIO}'
-   - '--region'
-   - '${_REGION}'
-   - '--platform'
-   - 'managed'
-   - '--allow-unauthenticated' 
-
-# ============================================================================ #
-#                      REVERSE ENGINEERING
-# ============================================================================ #
-
-# Pull image from cache
-- id: pull-image-re
-  name: gcr.io/cloud-builders/docker
-  waitFor: [ '-' ]  # don't wait for any other steps
-  entrypoint: 'bash'
-  args:
-    - '-c'
-    - |
-      docker pull ${_REGISTRY}/${_PROJECT}/${_RE} || exit 0
-
-# Run test
-- id: test-re
-  name: gcr.io/cloud-builders/docker
-  entrypoint: 'bash'
-  args:
-    - '-c'
-    - |
-      docker run -entrypoint=/bin/bash -v `pwd`/reverse-eng/src:/app/src ${_REGISTRY}/${_PROJECT}/${_RE} python tests.py
-
-# Build container
-- id: build-re
-  name: gcr.io/cloud-builders/docker
-  entrypoint: 'bash'
-  args:
-    - '-c'
-    - |
-      cd reverse-eng \
-      docker build . -t ${_REGISTRY}/${_PROJECT}/${_RE} --cache-from=${_REGISTRY}/${_PROJECT}/${_RE}
-
-# Deploy
-- id: deploy-re
-  name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: 'gcloud'
-  args:
-   - 'run'
-   - 'deploy'
-   - '${_SRV_RE}'
-   - '--image'
-   - '${_REGISTRY}/${_PROJECT}/${_RE}'
-   - '--region'
-   - '${_REGION}'
-   - '--platform'
-   - 'managed'
-   - '--allow-unauthenticated' 
