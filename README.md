@@ -1,4 +1,4 @@
-![Cloud Build](https://storage.googleapis.com/${GOOGLE_CLOUD_PROJECT}-badges/builds/tfm-deepfakes/branches/main.svg)
+![Cloud Build](https://storage.googleapis.com/deepfakes-317408-badges/builds/tfm-deepfakes/branches/main.svg)
 
 # TFM-DeepFakes
 
