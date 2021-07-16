@@ -47,6 +47,15 @@ steps:
       cd api \
       docker build . -t ${_REGISTRY}/${_PROJECT}/${_API}
 
+# Push container
+- id: push-api
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker push ${_REGISTRY}/${_PROJECT}/${_API}
+
 # Deploy
 - id: deploy-api
   name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -87,7 +96,7 @@ steps:
       docker run -entrypoint=/bin/bash -v `pwd`/cache:/app ${_REGISTRY}/${_PROJECT}/${_CH} python tests.py
 
 # Build container
-- id: build-ff
+- id: build-ch
   name: gcr.io/cloud-builders/docker
   entrypoint: 'bash'
   args:
@@ -95,6 +104,15 @@ steps:
     - |
       cd cache \
       docker build . -t ${_REGISTRY}/${_PROJECT}/${_CH} --cache-from=${_REGISTRY}/${_PROJECT}/${_CH}
+
+# Push container
+- id: push-ch
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker push ${_REGISTRY}/${_PROJECT}/${_CH}
 
 # Deploy
 - id: deploy-ch
@@ -127,8 +145,17 @@ steps:
       cd react-ui \
       docker build . -t ${_REGISTRY}/${_PROJECT}/${_RUI}
 
+# Push container
+- id: push-rui
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker push ${_REGISTRY}/${_PROJECT}/${_RUI}
+
 # Deploy
-- id: deploy-ch
+- id: deploy-rui
   name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: 'gcloud'
   args:
