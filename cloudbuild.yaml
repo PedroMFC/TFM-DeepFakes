@@ -25,6 +25,177 @@ timeout: 3660s
 
 steps:
 # ============================================================================ #
+#                      FACEFORENSICS++
+# ============================================================================ #
+
+# Pull image from cache
+- id: pull-image-ff
+  name: gcr.io/cloud-builders/docker
+  waitFor: [ '-' ]  # don't wait for any other steps
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker pull ${_REGISTRY}/${_PROJECT}/${_FF} || exit 0
+
+# Run test
+- id: test-ff
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker run -entrypoint=/bin/bash -v `pwd`/faceforensics:/app ${_REGISTRY}/${_PROJECT}/${_FF} python tests.py
+
+# Push container
+- id: push-ff
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker push ${_REGISTRY}/${_PROJECT}/${_FF}
+
+# Build container
+- id: build-ff
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker build ./faceforensics -t ${_REGISTRY}/${_PROJECT}/${_FF} --cache-from=${_REGISTRY}/${_PROJECT}/${_FF}
+
+# Deploy
+- id: deploy-ff
+  name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'gcloud'
+  args:
+   - 'run'
+   - 'deploy'
+   - '${_SRV_FF}'
+   - '--image'
+   - '${_REGISTRY}/${_PROJECT}/${_FF}'
+   - '--region'
+   - '${_REGION}'
+   - '--platform'
+   - 'managed'
+   - '--allow-unauthenticated' 
+
+# ============================================================================ #
+#                      KERAS
+# ============================================================================ #
+
+# Pull image from cache
+- id: pull-image-kio
+  name: gcr.io/cloud-builders/docker
+  waitFor: [ '-' ]  # don't wait for any other steps
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker pull ${_REGISTRY}/${_PROJECT}/${_KIO} || exit 0
+
+# Run test
+- id: test-kio
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker run -entrypoint=/bin/bash -v `pwd`/kerasio:/app ${_REGISTRY}/${_PROJECT}/${_KIO} python tests.py
+
+# Build container
+- id: build-kio
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker build ./kerasio -t ${_REGISTRY}/${_PROJECT}/${_KIO} --cache-from=${_REGISTRY}/${_PROJECT}/${_KIO}
+
+# Push container
+- id: push-kio
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker push ${_REGISTRY}/${_PROJECT}/${_KIO}
+
+# Deploy
+- id: deploy-kio
+  name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'gcloud'
+  args:
+   - 'run'
+   - 'deploy'
+   - '${_SRV_KIO}'
+   - '--image'
+   - '${_REGISTRY}/${_PROJECT}/${_KIO}'
+   - '--region'
+   - '${_REGION}'
+   - '--platform'
+   - 'managed'
+   - '--allow-unauthenticated' 
+
+# ============================================================================ #
+#                      REVERSE ENGINEERING
+# ============================================================================ #
+
+# Pull image from cache
+- id: pull-image-re
+  name: gcr.io/cloud-builders/docker
+  waitFor: [ '-' ]  # don't wait for any other steps
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker pull ${_REGISTRY}/${_PROJECT}/${_RE} || exit 0
+
+# Run test
+- id: test-re
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker run -entrypoint=/bin/bash -v `pwd`/reverse-eng/src:/app/src ${_REGISTRY}/${_PROJECT}/${_RE} python tests.py
+
+# Build container
+- id: build-re
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker build ./reverse-eng -t ${_REGISTRY}/${_PROJECT}/${_RE} --cache-from=${_REGISTRY}/${_PROJECT}/${_RE}
+
+# Push container
+- id: push-re
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker push ${_REGISTRY}/${_PROJECT}/${_RE}
+
+# Deploy
+- id: deploy-re
+  name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'gcloud'
+  args:
+   - 'run'
+   - 'deploy'
+   - '${_SRV_RE}'
+   - '--image'
+   - '${_REGISTRY}/${_PROJECT}/${_RE}'
+   - '--region'
+   - '${_REGION}'
+   - '--platform'
+   - 'managed'
+   - '--allow-unauthenticated' 
+
+# ============================================================================ #
 #                      API
 # ============================================================================ #
 
@@ -140,8 +311,7 @@ steps:
   args:
     - '-c'
     - |
-      cd react-ui \
-      docker build . -t ${_REGISTRY}/${_PROJECT}/${_RUI}
+      docker build ./react-ui -t ${_REGISTRY}/${_PROJECT}/${_RUI}
 
 # Push container
 - id: push-rui
