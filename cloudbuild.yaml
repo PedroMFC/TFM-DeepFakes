@@ -44,8 +44,7 @@ steps:
   args:
     - '-c'
     - |
-      cd api \
-      docker build . -t ${_REGISTRY}/${_PROJECT}/${_API}
+      docker build ./api -t ${_REGISTRY}/${_PROJECT}/${_API}
 
 # Push container
 - id: push-api
@@ -102,8 +101,7 @@ steps:
   args:
     - '-c'
     - |
-      cd cache \
-      docker build . -t ${_REGISTRY}/${_PROJECT}/${_CH} --cache-from=${_REGISTRY}/${_PROJECT}/${_CH}
+      docker build ./cache -t ${_REGISTRY}/${_PROJECT}/${_CH} --cache-from=${_REGISTRY}/${_PROJECT}/${_CH}
 
 # Push container
 - id: push-ch
