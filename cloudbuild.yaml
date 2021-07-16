@@ -25,6 +25,56 @@ timeout: 3660s
 
 steps:
 # ============================================================================ #
+#                      FACEFORENSICS++
+# ============================================================================ #
+
+# Pull image from cache
+- id: pull-image-ff
+  name: gcr.io/cloud-builders/docker
+  waitFor: [ '-' ]  # don't wait for any other steps
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker pull ${_REGISTRY}/${_PROJECT}/${_FF} || exit 0
+
+# Run test
+- id: test-ff
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker run -entrypoint=/bin/bash -v `pwd`/faceforensics:/app ${_REGISTRY}/${_PROJECT}/${_FF} python tests.py
+
+# Build container
+- id: build-ff
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      cd faceforensics \
+      docker build . -t ${_REGISTRY}/${_PROJECT}/${_FF} --cache-from=${_REGISTRY}/${_PROJECT}/${_FF}
+
+# Deploy
+- id: deploy-ff
+  name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'gcloud'
+  args:
+   - 'run'
+   - 'deploy'
+   - '${_SRV_FF}'
+   - '--image'
+   - '${_REGISTRY}/${_PROJECT}/${_FF}'
+   - '--region'
+   - '${_REGION}'
+   - '--platform'
+   - 'managed'
+   - '--allow-unauthenticated' 
+
+
+# ============================================================================ #
 #                      REVERSE ENGINEERING
 # ============================================================================ #
 
