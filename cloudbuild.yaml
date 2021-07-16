@@ -1,0 +1,67 @@
+#
+#  Author: Hari Sekhon
+#  Date: [% DATE # 2020-02-11 12:53:33 +0000 (Tue, 11 Feb 2020) %]
+
+substitutions:
+  _FF:  faceforensics
+  _RE:  reverse
+  _API: api
+  _KIO: kerasio
+  _RUI: reactui
+  _CH: cache
+
+  _SRV_FF:  faceforensics
+  _SRV_RE:  reverse
+  _SRV_API: api
+  _SRV_KIO: kerasio
+  _SRV_RUI: reactui
+  _SRV_CH:  cache
+
+  _REGISTRY: gcr.io
+  _PROJECT: $PROJECT_ID
+  _REGION: europe-west1
+
+timeout: 3660s
+
+steps:
+# ============================================================================ #
+#                      REVERSE ENGINEERING
+# ============================================================================ #
+
+# Pull image from cache
+- id: pull-image-re
+  name: gcr.io/cloud-builders/docker
+  waitFor: [ '-' ]  # don't wait for any other steps
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker pull ${_} || exit 0
+
+# Run test
+- id: test-re
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker run -entrypoint=/bin/bash -v `pwd`/reverse-eng/src:/app/src ${_REGISTRY}/${_PROJECT}/${_RE} python tests.py
+
+# Build container
+- id: build-re
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      cd reverse-eng \
+      docker build . -t ${_REGISTRY}/${_PROJECT}/${_RE} --cache-from=${_REGISTRY}/${_PROJECT}/${_RE}
+
+# Deploy
+- id: deploy-re
+  name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'gcloud'
+  args:
+    - '-c'
+    - |
+    run deploy ${_SRV_RE} --image ${_REGISTRY}/${_PROJECT}/${_RE} --region ${_REGION} --platform managed --allow-unauthenticated
