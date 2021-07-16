@@ -111,3 +111,34 @@ steps:
    - '--platform'
    - 'managed'
    - '--allow-unauthenticated' 
+
+
+# ============================================================================ #
+#                      REACT
+# ============================================================================ #
+
+# Build container
+- id: build-rui
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      cd react-ui \
+      docker build . -t ${_REGISTRY}/${_PROJECT}/${_RUI}
+
+# Deploy
+- id: deploy-ch
+  name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'gcloud'
+  args:
+   - 'run'
+   - 'deploy'
+   - '${_SRV_RUI}'
+   - '--image'
+   - '${_REGISTRY}/${_PROJECT}/${_RUI}'
+   - '--region'
+   - '${_REGION}'
+   - '--platform'
+   - 'managed'
+   - '--allow-unauthenticated' 
