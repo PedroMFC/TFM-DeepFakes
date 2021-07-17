@@ -35,14 +35,17 @@ paths:
         
       responses:
         '200':
-            description: Operación exitosa
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ApiResponse'
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
         '400':
           description: Argumentos inválidos
-          content: {}
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
           
   /reverse:
     post:
@@ -61,14 +64,17 @@ paths:
         
       responses:
         '200':
-            description: Operación exitosa
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ApiResponse'
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
         '400':
           description: Argumentos inválidos
-          content: {}
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
           
   
   /kerasio:
@@ -88,14 +94,17 @@ paths:
         
       responses:
         '200':
-            description: Operación exitosa
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ApiResponse'
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
         '400':
           description: Argumentos inválidos
-          content: {}
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
           
 components:
   schemas:
@@ -112,6 +121,8 @@ components:
           type: integer
         model_path:
           type: string
+        full:
+          type: integer
       xml:
         name: FaceForensicsInput
         
@@ -154,3 +165,10 @@ components:
       example:
         0: fake
 
+    Error:
+      type: object
+      properties:
+        Error:
+          type: string
+      xml:
+        name: Error
