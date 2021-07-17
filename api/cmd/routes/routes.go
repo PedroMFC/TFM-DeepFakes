@@ -45,6 +45,11 @@ type ResultOut struct{
 	Result []map[string]string `json:"result"`
 }
 
+type Error struct{
+	Error string `json:"Error"`
+}
+
+
 func CORS(c *gin.Context) {
 
 	// First, we add the headers with need to enable CORS
@@ -127,15 +132,24 @@ func FaceForensicsLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		log.Println("response Status:", response.Status)
 		log.Println("response Headers:", response.Header)
 		body, _ := ioutil.ReadAll(response.Body)
-		//log.Println("response Body:", string(body))
 
-		var ResultJSON ResultOut
+		if response.StatusCode == http.StatusOK {
+			var ResultJSON ResultOut
 
-		json.Unmarshal([]byte(string(body)), &ResultJSON)
-		log.Println(ResultJSON)
-		c.JSON(response.StatusCode, gin.H{
-			"result": ResultJSON.Result,
-		})
+			json.Unmarshal([]byte(string(body)), &ResultJSON)
+			log.Println(ResultJSON)
+			c.JSON(response.StatusCode, gin.H{
+				"result": ResultJSON.Result,
+			})
+		} else {
+			var ResultJSON Error
+
+			json.Unmarshal([]byte(string(body)), &ResultJSON)
+			log.Println(ResultJSON)
+			c.JSON(response.StatusCode, gin.H{
+				"Error": ResultJSON.Error,
+			})
+		}
 	}
 }
 
@@ -172,13 +186,23 @@ func KerasIOLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		body, _ := ioutil.ReadAll(response.Body)
 		//log.Println("response Body:", string(body))
 
-		var ResultJSON ResultOut
+		if response.StatusCode == http.StatusOK {
+			var ResultJSON ResultOut
 
-		json.Unmarshal([]byte(string(body)), &ResultJSON)
-		log.Println(ResultJSON)
-		c.JSON(response.StatusCode, gin.H{
-			"result": ResultJSON.Result,
-		})
+			json.Unmarshal([]byte(string(body)), &ResultJSON)
+			log.Println(ResultJSON)
+			c.JSON(response.StatusCode, gin.H{
+				"result": ResultJSON.Result,
+			})
+		} else {
+			var ResultJSON Error
+
+			json.Unmarshal([]byte(string(body)), &ResultJSON)
+			log.Println(ResultJSON)
+			c.JSON(response.StatusCode, gin.H{
+				"Error": ResultJSON.Error,
+			})
+		}
 	}
 }
 
@@ -217,12 +241,22 @@ func ReverseLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		body, _ := ioutil.ReadAll(response.Body)
 		//log.Println("response Body:", string(body))
 
-		var ResultJSON ResultOut
+		if response.StatusCode == http.StatusOK {
+			var ResultJSON ResultOut
 
-		json.Unmarshal([]byte(string(body)), &ResultJSON)
-		log.Println(ResultJSON)
-		c.JSON(response.StatusCode, gin.H{
-			"result": ResultJSON.Result,
-		})
+			json.Unmarshal([]byte(string(body)), &ResultJSON)
+			log.Println(ResultJSON)
+			c.JSON(response.StatusCode, gin.H{
+				"result": ResultJSON.Result,
+			})
+		} else {
+			var ResultJSON Error
+
+			json.Unmarshal([]byte(string(body)), &ResultJSON)
+			log.Println(ResultJSON)
+			c.JSON(response.StatusCode, gin.H{
+				"Error": ResultJSON.Error,
+			})
+		}
 	}
 }
