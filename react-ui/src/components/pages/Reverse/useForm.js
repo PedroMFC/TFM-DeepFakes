@@ -21,7 +21,7 @@ const useForm = (callback, callback2, validate, path) => {
     setErrors(validate(values));
     
     if (Object.keys(errors).length === 0 ){
-      fetch("https://api-utoehvsqvq-ew.a.run.app/" + path + "/", {
+      fetch("https://api-utoehvsqvq-ew.a.run.app/" + path, {
               "method": "POST",
               "headers": {
                   "content-type": "application/json",
