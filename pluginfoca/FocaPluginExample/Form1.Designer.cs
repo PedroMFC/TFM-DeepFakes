@@ -267,7 +267,7 @@ namespace FocaPluginExample
             this.buttonKIO.TabIndex = 14;
             this.buttonKIO.Text = "Procesar";
             this.buttonKIO.UseVisualStyleBackColor = true;
-            this.buttonKIO.Click += new System.EventHandler(this.buttonKIO_Click_1);
+            this.buttonKIO.Click += new System.EventHandler(this.buttonKIO_Click);
             // 
             // URLKIOBox
             // 

@@ -85,8 +85,8 @@ namespace FocaPluginExample
         private async void buttonRE_Click(object sender, EventArgs e)
         {
             setLoading();
-            //string url = "https://api-utoehvsqvq-ew.a.run.app/reverse";
-            string url = "https://reverse-utoehvsqvq-ew.a.run.app";
+            string url = "https://api-utoehvsqvq-ew.a.run.app/reverse";
+            //string url = "https://reverse-utoehvsqvq-ew.a.run.app";
             var client = new HttpClient();
 
             if (BoxModelRE.SelectedIndex == -1)
@@ -137,8 +137,8 @@ namespace FocaPluginExample
         private async void buttonFF_Click(object sender, EventArgs e)
         {
             setLoading();
-            //string url = "https://api-utoehvsqvq-ew.a.run.app/faceforensics";
-            string url = "https://faceforensics-utoehvsqvq-ew.a.run.app";
+            string url = "https://api-utoehvsqvq-ew.a.run.app/faceforensics";
+            //string url = "https://faceforensics-utoehvsqvq-ew.a.run.app";
             var client = new HttpClient();
             Models.PostFaceforensics post;
 
@@ -200,7 +200,7 @@ namespace FocaPluginExample
 
         }
 
-        private async void buttonKIO_Click_1(object sender, EventArgs e)
+        private async void buttonKIO_Click(object sender, EventArgs e)
         {
             setLoading();
             string url = "https://api-utoehvsqvq-ew.a.run.app/kerasio";
