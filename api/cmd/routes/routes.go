@@ -11,7 +11,7 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
-	// "github.com/gin-contrib/cors"
+	"github.com/gin-contrib/cors"
 )
 
 type applicationGin struct {
@@ -49,33 +49,14 @@ type Error struct{
 	Error string `json:"Error"`
 }
 
-
-func CORS(c *gin.Context) {
-
-	// First, we add the headers with need to enable CORS
-	// Make sure to adjust these headers to your needs
-	c.Header("Access-Control-Allow-Origin", "*")
-	c.Header("Access-Control-Allow-Methods", "*")
-	c.Header("Access-Control-Allow-Headers", "*")
-	c.Header("Content-Type", "application/json")
-
-	// Second, we handle the OPTIONS problem
-	if c.Request.Method != "OPTIONS" {
-		
-		c.Next()
-
-	} else {
-        
-		// Everytime we receive an OPTIONS request, 
-		// we just return an HTTP 200 Status Code
-		c.AbortWithStatus(http.StatusOK)
-	}
-}
-
 func NewAppGin(client restclient.HTTPClient) *applicationGin {
 	router := gin.New()
 
-	router.Use(CORS)
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods: []string{"POST"},
+		AllowHeaders:    []string{"content-type"},
+	}))
 
 	router.POST("/faceforensics", FaceForensicsLogic(client))
 	router.POST("/reverse", ReverseLogic(client))
