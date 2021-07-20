@@ -1,13 +1,14 @@
 import React from 'react';
-import validate from './validateInfo';
+import validateInfo from './validateInfo';
 import useForm from './useForm';
+import '../../Form.css';
 import { Button } from '../../Button'
 
 const FormSend = ({ submitForm , setFinalResult }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(
     submitForm,
     setFinalResult,
-    validate,
+    validateInfo,
     "kerasio"
   );
 

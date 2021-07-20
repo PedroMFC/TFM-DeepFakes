@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import CheckRequests from '../../requestsLogic.js'
 
 const useForm = (callback, callback2, validate, path) => {
   const [values, setValues] = useState({
@@ -15,52 +16,63 @@ const useForm = (callback, callback2, validate, path) => {
     });
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    
+
     setErrors(validate(values));
-    
+
+    console.log(Object.keys(errors).length)
     if (Object.keys(errors).length === 0 ){
-      fetch("https://api-utoehvsqvq-ew.a.run.app/" + path, {
-              "method": "POST",
-              "headers": {
-                  "content-type": "application/json",
-                  "accept": "application/json"
-              },
-              "body": JSON.stringify({
-                video_path: values.video_path
-              })
-          })
-          .then(response => response.json())
-          .then(response => {
-              //var responseJSON = JSON.parse(response)
+      var aceptado = false
+      const result = await CheckRequests()
 
-              console.log(response)
-              
-              if (response.result[0]["0"] === "real" ){
-                console.log("Pues es real")
-                callback2("real")
-              } else{
-                console.log("Que nos han timado....")
-                callback2("fake")
-              }
+      if (result > 0){
+        aceptado = true
+      }
 
-              //console.log(responseJSON.result[0])
-          })
-          .catch(err => {
-              console.log(err);
-              callback2("error")
-          });
+      if (aceptado){
+        callback(true);
+        callback2("")
+        fetch("https://api-utoehvsqvq-ew.a.run.app/" + path, {
+                "method": "POST",
+                "headers": {
+                    "content-type": "application/json",
+                    "accept": "application/json"
+                },
+                "body": JSON.stringify({
+                  video_path: values.video_path,
+                })
+            })
+            .then(response => response.json())
+            .then(response => {
+                console.log(response)
+                
+                if (response.result[0]["0"] === "real" ){
+                  callback2("real")
+                } else{
+                  callback2("fake")
+                }
 
-      callback2("")
-      setIsSubmitting(true);
+            })
+            .catch(err => {
+                console.log(err);
+                callback2("error")
+            });
+
+      } else{
+      
+        callback2("wait")
+      }
     }
+    
+    setIsSubmitting(true);
+
   };
 
   useEffect(
     () => {
       if (Object.keys(errors).length === 0 && isSubmitting) {
-        callback();
+        callback(true);
       }
     },
     [errors]
