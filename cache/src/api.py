@@ -45,6 +45,27 @@ def add_entry():
 
     return {"result":"Creado correctamente"}, 201
 
+@app.route('/requests/<user>', methods=['GET'])
+def get_user(user):
+
+    result = firestore.getUser(user)
+
+    return {"timestamps":result}, 200
+
+@app.route('/requests/<user>', methods=['POST'])
+def save_user(user):
+
+    timestamps = None
+
+    if 'timestamps' in request.json:
+        timestamps = request.json['timestamps']
+    else:
+        return {"Error": "La petición es incorrecta. Faltan los tiempos"}, 400
+
+    firestore.saveUser(user, timestamps)
+
+    return {"result":"Añadida correctamante"}, 201
+
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get("PORT", 8084)))
 

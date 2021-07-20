@@ -20,3 +20,19 @@ def get(sha, service):
         return entry.to_dict()["result"]
     else:
         return ""
+
+
+def saveUser(user, requests):
+    db.collection('requests').document(user).set({
+        u'timestamps': requests,
+    })
+
+
+def getUser(user):
+    entry = db.collection('requests').document(user).get()
+
+    if entry.exists:
+        return entry.to_dict()["timestamps"]
+    else:
+        return []
+

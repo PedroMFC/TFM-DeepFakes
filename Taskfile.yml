@@ -312,6 +312,21 @@ tasks:
     cmds:
       - curl -X GET -H "Content-Type:application/json" https://cache-utoehvsqvq-ew.a.run.app/results/ej2/kerasio
 
+
+  request-post-user-ch:
+    desc: Petición de almacenar peticiones para servicio de cache en local.
+    summary: |
+      Ejemplo de una petición para la cache corriendo en local para almacenar las peticiones
+    cmds:
+      - curl -X POST -H "Content-Type:application/json" -d '{"timestamps":[55,22,53]}' http://localhost:8084/requests/85.55.32.12
+
+  request-get-user-ch:
+    desc: Petición de almacenar peticiones para servicio de cache en local.
+    summary: |
+      Ejemplo de una petición para la cache corriendo en local para almacenar las peticiones
+    cmds:
+      - curl -X GET "Content-Type:application/json" http://localhost:8084/requests/85.55.32.12
+
   test-ch:
     desc: Tests para el servicio cache.
     summary: |
