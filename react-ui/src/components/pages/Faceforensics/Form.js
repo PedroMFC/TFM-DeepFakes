@@ -6,13 +6,14 @@ import FormSend from './FormSend';
 import FormReal from '../../FormReal';
 import FormFake from '../../FormFake';
 import FormError from '../../FormError';
+import FormWait from '../../FormWait';
 
 const Form = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [finalResult, setFinalResult] = useState("");
 
-  function submitForm() {
-    setIsSubmitted(true);
+  function submitForm(valor) {
+    setIsSubmitted(valor);
   }
 
   return (
@@ -24,10 +25,11 @@ const Form = () => {
         ) : [(finalResult === "" ?
               <FormLoading /> : [(finalResult === "real" ?
               <FormReal /> : [(finalResult === "fake" ?
-              <FormFake /> : 
-              <FormError />
+              <FormFake /> : [(finalResult === "error" ?
+              <FormError /> :
+              <FormWait />
               )]
-              
+              )]
               )]
         ) ]}
         </div>
