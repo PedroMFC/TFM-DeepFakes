@@ -45,8 +45,16 @@ type ResultOut struct{
 	Result []map[string]string `json:"result"`
 }
 
+type Requests struct{
+	Timestamps []int `json:"timestamps"`
+}
+
 type Error struct{
 	Error string `json:"Error"`
+}
+
+type ResultCreated struct{
+	Result string `json:"result"`
 }
 
 func NewAppGin(client restclient.HTTPClient) *applicationGin {
@@ -61,6 +69,8 @@ func NewAppGin(client restclient.HTTPClient) *applicationGin {
 	router.POST("/faceforensics", FaceForensicsLogic(client))
 	router.POST("/reverse", ReverseLogic(client))
 	router.POST("/kerasio", KerasIOLogic(client))
+	router.GET("/requests/:user", getUser(client))
+	router.POST("/requests/:user", saveUser(client))
 
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, "OK")
@@ -224,6 +234,88 @@ func ReverseLogic(client restclient.HTTPClient) gin.HandlerFunc{
 
 		if response.StatusCode == http.StatusOK {
 			var ResultJSON ResultOut
+
+			json.Unmarshal([]byte(string(body)), &ResultJSON)
+			log.Println(ResultJSON)
+			c.JSON(response.StatusCode, gin.H{
+				"result": ResultJSON.Result,
+			})
+		} else {
+			var ResultJSON Error
+
+			json.Unmarshal([]byte(string(body)), &ResultJSON)
+			log.Println(ResultJSON)
+			c.JSON(response.StatusCode, gin.H{
+				"Error": ResultJSON.Error,
+			})
+		}
+	}
+}
+
+/*Funciones de conexión con la caché*/
+
+func getUser(client restclient.HTTPClient) gin.HandlerFunc{
+	return func(c *gin.Context) {
+		var request *http.Request
+		user := c.Param("user")
+
+		url := "https://cache-utoehvsqvq-ew.a.run.app/requests/"
+		request, _ = http.NewRequest("GET", url + user, nil)
+		request.Header.Set("Content-Type", "application/json; charset=UTF-8")
+
+		response, error := client.Do(request)
+		if error != nil {
+			panic(error)
+		}
+		defer response.Body.Close()
+
+		log.Println("response Status:", response.Status)
+		log.Println("response Headers:", response.Header)
+		body, _ := ioutil.ReadAll(response.Body)
+		//log.Println("response Body:", string(body))
+
+		if response.StatusCode == http.StatusOK {
+			var ResultJSON Requests
+
+			json.Unmarshal([]byte(string(body)), &ResultJSON)
+			log.Println(ResultJSON)
+			c.JSON(response.StatusCode, gin.H{
+				"timestamps": ResultJSON.Timestamps,
+			})
+		} else {
+			var ResultJSON Error
+
+			json.Unmarshal([]byte(string(body)), &ResultJSON)
+			log.Println(ResultJSON)
+			c.JSON(response.StatusCode, gin.H{
+				"Error": ResultJSON.Error,
+			})
+		}
+	}
+}
+
+func saveUser(client restclient.HTTPClient) gin.HandlerFunc{
+	return func(c *gin.Context) {
+		var request *http.Request
+		user := c.Param("user")
+
+		url := "https://cache-utoehvsqvq-ew.a.run.app/requests/"
+
+		request, _ = http.NewRequest("POST", url + user, c.Request.Body)
+		request.Header.Set("Content-Type", "application/json; charset=UTF-8")
+
+		response, error := client.Do(request)
+		if error != nil {
+			panic(error)
+		}
+		defer response.Body.Close()
+
+		log.Println("response Status:", response.Status)
+		log.Println("response Headers:", response.Header)
+		body, _ := ioutil.ReadAll(response.Body)
+
+		if response.StatusCode == http.StatusCreated {
+			var ResultJSON ResultCreated
 
 			json.Unmarshal([]byte(string(body)), &ResultJSON)
 			log.Println(ResultJSON)

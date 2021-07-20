@@ -207,6 +207,20 @@ tasks:
       - docker push {{.GCR_API}}
       - gcloud run deploy {{.SRV_API}} --image {{.GCR_API}} --platform managed --allow-unauthenticated --region {{.REGION}}
 
+  request-api-get-ip:
+    desc: Petición para API en local para obtener las peticiones de una IP.
+    summary: |
+      Ejemplo de una petición a la API para obtener las peticiones de una IP corriendo en local.
+    cmds:
+      - curl -X GET -H "Content-Type:application/json" http://localhost:8081/requests/85.55.32.12
+
+  request-api-post-ip:
+    desc: Petición para API en local para añadir las peticiones de una IP.
+    summary: |
+      Ejemplo de una petición a la API para añadir las peticiones de una IP corriendo en local.
+    cmds:
+      - curl -X POST -H "Content-Type:application/json" -d '{"timestamps":[1,2,25]}' http://localhost:8081/requests/85.55.32.12
+
   # Keras IO
   docker-build-kio:
     desc: Imagen para la clasificación de vídeo con Keras.
