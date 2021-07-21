@@ -2,6 +2,7 @@ package routes
 
 import (
 	"api/cmd/restclient"
+	"api/cmd/requests"
 	"net/http"
 	"strconv"
 	"bytes"
@@ -13,6 +14,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-contrib/cors"
 )
+
+
+var RequestLogic = requests.RequestLogic
 
 type applicationGin struct {
 	Router *gin.Engine
@@ -59,11 +63,6 @@ type ResultKerasImgOut struct{
 	File string `json:"file"`
 }
 
-
-type Requests struct{
-	Timestamps []int `json:"timestamps"`
-}
-
 type Error struct{
 	Error string `json:"Error"`
 }
@@ -85,8 +84,8 @@ func NewAppGin(client restclient.HTTPClient) *applicationGin {
 	router.POST("/reverse", ReverseLogic(client))
 	router.POST("/kerasio", KerasIOLogic(client))
 	router.POST("/kerasioimg", KerasIOImgLogic(client))
-	router.GET("/requests/:user", getUser(client))
-	router.POST("/requests/:user", saveUser(client))
+	// router.GET("/requests/:user", getUser(client))
+	// router.POST("/requests/:user", saveUser(client))
 
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, "OK")
@@ -102,6 +101,21 @@ func FaceForensicsLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		var jsonData []byte
 		var input VideoInput
 
+		
+		//log.Println(c.Request.Header.Get("X-REAL-IP"))
+		//log.Println(c.Request.RemoteAddr)
+
+		//ip := "127.0.0.1:46344"
+		ip := c.Request.RemoteAddr
+		log.Println("IP: ", ip)
+		pass := RequestLogic(ip, client)
+
+		if pass < 0{
+			c.JSON(http.StatusForbidden, gin.H{
+				"Error": "Ha superado el máximo de intentos",
+			})
+		} else{
+			
 		requestBody, _ := ioutil.ReadAll(c.Request.Body)
 		json.Unmarshal([]byte(string(requestBody)), &input)
 
@@ -158,6 +172,7 @@ func FaceForensicsLogic(client restclient.HTTPClient) gin.HandlerFunc{
 			})
 		}
 	}
+	}
 }
 
 func KerasIOLogic(client restclient.HTTPClient) gin.HandlerFunc{
@@ -166,6 +181,16 @@ func KerasIOLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		var url string
 		var jsonData []byte
 		var input KerasIOInput
+
+		ip := c.Request.RemoteAddr
+		log.Println("IP: ", ip)
+		pass := RequestLogic(ip, client)
+
+		if pass < 0{
+			c.JSON(http.StatusForbidden, gin.H{
+				"Error": "Ha superado el máximo de intentos",
+			})
+		} else{
 
 		requestBody, _ := ioutil.ReadAll(c.Request.Body)
 
@@ -211,6 +236,7 @@ func KerasIOLogic(client restclient.HTTPClient) gin.HandlerFunc{
 			})
 		}
 	}
+	}
 }
 
 
@@ -220,6 +246,15 @@ func KerasIOImgLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		var url string
 		var jsonData []byte
 		var input KerasIOImgInput
+		ip := c.Request.RemoteAddr
+		log.Println("IP: ", ip)
+		pass := RequestLogic(ip, client)
+
+		if pass < 0{
+			c.JSON(http.StatusForbidden, gin.H{
+				"Error": "Ha superado el máximo de intentos",
+			})
+		} else{
 
 		requestBody, _ := ioutil.ReadAll(c.Request.Body)
 
@@ -269,6 +304,7 @@ func KerasIOImgLogic(client restclient.HTTPClient) gin.HandlerFunc{
 			})
 		}
 	}
+	}
 }
 
 
@@ -278,6 +314,16 @@ func ReverseLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		var url string
 		var jsonData []byte
 		var input ImageInput
+
+		ip := c.Request.RemoteAddr
+		log.Println("IP: ", ip)
+		pass := RequestLogic(ip, client)
+
+		if pass < 0{
+			c.JSON(http.StatusForbidden, gin.H{
+				"Error": "Ha superado el máximo de intentos",
+			})
+		} else{
 
 		requestBody, _ := ioutil.ReadAll(c.Request.Body)
 
@@ -324,86 +370,6 @@ func ReverseLogic(client restclient.HTTPClient) gin.HandlerFunc{
 			})
 		}
 	}
-}
-
-/*Funciones de conexión con la caché*/
-
-func getUser(client restclient.HTTPClient) gin.HandlerFunc{
-	return func(c *gin.Context) {
-		var request *http.Request
-		user := c.Param("user")
-
-		url := "https://cache-utoehvsqvq-ew.a.run.app/requests/"
-		request, _ = http.NewRequest("GET", url + user, nil)
-		request.Header.Set("Content-Type", "application/json; charset=UTF-8")
-
-		response, error := client.Do(request)
-		if error != nil {
-			panic(error)
-		}
-		defer response.Body.Close()
-
-		log.Println("response Status:", response.Status)
-		log.Println("response Headers:", response.Header)
-		body, _ := ioutil.ReadAll(response.Body)
-		//log.Println("response Body:", string(body))
-
-		if response.StatusCode == http.StatusOK {
-			var ResultJSON Requests
-
-			json.Unmarshal([]byte(string(body)), &ResultJSON)
-			log.Println(ResultJSON)
-			c.JSON(response.StatusCode, gin.H{
-				"timestamps": ResultJSON.Timestamps,
-			})
-		} else {
-			var ResultJSON Error
-
-			json.Unmarshal([]byte(string(body)), &ResultJSON)
-			log.Println(ResultJSON)
-			c.JSON(response.StatusCode, gin.H{
-				"Error": ResultJSON.Error,
-			})
-		}
 	}
 }
 
-func saveUser(client restclient.HTTPClient) gin.HandlerFunc{
-	return func(c *gin.Context) {
-		var request *http.Request
-		user := c.Param("user")
-
-		url := "https://cache-utoehvsqvq-ew.a.run.app/requests/"
-
-		request, _ = http.NewRequest("POST", url + user, c.Request.Body)
-		request.Header.Set("Content-Type", "application/json; charset=UTF-8")
-
-		response, error := client.Do(request)
-		if error != nil {
-			panic(error)
-		}
-		defer response.Body.Close()
-
-		log.Println("response Status:", response.Status)
-		log.Println("response Headers:", response.Header)
-		body, _ := ioutil.ReadAll(response.Body)
-
-		if response.StatusCode == http.StatusCreated {
-			var ResultJSON ResultCreated
-
-			json.Unmarshal([]byte(string(body)), &ResultJSON)
-			log.Println(ResultJSON)
-			c.JSON(response.StatusCode, gin.H{
-				"result": ResultJSON.Result,
-			})
-		} else {
-			var ResultJSON Error
-
-			json.Unmarshal([]byte(string(body)), &ResultJSON)
-			log.Println(ResultJSON)
-			c.JSON(response.StatusCode, gin.H{
-				"Error": ResultJSON.Error,
-			})
-		}
-	}
-}

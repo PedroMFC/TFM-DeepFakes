@@ -1,22 +1,26 @@
-
 package tests
 
 import (
 	"net/http"
 	"testing"
+
 	//"errors"
-	"io/ioutil"
 	"bytes"
+	"io/ioutil"
+
+	"api/cmd/mocks"
+	"api/cmd/routes"
+	"api/cmd/restclient"
 
 	"github.com/steinfletcher/apitest"
-	"api/cmd/routes"
-	"api/cmd/mocks"
 	//"api/cmd/restclient"
 )
 
 func TestPrueba(t *testing.T) {
 	client := &mocks.MockClient{} 
 	handler := routes.NewAppGin(client).Router
+
+
 
 	apitest.New().
 		Handler(handler).
@@ -42,6 +46,10 @@ func TestRevEngOK(t *testing.T) {
 		}, nil
 	}
 
+	routes.RequestLogic = func(user string, client restclient.HTTPClient) int {
+		return 1
+	}
+
 	apitest.New().
 		Handler(handler).
 		Post("/reverse").
@@ -50,6 +58,7 @@ func TestRevEngOK(t *testing.T) {
 		Status(http.StatusOK).
 		End()
 }
+
 
 func TestRevEngError(t *testing.T) {
 	client := &mocks.MockClient{} 
@@ -66,6 +75,10 @@ func TestRevEngError(t *testing.T) {
 		}, nil
 	}
 
+	routes.RequestLogic = func(user string, client restclient.HTTPClient) int {
+		return 1
+	}
+
 	apitest.New().
 		Handler(handler).
 		Post("/reverse").
@@ -73,7 +86,6 @@ func TestRevEngError(t *testing.T) {
 		Status(http.StatusBadRequest).
 		End()
 }
-
 
 func TestFaceForensicsOK(t *testing.T) {
 	client := &mocks.MockClient{} 
@@ -90,6 +102,11 @@ func TestFaceForensicsOK(t *testing.T) {
 		}, nil
 	}
 
+	routes.RequestLogic = func(user string, client restclient.HTTPClient) int {
+		return 1
+	}
+
+
 	apitest.New().
 		Handler(handler).
 		Post("/faceforensics").
@@ -97,6 +114,7 @@ func TestFaceForensicsOK(t *testing.T) {
 		Status(http.StatusOK).
 		End()
 }
+
 
 func TestFaceForensicsError(t *testing.T) {
 	client := &mocks.MockClient{} 
@@ -111,6 +129,10 @@ func TestFaceForensicsError(t *testing.T) {
 			StatusCode: 400,
 			Body:       r,
 		}, nil
+	}
+
+	routes.RequestLogic = func(user string, client restclient.HTTPClient) int {
+		return 1
 	}
 
 	apitest.New().
@@ -137,6 +159,11 @@ func TestKerasOK(t *testing.T) {
 		}, nil
 	}
 
+	routes.RequestLogic = func(user string, client restclient.HTTPClient) int {
+		return 1
+	}
+
+
 	apitest.New().
 		Handler(handler).
 		Post("/kerasio").
@@ -144,6 +171,7 @@ func TestKerasOK(t *testing.T) {
 		Status(http.StatusOK).
 		End()
 }
+
 
 func TestKerasError(t *testing.T) {
 	client := &mocks.MockClient{} 
@@ -160,6 +188,11 @@ func TestKerasError(t *testing.T) {
 		}, nil
 	}
 
+	routes.RequestLogic = func(user string, client restclient.HTTPClient) int {
+		return 1
+	}
+
+
 	apitest.New().
 		Handler(handler).
 		Post("/kerasio").
@@ -167,6 +200,7 @@ func TestKerasError(t *testing.T) {
 		Status(http.StatusBadRequest).
 		End()
 }
+
 
 func TestNoService(t *testing.T) {
 	client := &mocks.MockClient{} 
@@ -183,6 +217,11 @@ func TestNoService(t *testing.T) {
 		}, nil
 	}
 
+	routes.RequestLogic = func(user string, client restclient.HTTPClient) int {
+		return 1
+	}
+
+
 	apitest.New().
 		Handler(handler).
 		Post("/otroservicio").
@@ -191,6 +230,7 @@ func TestNoService(t *testing.T) {
 		End()
 }
 
+/*
 func TestSaveUserOK(t *testing.T) {
 	client := &mocks.MockClient{} 
 	handler := routes.NewAppGin(client).Router
@@ -203,6 +243,10 @@ func TestSaveUserOK(t *testing.T) {
 			StatusCode: 201,
 			Body:       r,
 		}, nil
+	}
+
+	routes.RequestLogic = func(user string, client restclient.HTTPClient) int {
+		return 1
 	}
 
 	apitest.New().
@@ -220,7 +264,7 @@ func TestSaveUserOK(t *testing.T) {
 		End()
 }
 
-
+/*
 func TestGetUserOK(t *testing.T) {
 	client := &mocks.MockClient{} 
 	handler := routes.NewAppGin(client).Router
@@ -235,6 +279,11 @@ func TestGetUserOK(t *testing.T) {
 		}, nil
 	}
 
+	routes.RequestLogic = func(user string, client restclient.HTTPClient) int {
+		return 1
+	}
+
+
 	apitest.New().
 		Handler(handler).
 		Get("/requests/85.5.5.1").
@@ -248,4 +297,4 @@ func TestGetUserOK(t *testing.T) {
 		Expect(t).
 		Status(http.StatusNotFound).
 		End()
-}
+}*/
