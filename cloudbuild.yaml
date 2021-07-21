@@ -7,6 +7,7 @@ substitutions:
   _RE:  reverse
   _API: api
   _KIO: kerasio
+  _KIO_IMG: kerasioimg
   _RUI: reactui
   _CH: cache
 
@@ -14,6 +15,7 @@ substitutions:
   _SRV_RE:  reverse
   _SRV_API: api
   _SRV_KIO: kerasio
+  _SRV_KIO_IMG: kerasioimg
   _SRV_RUI: reactui
   _SRV_CH:  cache
 
@@ -130,6 +132,62 @@ steps:
    - '${_SRV_KIO}'
    - '--image'
    - '${_REGISTRY}/${_PROJECT}/${_KIO}'
+   - '--region'
+   - '${_REGION}'
+   - '--platform'
+   - 'managed'
+   - '--allow-unauthenticated' 
+
+# ============================================================================ #
+#                      KERAS DINÁMICO
+# ============================================================================ #
+
+# Pull image from cache
+- id: pull-image-kio
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker pull ${_REGISTRY}/${_PROJECT}/${_KIO_IMG} || exit 0
+
+# Run test
+- id: test-kio
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker run -entrypoint=/bin/bash -v `pwd`/kerasioimg:/app ${_REGISTRY}/${_PROJECT}/${_KIO_IMG} python tests.py
+
+# Build container
+- id: build-kio
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker build ./kerasioimg -t ${_REGISTRY}/${_PROJECT}/${_KIO_IMG} --cache-from ${_REGISTRY}/${_PROJECT}/${_KIO_IMG}
+
+# Push container
+- id: push-kio
+  name: gcr.io/cloud-builders/docker
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      docker push ${_REGISTRY}/${_PROJECT}/${_KIO_IMG}
+
+# Deploy
+- id: deploy-kio
+  name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'gcloud'
+  args:
+   - 'run'
+   - 'deploy'
+   - '${_SRV_KIO_IMG}'
+   - '--image'
+   - '${_REGISTRY}/${_PROJECT}/${_KIO_IMG}'
    - '--region'
    - '${_REGION}'
    - '--platform'
