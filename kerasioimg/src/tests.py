@@ -22,6 +22,8 @@ class TestMethods(unittest.TestCase):
         mock_detect.return_value = '', ''
 
         app.post_json('/', dict(model_path='http://some_model'), status=400)
+        app.post_json('/', dict(image_path='', model_path='http://some_model'), status=400)
+        app.post_json('/', dict(image_path='http://some_path', model_path=''), status=400)
         app.post_json('/', dict(image_path='http://some_path'), status=400)
         app.post_json('/', dict(lime=0), status=400)
         app.post_json('/', dict(image_size=299), status=400)
