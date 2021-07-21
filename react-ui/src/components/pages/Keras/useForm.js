@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import CheckRequests from '../../requestsLogic.js'
 
 const useForm = (callback, callback2, validate, path) => {
   const [values, setValues] = useState({
@@ -16,63 +15,54 @@ const useForm = (callback, callback2, validate, path) => {
     });
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = e => {
     e.preventDefault();
-
+    
     setErrors(validate(values));
-
-    console.log(Object.keys(errors).length)
     if (Object.keys(errors).length === 0 ){
-      var aceptado = false
-      const result = await CheckRequests()
+      callback2("")
+      fetch("https://api-utoehvsqvq-ew.a.run.app/" + path, {
+              "method": "POST",
+              "headers": {
+                  "content-type": "application/json",
+                  "accept": "application/json"
+              },
+              "body": JSON.stringify({
+                video_path: values.video_path,
+              })
+          })
+          .then(response => response.json())
+          .then(response => {
+              console.log(response)
 
-      if (result > 0){
-        aceptado = true
-      }
-
-      if (aceptado){
-        callback(true);
-        callback2("")
-        fetch("https://api-utoehvsqvq-ew.a.run.app/" + path, {
-                "method": "POST",
-                "headers": {
-                    "content-type": "application/json",
-                    "accept": "application/json"
-                },
-                "body": JSON.stringify({
-                  video_path: values.video_path,
-                })
-            })
-            .then(response => response.json())
-            .then(response => {
-                console.log(response)
-                
+              if(response.result != undefined){
                 if (response.result[0]["0"] === "real" ){
+                  console.log("Pues es real")
                   callback2("real")
                 } else{
                   callback2("fake")
                 }
+              } else {
+                if (response.Error == "Ha superado el máximo de intentos"){
+                  callback2("wait")
+                } else{
+                  callback2("error")
+                }
+              }
+          })
+          .catch(err => {
+              console.log(err.response);
+              callback2("error")
+          });
 
-            })
-            .catch(err => {
-                console.log(err);
-                callback2("error")
-            });
-
-      } else{
-      
-        callback2("wait")
-      }
+      setIsSubmitting(true);
     }
-    
-    setIsSubmitting(true);
-
   };
 
   useEffect(
     () => {
       if (Object.keys(errors).length === 0 && isSubmitting) {
-        callback(true);
+        callback();
       }
     },
     [errors]

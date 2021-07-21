@@ -12,8 +12,8 @@ const Form = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [finalResult, setFinalResult] = useState("");
 
-  function submitForm(valor) {
-    setIsSubmitted(valor);
+  function submitForm() {
+    setIsSubmitted(true);
   }
 
   return (
