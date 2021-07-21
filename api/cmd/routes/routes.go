@@ -13,6 +13,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-contrib/cors"
+	"github.com/tomasen/realip"
 )
 
 
@@ -106,7 +107,7 @@ func FaceForensicsLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		//log.Println(c.Request.RemoteAddr)
 
 		//ip := "127.0.0.1:46344"
-		ip := c.Request.RemoteAddr
+		ip := realip.FromRequest(c.Request)
 		log.Println("IP: ", ip)
 		pass := RequestLogic(ip, client)
 
