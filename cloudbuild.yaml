@@ -143,7 +143,7 @@ steps:
 # ============================================================================ #
 
 # Pull image from cache
-- id: pull-image-kio
+- id: pull-image-kio-img
   name: gcr.io/cloud-builders/docker
   entrypoint: 'bash'
   args:
@@ -152,7 +152,7 @@ steps:
       docker pull ${_REGISTRY}/${_PROJECT}/${_KIO_IMG} || exit 0
 
 # Run test
-- id: test-kio
+- id: test-kio-img
   name: gcr.io/cloud-builders/docker
   entrypoint: 'bash'
   args:
@@ -161,7 +161,7 @@ steps:
       docker run -entrypoint=/bin/bash -v `pwd`/kerasioimg:/app ${_REGISTRY}/${_PROJECT}/${_KIO_IMG} python tests.py
 
 # Build container
-- id: build-kio
+- id: build-kio-img
   name: gcr.io/cloud-builders/docker
   entrypoint: 'bash'
   args:
@@ -170,7 +170,7 @@ steps:
       docker build ./kerasioimg -t ${_REGISTRY}/${_PROJECT}/${_KIO_IMG} --cache-from ${_REGISTRY}/${_PROJECT}/${_KIO_IMG}
 
 # Push container
-- id: push-kio
+- id: push-kio-img
   name: gcr.io/cloud-builders/docker
   entrypoint: 'bash'
   args:
@@ -179,7 +179,7 @@ steps:
       docker push ${_REGISTRY}/${_PROJECT}/${_KIO_IMG}
 
 # Deploy
-- id: deploy-kio
+- id: deploy-kio-img
   name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: 'gcloud'
   args:
