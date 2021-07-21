@@ -198,6 +198,13 @@ tasks:
     cmds:
       - curl -X POST -H "Content-Type:application/json" -d '{"video_path":"https://www.youtube.com/watch?v=xLecwguQOIc"}' https://api-utoehvsqvq-ew.a.run.app/kerasio
 
+  request-api-api-kio-img:
+    desc: Petición para clasificación de imágenes con Keras en Google Cloud.
+    summary: |
+      Ejemplo de una petición al algoritmo de clasificación de imágenes con Keras disponible en Googgle Cloud.
+    cmds:
+      - curl -X POST -H "Content-Type:application/json" -d '{"image_path":"https://i0.wp.com/post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/03/GettyImages-1092658864_hero-1024x575.jpg", "model_path":"https://tfhub.dev/google/imagenet/mobilenet_v3_small_100_224/classification/5", "image_size":224, "lime":1}' http://localhost:8081/kerasioimg
+
   gcloud-send-api:
     desc: CI/CD API entrada.
     summary: |
@@ -278,39 +285,46 @@ tasks:
 
   # Keras IO IMGS
   docker-build-kio-img:
-    desc: Imagen para la clasificación de vídeo con Keras.
+    desc: Imagen para la clasificación de imágenes con Keras.
     summary: |
-      Construir imagen de docker para la clasificación de vídeo con Keras.
+      Construir imagen de docker para la clasificación de imágenes con Keras.
     dir: ./kerasioimg
     cmds:
       - docker build -t {{.GCR_KIO_IMG}}  .
 
   docker-run-kio-img:
-    desc: Correr imagen de clasificación de vídeo con Keras.
+    desc: Correr imagen de clasificación de imágenes con Keras.
     summary: |
-      Ejecuta la imagen con la clasificación de vídeo con Keras. Monta el volúmen con los archivos necesarios (sobreescribe los alamcenados) y escucha en el puerto 8082.
+      Ejecuta la imagen con la clasificación de imágenes con Keras. Monta el volúmen con los archivos necesarios (sobreescribe los alamcenados) y escucha en el puerto 8085.
     cmds:
       - docker run --rm -it -p 8085:8085 -e PORT=8085 -v `pwd`/kerasioimg:/app {{.GCR_KIO_IMG}}
   
   docker-console-kio-img:
-    desc: Correr imagen de clasificación de vídeo con Keras en consola.
+    desc: Correr imagen de clasificación de imágenes con Keras en consola.
     summary: |
-      Ejecuta el contenedor para clasificación de vídeo con Keras accediendo mediante consola
+      Ejecuta el contenedor para clasificación de imágenes con Keras accediendo mediante consola
     cmds:
       - docker run --rm -it -p 8085:8085 -e PORT=8085 --entrypoint=/bin/bash -v `pwd`/kerasioimg:/app {{.GCR_KIO_IMG}}
 
 
   request-api-kio-img:
-    desc: Petición para clasificación de vídeo con Keras en Google Cloud.
+    desc: Petición para clasificación de imágenes con Keras en Google Cloud.
     summary: |
-      Ejemplo de una petición al algoritmo de clasificación de vídeo con Keras disponible en Googgle Cloud.
+      Ejemplo de una petición al algoritmo de clasificación de imágenes con Keras disponible en Googgle Cloud.
     cmds:
       - curl -X POST -H "Content-Type:application/json" -d '{"image_path":"https://i0.wp.com/post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/03/GettyImages-1092658864_hero-1024x575.jpg", "model_path":"https://tfhub.dev/google/imagenet/mobilenet_v3_small_100_224/classification/5", "image_size":224, "lime":0}' http://localhost:8085
 
-  test-kio-img:
-    desc: Tests clasificación de vídeo con Keras.
+  request-api-gcr-kio-img:
+    desc: Petición para clasificación de imágenes con Keras en Google Cloud.
     summary: |
-      Ejecutar los test para el servicio clasificación de vídeo con Keras. Destacamos que monta el volúmen con el código y sobreescribe el que tenía por defecto el contenedor.
+      Ejemplo de una petición al algoritmo de clasificación de imágenes con Keras disponible en Googgle Cloud.
+    cmds:
+      - curl -X POST -H "Content-Type:application/json" -d '{"image_path":"https://i0.wp.com/post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/03/GettyImages-1092658864_hero-1024x575.jpg", "model_path":"https://tfhub.dev/google/imagenet/mobilenet_v3_small_100_224/classification/5", "image_size":224, "lime":1}' https://kerasioimg-utoehvsqvq-ew.a.run.app
+
+  test-kio-img:
+    desc: Tests clasificación de imágenes con Keras.
+    summary: |
+      Ejecutar los test para el servicio clasificación de imágenes con Keras. Destacamos que monta el volúmen con el código y sobreescribe el que tenía por defecto el contenedor.
     cmds:
       - docker run -it --rm --entrypoint=/bin/bash -v `pwd`/kerasioimg:/app {{.GCR_KIO_IMG}} -c 'python /app/src/tests.py'
 

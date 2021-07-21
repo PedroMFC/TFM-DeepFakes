@@ -41,9 +41,24 @@ type KerasIOInput struct{
 	VideoPath string `json:"video_path"`
 }
 
+
+type KerasIOImgInput struct{
+	ImagePath string `json:"image_path"`
+	ModelPath string `json:"model_path"`
+	ImageSize int `json:"image_size"`
+	Lime int `json:"lime"`
+}
+
+
 type ResultOut struct{
 	Result []map[string]string `json:"result"`
 }
+
+type ResultKerasImgOut struct{
+	Result []map[string]string `json:"result"`
+	File string `json:"file"`
+}
+
 
 type Requests struct{
 	Timestamps []int `json:"timestamps"`
@@ -69,6 +84,7 @@ func NewAppGin(client restclient.HTTPClient) *applicationGin {
 	router.POST("/faceforensics", FaceForensicsLogic(client))
 	router.POST("/reverse", ReverseLogic(client))
 	router.POST("/kerasio", KerasIOLogic(client))
+	router.POST("/kerasioimg", KerasIOImgLogic(client))
 	router.GET("/requests/:user", getUser(client))
 	router.POST("/requests/:user", saveUser(client))
 
@@ -184,6 +200,64 @@ func KerasIOLogic(client restclient.HTTPClient) gin.HandlerFunc{
 			log.Println(ResultJSON)
 			c.JSON(response.StatusCode, gin.H{
 				"result": ResultJSON.Result,
+			})
+		} else {
+			var ResultJSON Error
+
+			json.Unmarshal([]byte(string(body)), &ResultJSON)
+			log.Println(ResultJSON)
+			c.JSON(response.StatusCode, gin.H{
+				"Error": ResultJSON.Error,
+			})
+		}
+	}
+}
+
+
+func KerasIOImgLogic(client restclient.HTTPClient) gin.HandlerFunc{
+	return func(c *gin.Context) {
+		var request *http.Request
+		var url string
+		var jsonData []byte
+		var input KerasIOImgInput
+
+		requestBody, _ := ioutil.ReadAll(c.Request.Body)
+
+		json.Unmarshal([]byte(string(requestBody)), &input)
+
+		jsonData = []byte(`{
+			"image_path":"` + input.ImagePath + `",
+			"model_path":"`+ input.ModelPath  +`",
+			"image_size":`+ strconv.Itoa(input.ImageSize)  +`,
+			"lime":` + strconv.Itoa(input.Lime) + `
+		}`)
+ 
+		log.Println(string(jsonData))
+		//url = "https://kerasioimg-utoehvsqvq-ew.a.run.app"
+		url = "http://localhost:8085"
+
+		request, _ = http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
+		request.Header.Set("Content-Type", "application/json; charset=UTF-8")
+
+		response, error := client.Do(request)
+		if error != nil {
+			panic(error)
+		}
+		defer response.Body.Close()
+
+		log.Println("response Status:", response.Status)
+		log.Println("response Headers:", response.Header)
+		body, _ := ioutil.ReadAll(response.Body)
+		//log.Println("response Body:", string(body))
+
+		if response.StatusCode == http.StatusOK {
+			var ResultJSON ResultKerasImgOut
+
+			json.Unmarshal([]byte(string(body)), &ResultJSON)
+			log.Println(ResultJSON)
+			c.JSON(response.StatusCode, gin.H{
+				"result": ResultJSON.Result,
+				"file": ResultJSON.File,
 			})
 		} else {
 			var ResultJSON Error
