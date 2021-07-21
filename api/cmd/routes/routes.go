@@ -269,8 +269,8 @@ func KerasIOImgLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		}`)
  
 		log.Println(string(jsonData))
-		//url = "https://kerasioimg-utoehvsqvq-ew.a.run.app"
-		url = "http://localhost:8085"
+		url = "https://kerasioimg-utoehvsqvq-ew.a.run.app"
+		//url = "http://localhost:8085"
 
 		request, _ = http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 		request.Header.Set("Content-Type", "application/json; charset=UTF-8")
