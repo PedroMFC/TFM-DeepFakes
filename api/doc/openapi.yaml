@@ -105,6 +105,35 @@ paths:
             application/json:
                 schema:
                   $ref: '#/components/schemas/Error'
+                  
+  /kerasioimg:
+    post:
+      tags:
+        - api
+      summary: Análisis de imágenes con modelos dinámicos y justificación de los resultados mediante lime
+      operationId: postKerasIOImg
+      requestBody:
+        description: KerasIOImgInput tiene que ser enviada
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KerasIOImgInput'
+              
+        required: true
+        
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseLime'
+        '400':
+          description: Argumentos inválidos
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
           
 components:
   schemas:
@@ -148,9 +177,39 @@ components:
       xml:
         name: KerasIOInput
         
+        
+    KerasIOImgInput:
+      required:
+        - image_path
+        - model_path
+      type: object
+      properties:
+        image_path:
+          type: string
+        model_path:
+          type: string
+        image_size:
+          type: integer
+        lime:
+          type: integer
+      xml:
+        name: KerasIOImgInput
+        
     ApiResponse:
       type: object
       properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/Result'
+      xml:
+        name: ApiResponse
+        
+    ApiResponseLime:
+      type: object
+      properties:
+        file:
+          type: string
         result:
           type: array
           items:
