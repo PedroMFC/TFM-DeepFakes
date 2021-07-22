@@ -399,7 +399,7 @@ tasks:
     summary: |
       Ejecutar los test para el servicio cache. Destacamos que monta el volúmen con el código y sobreescribe el que tenía por defecto el contenedor.
     cmds:
-      - docker run -it --rm --entrypoint=/bin/bash -v `pwd`/cache:/app {{.GCR_CH}} -c 'python /app/src/tests.py'
+      - docker run -it --rm --entrypoint=/bin/bash -v `pwd`/cache/src:/app/src {{.GCR_CH}} -c 'python /app/src/tests.py'
 
   gcloud-send-ch:
     desc: CI/CD cache.

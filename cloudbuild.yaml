@@ -316,7 +316,7 @@ steps:
   args:
     - '-c'
     - |
-      docker run -entrypoint=/bin/bash -v `pwd`/cache:/app ${_REGISTRY}/${_PROJECT}/${_CH} python tests.py
+      docker run -entrypoint=/bin/bash -v `pwd`/cache/src:/app/app ${_REGISTRY}/${_PROJECT}/${_CH} python tests.py
 
 # Build container
 - id: build-ch
