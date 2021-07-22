@@ -1,6 +1,5 @@
-#
-#  Author: Hari Sekhon
-#  Date: [% DATE # 2020-02-11 12:53:33 +0000 (Tue, 11 Feb 2020) %]
+# Author: Pedro Manuel Flores Crespo
+# CI/CD Para el sistema de detección de DeepFakes
 
 substitutions:
   _FF:  faceforensics

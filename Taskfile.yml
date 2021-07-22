@@ -304,7 +304,7 @@ tasks:
     summary: |
       Ejecuta el contenedor para clasificación de imágenes con Keras accediendo mediante consola
     cmds:
-      - docker run --rm -it -p 8085:8085 -e PORT=8085 --entrypoint=/bin/bash -v `pwd`/kerasioimg:/app {{.GCR_KIO_IMG}}
+      - docker run --rm -it -p 8085:8085 -e PORT=8085 --entrypoint=/bin/bash -v `pwd`/kerasioimg/src:/app/src {{.GCR_KIO_IMG}}
 
 
   request-api-kio-img:
@@ -312,7 +312,7 @@ tasks:
     summary: |
       Ejemplo de una petición al algoritmo de clasificación de imágenes con Keras disponible en Googgle Cloud.
     cmds:
-      - curl -X POST -H "Content-Type:application/json" -d '{"image_path":"https://i0.wp.com/post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/03/GettyImages-1092658864_hero-1024x575.jpg", "model_path":"https://tfhub.dev/google/imagenet/mobilenet_v3_small_100_224/classification/5", "image_size":224, "lime":0}' http://localhost:8085
+      - curl -X POST -H "Content-Type:application/json" -d '{"image_path":"https://i0.wp.com/post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/03/GettyImages-1092658864_hero-1024x575.jpg", "model_path":"https://tfhub.dev/google/imagenet/mobilenet_v3_small_100_224/classification/5", "image_size":224, "lime":1}' http://localhost:8085
 
   request-api-gcr-kio-img:
     desc: Petición para clasificación de imágenes con Keras en Google Cloud.
@@ -349,7 +349,7 @@ tasks:
     summary: |
       Ejecuta el contenedor con el servicio cache accediendo mediante consola
     cmds:
-      - docker run --rm -it -p 8084:8084 -e PORT=8084 --entrypoint=/bin/bash -v `pwd`/cache:/app {{.GCR_CH}}
+      - docker run --rm -it -p 8084:8084 -e PORT=8084 --entrypoint=/bin/bash -v `pwd`/cache/src:/app/src {{.GCR_CH}}
 
   request-put-ch:
     desc: Petición para servicio de cache en local.
@@ -456,4 +456,20 @@ tasks:
       - docker rmi $(docker images -f "dangling=true" -q)
 
 
-# vscode://vscode.github-authentication/did-authenticate?windowid=1&code=47ffa6b7dc387e0a1e0e&state=60d4e254-50f4-475d-9cf6-bd903c83bc09
+# Contenedores credenciales
+  docker-build-kio-img-cred:
+    desc: Imagen para las credenciales de Keras.
+    summary: |
+      Construir imagen de docker con las credenciales de Keras para poder conectar con cloud storage. 
+    dir: ./keasioimg
+    cmds:
+      - docker build -f ./Aux.Dockerfile -t gcr.io/deepfakes-317408/kerascred .
+
+
+  docker-build-ch-cred:
+    desc: Imagen para las credenciales de la cache.
+    summary: |
+      Construir imagen de docker con las credenciales de la cache para poder conectar con firestore. 
+    dir: ./cache
+    cmds:
+      - docker build -f ./Aux.Dockerfile -t gcr.io/deepfakes-317408/cachecred .
