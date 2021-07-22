@@ -7,7 +7,7 @@ import os
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'key.json'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/app/credentials/key.json'
 
 @app.route('/', methods=['POST'])
 def home():

@@ -1,4 +1,4 @@
-FROM python:3.6-slim
+FROM gcr.io/deepfakes-317408/kerascred
 LABEL maintainer="Pedro Flores <pedro_23_96@hotmail.com>" 
 LABEL version="0.0.1"
 
