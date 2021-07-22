@@ -130,3 +130,7 @@ dmypy.json
 
 # Otros
 Dockerfiles
+
+# Credenciales
+kerasioimg/src/key.json
+cache/src/serviceAccountKey.json
