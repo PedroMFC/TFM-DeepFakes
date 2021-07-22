@@ -19,6 +19,8 @@ import (
 
 var RequestLogic = requests.RequestLogic
 
+/* ESTRUCTURAS DE LOS JSON*/
+
 type applicationGin struct {
 	Router *gin.Engine
 }
@@ -72,6 +74,9 @@ type ResultCreated struct{
 	Result string `json:"result"`
 }
 
+
+/* LÓGICA DE LA API */
+
 func NewAppGin(client restclient.HTTPClient) *applicationGin {
 	router := gin.New()
 
@@ -85,8 +90,6 @@ func NewAppGin(client restclient.HTTPClient) *applicationGin {
 	router.POST("/reverse", ReverseLogic(client))
 	router.POST("/kerasio", KerasIOLogic(client))
 	router.POST("/kerasioimg", KerasIOImgLogic(client))
-	// router.GET("/requests/:user", getUser(client))
-	// router.POST("/requests/:user", saveUser(client))
 
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, "OK")
@@ -94,6 +97,8 @@ func NewAppGin(client restclient.HTTPClient) *applicationGin {
 
 	return &applicationGin{Router: router}
 }
+
+/* LÓGICA FACEFORENSICS */
 
 func FaceForensicsLogic(client restclient.HTTPClient) gin.HandlerFunc{
 	return func(c *gin.Context) {
@@ -107,7 +112,7 @@ func FaceForensicsLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		//log.Println(c.Request.RemoteAddr)
 
 		//ip := "127.0.0.1:46344"
-		ip := realip.FromRequest(c.Request)
+		ip := getIP(c.Request)
 		log.Println("IP: ", ip)
 		pass := RequestLogic(ip, client)
 
@@ -183,7 +188,7 @@ func KerasIOLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		var jsonData []byte
 		var input KerasIOInput
 
-		ip := c.Request.RemoteAddr
+		ip := getIP(c.Request)
 		log.Println("IP: ", ip)
 		pass := RequestLogic(ip, client)
 
@@ -247,7 +252,8 @@ func KerasIOImgLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		var url string
 		var jsonData []byte
 		var input KerasIOImgInput
-		ip := c.Request.RemoteAddr
+
+		ip := getIP(c.Request)
 		log.Println("IP: ", ip)
 		pass := RequestLogic(ip, client)
 
@@ -316,7 +322,7 @@ func ReverseLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		var jsonData []byte
 		var input ImageInput
 
-		ip := c.Request.RemoteAddr
+		ip := getIP(c.Request)
 		log.Println("IP: ", ip)
 		pass := RequestLogic(ip, client)
 
@@ -374,3 +380,8 @@ func ReverseLogic(client restclient.HTTPClient) gin.HandlerFunc{
 	}
 }
 
+/* FUNCIÓN COMÚN PARA OBTENER LA IP*/
+
+func getIP(request *http.Request) string{
+	return realip.FromRequest(request)
+}
