@@ -21,7 +21,7 @@ export const homeObjOne = {
     headline: 'Herramienta para el análisis de vídeo',
     description:
       'Utiliza este modelo entrenado sobre el conjunto de entrenamiento de Faceforensics++. Consiste en 1000 vídeos que han sido manipulados mediante cuatro métodos '+
-      'diferentes: Face2Face, FaceSwap and NeuralTextures',
+      'diferentes: Face2Face, FaceSwap, Deepfakes y NeuralTextures',
     buttonLabel: 'Learn More',
     imgStart: '',
     img: 'img/video.svg',
@@ -47,10 +47,10 @@ export const homeObjOne = {
     lightBg: false,
     lightText: true,
     lightTextDesc: true,
-    topLine: 'Keras',
+    topLine: 'Kerasimg',
     headline: 'Puedes incluir cualquier modelo',
     description:
-      'Puedas ampliar fácilmente el número de algorimtos disponibles en esta arquitectura. Por ejemplo, podemos usar un clasificador de vídeos implementado en Keras ' + 
+      'Puedas ampliar fácilmente el número de algorimtos disponibles en esta arquitectura. Por ejemplo, podemos usar un clasificador de imágenes implementado en Keras ' + 
       'para detectar si verdaderamente estás siendo engañado o no',
     buttonLabel: 'Sign Up Now',
     imgStart: 'start',

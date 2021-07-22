@@ -56,6 +56,22 @@ function Service() {
                 </Button>
               </div>
             </Link>
+
+            <Link to='/kerasimg' className='pricing__container-card'>
+              <div className='pricing__container-cardInfo'>
+                <div className='icon'>
+                  <BsCamera />
+                </div>
+                <h3>Keras IMG</h3>
+                <ul className='pricing__container-features'>
+                  <li>Análisis de imágenes</li>
+                </ul>
+                <Button buttonSize='btn--wide' buttonColor='primary'>
+                  Probar
+                </Button>
+              </div>
+            </Link>
+            
           </div>
         </div>
       </div>

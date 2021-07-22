@@ -62,6 +62,15 @@ function NavBar() {
                       Keras CNN-RNN
                     </Link>
                   </li>
+                  <li className='nav-item'>
+                    <Link
+                      to='/kerasimg'
+                      className='nav-links'
+                      onClick={closeMobileMenu}
+                    >
+                      KerasImg
+                    </Link>
+                  </li>
                 </ul>
               </div>
             </nav>

@@ -20,6 +20,11 @@
     background: #242424;
   }
   
+  .pricing__container-card:nth-child(4) {
+    transform: scale(1.05);
+    background: #242424;
+  }
+
   .pricing__container-card:hover {
     transform: scale(1.06);
     transition: all 0.3s ease-out;
@@ -30,6 +35,10 @@
     margin: 0 24px;
   }
   
+  .pricing__container-card:nth-child(4) {
+    margin: 0 24px;
+  }
+
   .pricing__container {
     display: flex;
     justify-content: center;

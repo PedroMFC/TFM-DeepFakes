@@ -3,6 +3,10 @@ import { useState, useEffect } from 'react';
 const useForm = (callback, callback2, validate, path) => {
   const [values, setValues] = useState({
     image_path: '',
+    model_path: '',
+    image_size: '',
+    lime: '',
+    file:'',
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -17,10 +21,15 @@ const useForm = (callback, callback2, validate, path) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    
+
     setErrors(validate(values));
     if (Object.keys(errors).length === 0 ){
       callback2("")
+      setValues({
+        ...values,
+        file: ''
+      });
+      var limeAux = values.lime == "S" ? 1: 0 
       fetch("https://api-utoehvsqvq-ew.a.run.app/" + path, {
               "method": "POST",
               "headers": {
@@ -29,6 +38,9 @@ const useForm = (callback, callback2, validate, path) => {
               },
               "body": JSON.stringify({
                 image_path: values.image_path,
+                model_path: values.model_path,
+                image_size: parseInt(values.image_size),
+                lime: limeAux ,
               })
           })
           .then(response => response.json())
@@ -42,6 +54,14 @@ const useForm = (callback, callback2, validate, path) => {
                 } else{
                   callback2("fake")
                 }
+
+                if (response.file != undefined){
+                  setValues({
+                    ...values,
+                    file: response.file
+                  });
+                }
+
               } else {
                 if (response.Error == "Ha superado el máximo de intentos"){
                   callback2("wait")
