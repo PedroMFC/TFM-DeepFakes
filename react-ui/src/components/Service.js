@@ -66,7 +66,7 @@ function Service() {
                 <ul className='pricing__container-features'>
                   <li>Análisis de imágenes</li>
                 </ul>
-                <Button buttonSize='btn--wide' buttonColor='primary'>
+                <Button buttonSize='btn--wide' buttonColor='blue'>
                   Probar
                 </Button>
               </div>
