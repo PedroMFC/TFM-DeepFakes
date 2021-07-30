@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import publicIp from "public-ip";
 
 const useForm = (callback, callback2, validate, path) => {
   const [values, setValues] = useState({
@@ -15,13 +16,17 @@ const useForm = (callback, callback2, validate, path) => {
     });
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    
+
     setErrors(validate(values));
     if (Object.keys(errors).length === 0 ){
+      setIsSubmitting(true)
       callback2("")
-      fetch("https://api-utoehvsqvq-ew.a.run.app/" + path, {
+      var ip = await publicIp.v4()
+      console.log(ip)
+      fetch("http://localhost:8081/" + path, {
+      //fetch("https://api-utoehvsqvq-ew.a.run.app/" + path, {
               "method": "POST",
               "headers": {
                   "content-type": "application/json",
@@ -30,6 +35,7 @@ const useForm = (callback, callback2, validate, path) => {
               "body": JSON.stringify({
                 video_path: values.video_path,
                 full: 0,
+                ip: ip,
               })
           })
           .then(response => response.json())
@@ -55,8 +61,6 @@ const useForm = (callback, callback2, validate, path) => {
               console.log(err.response);
               callback2("error")
           });
-
-      setIsSubmitting(true);
     }
   };
 
