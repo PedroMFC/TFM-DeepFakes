@@ -1,18 +1,19 @@
 package routes
 
 import (
-	"api/cmd/restclient"
 	"api/cmd/requests"
+	"api/cmd/restclient"
+	"bytes"
+	//"io"
 	"net/http"
 	"strconv"
-	"bytes"
 
 	"encoding/json"
 	"io/ioutil"
 	"log"
 
-	"github.com/gin-gonic/gin"
 	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 	"github.com/tomasen/realip"
 )
 
@@ -28,6 +29,10 @@ type applicationGin struct {
 func (a *applicationGin) Start() {
 	
 	http.ListenAndServe("0.0.0.0:8081", a.Router)
+}
+
+type ReuquestIP struct{
+	IP string `json:"ip"`
 }
 
 type ImageInput struct{
@@ -112,7 +117,7 @@ func FaceForensicsLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		//log.Println(c.Request.RemoteAddr)
 
 		//ip := "127.0.0.1:46344"
-		ip := getIP(c.Request)
+		ip, requestBody := getIP(c.Request)
 		log.Println("IP: ", ip)
 		pass := RequestLogic(ip, client)
 
@@ -122,7 +127,6 @@ func FaceForensicsLogic(client restclient.HTTPClient) gin.HandlerFunc{
 			})
 		} else{
 			
-		requestBody, _ := ioutil.ReadAll(c.Request.Body)
 		json.Unmarshal([]byte(string(requestBody)), &input)
 
 		log.Println(input.EndFrame)
@@ -188,7 +192,7 @@ func KerasIOLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		var jsonData []byte
 		var input KerasIOInput
 
-		ip := getIP(c.Request)
+		ip, requestBody := getIP(c.Request)
 		log.Println("IP: ", ip)
 		pass := RequestLogic(ip, client)
 
@@ -197,9 +201,7 @@ func KerasIOLogic(client restclient.HTTPClient) gin.HandlerFunc{
 				"Error": "Ha superado el máximo de intentos",
 			})
 		} else{
-
-		requestBody, _ := ioutil.ReadAll(c.Request.Body)
-
+			
 		json.Unmarshal([]byte(string(requestBody)), &input)
 
 		jsonData = []byte(`{
@@ -253,7 +255,7 @@ func KerasIOImgLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		var jsonData []byte
 		var input KerasIOImgInput
 
-		ip := getIP(c.Request)
+		ip, requestBody := getIP(c.Request)
 		log.Println("IP: ", ip)
 		pass := RequestLogic(ip, client)
 
@@ -262,8 +264,6 @@ func KerasIOImgLogic(client restclient.HTTPClient) gin.HandlerFunc{
 				"Error": "Ha superado el máximo de intentos",
 			})
 		} else{
-
-		requestBody, _ := ioutil.ReadAll(c.Request.Body)
 
 		json.Unmarshal([]byte(string(requestBody)), &input)
 
@@ -322,7 +322,8 @@ func ReverseLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		var jsonData []byte
 		var input ImageInput
 
-		ip := getIP(c.Request)
+
+		ip, requestBody := getIP(c.Request)
 		log.Println("IP: ", ip)
 		pass := RequestLogic(ip, client)
 
@@ -331,8 +332,6 @@ func ReverseLogic(client restclient.HTTPClient) gin.HandlerFunc{
 				"Error": "Ha superado el máximo de intentos",
 			})
 		} else{
-
-		requestBody, _ := ioutil.ReadAll(c.Request.Body)
 
 		json.Unmarshal([]byte(string(requestBody)), &input)
 
@@ -382,6 +381,19 @@ func ReverseLogic(client restclient.HTTPClient) gin.HandlerFunc{
 
 /* FUNCIÓN COMÚN PARA OBTENER LA IP*/
 
-func getIP(request *http.Request) string{
-	return realip.FromRequest(request)
+func getIP(request *http.Request) (string, []byte){
+	var ip string
+	var input ReuquestIP
+	requestBody, _ := ioutil.ReadAll(request.Body)
+	json.Unmarshal([]byte(string(requestBody)), &input)
+
+	if input.IP != ""{
+		ip = input.IP
+	} else{
+		ip = realip.FromRequest(request)
+	}
+
+	log.Println("IP: ", ip)
+
+	return ip, requestBody
 }
