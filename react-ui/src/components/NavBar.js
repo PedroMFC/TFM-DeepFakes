@@ -71,6 +71,15 @@ function NavBar() {
                       KerasImg
                     </Link>
                   </li>
+                  <li className='nav-item'>
+                    <Link
+                      to='/openapi'
+                      className='nav-links'
+                      onClick={closeMobileMenu}
+                    >
+                      OpenAPI
+                    </Link>
+                  </li>
                 </ul>
               </div>
             </nav>

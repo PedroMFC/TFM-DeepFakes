@@ -7,6 +7,7 @@ import Faceforensics from './components/pages/Faceforensics/Faceforensics';
 import Reverse from './components/pages/Reverse/Reverse';
 import Keras from './components/pages/Keras/Keras';
 import Kerasimg from './components/pages/Kerasimg/Kerasimg';
+import Openapi from './components/pages/Openapi/Openapi';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path='/reverse' component={Reverse} />
         <Route path='/keras' component={Keras} />
         <Route path='/kerasimg' component={Kerasimg} />
+        <Route path='/openapi' component={Openapi} />
       </Switch>
       <Footer />
     </Router>
