@@ -168,14 +168,17 @@ def sequence_prediction(path):
 
     result = ""
     resultProb = -1
+    perFake = 0
     for i in np.argsort(probabilities)[::-1]:
         print(f"  {class_vocab[i]}: {probabilities[i] * 100:5.2f}%")
         if probabilities[i] > resultProb:
             result = class_vocab[i]
             resultProb = probabilities[i]
+        if class_vocab[i] == "fake":
+            perFake = round(probabilities[i] * 100,2)
 
     print([{'0': result}])
-    return [{'0': result}]
+    return [{'0': result}], perFake
     # return frames
 
 

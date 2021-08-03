@@ -27,16 +27,17 @@ def home():
     path = "/home/kerasio/videos/" + name + ".mp4"
 
     # Vemos si está en la cache
-    cache_result = connect_cache.get(path, 'kerasio')
+    cache_result, cache_perFake, cache_perReal = connect_cache.get(path, 'kerasio')
 
     if cache_result != '':
-         return {"result": [{"0": cache_result}]}, 200
+         return {"result": [{"0": cache_result}], "perFake":cache_perFake, "perReal":cache_perReal}, 200
 
-    result = video_clasification.detect(path)
+    result, perFake = video_clasification.detect(path)
+    perReal = 100.0-perFake
 
-    connect_cache.send(path, result[0]['0'], 'kerasio')
+    connect_cache.send(path, result[0]['0'], 'kerasio', perFake, perReal)
 
-    return {"result":result}, 200
+    return {"result":result, "perFake":perFake, "perReal":perReal}, 200
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get("PORT", 8083)))
