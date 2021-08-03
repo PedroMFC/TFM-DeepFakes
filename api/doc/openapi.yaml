@@ -1,7 +1,9 @@
 openapi: 3.0.1
 info:
   title: DeepFakes API
-  description: Aplicación que ofrece una API para poder detectar deepfakes usando varios algoritmos
+  description: >-
+    Aplicación que ofrece una API para poder detectar deepfakes usando varios
+    algoritmos
   contact:
     email: pedro_23_96@hotmail.com
   license:
@@ -9,14 +11,13 @@ info:
     url: 'http://www.gnu.org/licenses/gpl-3.0.html'
   version: 1.0.0
 externalDocs:
-  description: Encuentra más de la aplicación 
+  description: Encuentra más de la aplicación
   url: 'https://github.com/PedroMFC/TFM-DeepFakes'
 servers:
   - url: 'https://api-utoehvsqvq-ew.a.run.app'
 tags:
   - name: api
-    description: Mandar información para el análisis de vídeos e imágenes 
-
+    description: Mandar información para el análisis de vídeos e imágenes
 paths:
   /faceforensics:
     post:
@@ -30,23 +31,20 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/FaceForensicsInput'
-              
         required: true
-        
       responses:
         '200':
           description: Operación exitosa
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiResponse'
+                $ref: '#/components/schemas/ApiResponsePer'
         '400':
           description: Argumentos inválidos
           content:
             application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-          
+              schema:
+                $ref: '#/components/schemas/Error'
   /reverse:
     post:
       tags:
@@ -59,9 +57,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ReverseEnginneringInput'
-              
         required: true
-        
       responses:
         '200':
           description: Operación exitosa
@@ -73,10 +69,8 @@ paths:
           description: Argumentos inválidos
           content:
             application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-          
-  
+              schema:
+                $ref: '#/components/schemas/Error'
   /kerasio:
     post:
       tags:
@@ -89,28 +83,27 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/KerasIOInput'
-              
         required: true
-        
       responses:
         '200':
           description: Operación exitosa
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiResponse'
+                $ref: '#/components/schemas/ApiResponsePer'
         '400':
           description: Argumentos inválidos
           content:
             application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-                  
+              schema:
+                $ref: '#/components/schemas/Error'
   /kerasioimg:
     post:
       tags:
         - api
-      summary: Análisis de imágenes con modelos dinámicos y justificación de los resultados mediante lime
+      summary: >-
+        Análisis de imágenes con modelos dinámicos y justificación de los
+        resultados mediante lime
       operationId: postKerasIOImg
       requestBody:
         description: KerasIOImgInput tiene que ser enviada
@@ -118,9 +111,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/KerasIOImgInput'
-              
         required: true
-        
       responses:
         '200':
           description: Operación exitosa
@@ -132,9 +123,8 @@ paths:
           description: Argumentos inválidos
           content:
             application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-          
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   schemas:
     FaceForensicsInput:
@@ -154,7 +144,6 @@ components:
           type: integer
       xml:
         name: FaceForensicsInput
-        
     ReverseEnginneringInput:
       required:
         - image_path
@@ -166,7 +155,6 @@ components:
           type: string
       xml:
         name: ReverseEnginneringInput
-        
     KerasIOInput:
       required:
         - video_path
@@ -176,8 +164,6 @@ components:
           type: string
       xml:
         name: KerasIOInput
-        
-        
     KerasIOImgInput:
       required:
         - image_path
@@ -194,7 +180,6 @@ components:
           type: integer
       xml:
         name: KerasIOImgInput
-        
     ApiResponse:
       type: object
       properties:
@@ -204,6 +189,21 @@ components:
             $ref: '#/components/schemas/Result'
       xml:
         name: ApiResponse
+        
+    ApiResponsePer:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/Result'
+        perFake:
+          type: number
+        perReal:
+          type: number
+      xml:
+        name: ApiResponse
+        
         
     ApiResponseLime:
       type: object
@@ -216,14 +216,12 @@ components:
             $ref: '#/components/schemas/Result'
       xml:
         name: ApiResponse
-        
     Result:
       type: object
       additionalProperties:
         type: string
       example:
-        0: fake
-
+        '0': fake
     Error:
       type: object
       properties:
