@@ -7,9 +7,11 @@ cred = credentials.Certificate("/app/credentials/serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-def save(sha, service, result):
+def save(sha, service, result, perFake, perReal):
     db.collection('deepfakes-' + service).document(sha).set({
         u'result': result,
+        u'perFake': perFake,
+        u'perReal': perReal,
     })
 
 
@@ -17,9 +19,9 @@ def get(sha, service):
     entry = db.collection('deepfakes-' + service).document(sha).get()
 
     if entry.exists:
-        return entry.to_dict()["result"]
+        return entry.to_dict()["result"], entry.to_dict()["perFake"], entry.to_dict()["perReal"]
     else:
-        return ""
+        return "","",""
 
 
 def saveUser(user, requests):

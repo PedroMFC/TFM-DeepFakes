@@ -15,9 +15,9 @@ app.config["DEBUG"] = True
 @app.route('/results/<sha>/<service>', methods=['GET'])
 def get_entry(sha, service):
 
-    result = firestore.get(sha, service)
+    result, perFake, perReal = firestore.get(sha, service)
 
-    return {"result":result}, 200
+    return {"result":result, "perFake":perFake, "perReal":perReal}, 200
 
 @app.route('/results', methods=['PUT'])
 def add_entry():
@@ -25,6 +25,8 @@ def add_entry():
     sha = ""
     result = ""
     service = ""
+    perReal = -1
+    perFake = -1
 
     if 'sha' in request.json and request.json['sha'] != "":
         sha = request.json['sha']
@@ -41,7 +43,12 @@ def add_entry():
     else:
         return {"Error": "La petición es incorrecta. Falta el servicio"}, 400
 
-    firestore.save(sha, service, result)
+    if 'perFake' in request.json and request.json['perFake'] != "":
+        perFake = request.json['perFake']
+    if 'perReal' in request.json and request.json['perReal'] != "":
+        perReal = request.json['perReal']
+
+    firestore.save(sha, service, result, perFake, perReal)
 
     return {"result":"Creado correctamente"}, 201
 

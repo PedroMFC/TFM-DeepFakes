@@ -356,7 +356,7 @@ tasks:
     summary: |
       Ejemplo de una petición para la cache corriendo en local.
     cmds:
-      - curl -X PUT -H "Content-Type:application/json" -d '{"sha":"ej1", "result":"fake", "service":"faceforensics"}' http://localhost:8084/results
+      - curl -X PUT -H "Content-Type:application/json" -d '{"sha":"ej1", "result":"fake", "service":"faceforensics", "perReal":48.5, "perFake":51.5}' http://localhost:8084/results
 
   request-put-gcr-ch:
     desc: Petición para servicio de cache en local.

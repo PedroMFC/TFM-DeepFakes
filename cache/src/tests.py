@@ -7,21 +7,24 @@ class TestMethods(unittest.TestCase):
 
     @patch('firestore.get')
     @patch('firestore.save')
-    def testPutCorrecto(self, get, save):
+    def testPutCorrecto(self, save, get):
         app = TestApp(api.app)
-        get.return_value = 'fake'
+        get.return_value = 'fake', 50.0, 50.0
         save.return_value = ''
 
         app.put_json('/results', dict(sha='sha', service='service', result='result'), status=201)
+        app.put_json('/results', dict(sha='sha', service='service', result='result', perFake=50), status=201)
+        app.put_json('/results', dict(sha='sha', service='service', result='result', perReal=50), status=201)
+        app.put_json('/results', dict(sha='sha', service='service', result='result', perFake=50, perReal=50), status=201)
         app.put_json('/results', dict(sha='sha', service='service'), status=400)
         app.put_json('/results', dict(sha='sha', result='result'), status=400)
         app.put_json('/results', dict(service='service', result='result'), status=400)
 
     @patch('firestore.get')
     @patch('firestore.save')
-    def testGetCorrecto(self, get, save):
+    def testGetCorrecto(self, save, get):
         app = TestApp(api.app)
-        get.return_value = 'fake'
+        get.return_value = 'fake', 50.0, 50.0
         save.return_value = ''
 
         app.get('/results', status=405)
