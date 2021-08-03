@@ -64,6 +64,8 @@ type KerasIOImgInput struct{
 
 type ResultOut struct{
 	Result []map[string]string `json:"result"`
+	PerFake float32 `json:"perFake"` 
+	PerReal float32 `json:"perReal"` 
 }
 
 type ResultKerasImgOut struct{
@@ -171,6 +173,8 @@ func FaceForensicsLogic(client restclient.HTTPClient) gin.HandlerFunc{
 			log.Println(ResultJSON)
 			c.JSON(response.StatusCode, gin.H{
 				"result": ResultJSON.Result,
+				"perFake": ResultJSON.PerFake,
+				"perReal": ResultJSON.PerReal,
 			})
 		} else {
 			var ResultJSON Error
@@ -233,6 +237,8 @@ func KerasIOLogic(client restclient.HTTPClient) gin.HandlerFunc{
 			log.Println(ResultJSON)
 			c.JSON(response.StatusCode, gin.H{
 				"result": ResultJSON.Result,
+				"perFake": ResultJSON.PerFake,
+				"perReal": ResultJSON.PerReal,
 			})
 		} else {
 			var ResultJSON Error
