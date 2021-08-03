@@ -118,6 +118,7 @@ def test_full_image_network(video_path, model_path, output_path,
     """
     # Resultados
     result = []
+    result_fake = []
     
     # Read and write
     reader = cv2.VideoCapture(video_path)
@@ -180,8 +181,9 @@ def test_full_image_network(video_path, model_path, output_path,
                            output.detach().cpu().numpy()[0]]
             # print(label, "=>", prediction, " ", output_list)
             result.append({str(frame_num-1): label})
+            result_fake.append({str(frame_num-1): output_list[1]})
 
         if frame_num >= end_frame:
             break
 
-    return result
+    return result, result_fake

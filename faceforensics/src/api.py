@@ -53,12 +53,12 @@ def home():
     path = "/home/faceforensics/videos/" + name + ".mp4"
 
     # Vemos si está en la cache
-    cache_result = connect_cache.get(path, 'faceforensics')
+    cache_result, cache_perFake, cache_perReal = connect_cache.get(path, 'faceforensics')
 
     if cache_result != '':
-         return {"result": [{"0": cache_result}]}, 200
+         return {"result": [{"0": cache_result}], "perFake":cache_perFake, "perReal":cache_perReal}, 200
 
-    result = detect.test_full_image_network(path, "../pretrained_model/" + model_path, "", start_frame, end_frame, False)
+    result, result_fake = detect.test_full_image_network(path, "../pretrained_model/" + model_path, "", start_frame, end_frame, False)
 
 
     if not full: # Si queremos saber el resultado como media
@@ -77,9 +77,19 @@ def home():
         result = [{'0': finalLabel}]
         # print(result)
 
-    connect_cache.send(path, result[0]['0'], 'faceforensics')
 
-    return {"result":result}, 200
+    # Calcular porcentaje de fake
+    sumFake = 0.0
+    for frame in result_fake:
+        for key in frame.keys():
+            sumFake += float(frame.get(key))
+
+    perFake = max([round((sumFake / len(result_fake))*100,2), 100])
+    perReal = 100 - perFake
+
+    connect_cache.send(path, result[0]['0'], 'faceforensics', perFake, perReal)
+
+    return {"result":result, "perFake": perFake, "perReal":perReal}, 200
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get("PORT", 8080)))

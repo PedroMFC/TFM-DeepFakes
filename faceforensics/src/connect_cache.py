@@ -14,16 +14,18 @@ def get(path, service):
     print("En cache " + data['result'])
     # print("Resultado cache: " + data.result)
 
-    return data['result']
+    return data['result'], data['perFake'], data['perReal']
 
-def send(path, result, service):
+def send(path, result, service, perFake, perReal):
     hash_value = getHash(path)
 
     url = 'https://cache-utoehvsqvq-ew.a.run.app/results'
 
     data = {'sha': hash_value,
         'result':result,
-        'service':service
+        'service':service,
+        'perFake': perFake,
+        'perReal': perReal
         }
 
     requests.put(url, json = data)
