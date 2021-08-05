@@ -13,9 +13,9 @@ class TestMethods(unittest.TestCase):
     def testCorrecto(self, mock_send, mock_get, mock_detect, mock_download):
         app = TestApp(api.app)
         mock_download.return_value = 0
-        mock_detect.return_value = [{"0": "fake"}]
+        mock_detect.return_value = [{"0": "fake"}], 50
         mock_send.return_value = ''
-        mock_get.return_value = ''
+        mock_get.return_value = '', '', ''
 
         app.post_json('/', dict(video_path='http://some_path'), status=200)
 
@@ -27,9 +27,9 @@ class TestMethods(unittest.TestCase):
     def testError(self, mock_send, mock_get, mock_detect, mock_download):
         app = TestApp(api.app)
         mock_download.return_value = -1
-        mock_detect.return_value = [{"0": "fake"}]
+        mock_detect.return_value = [{"0": "fake"}], 50
         mock_send.return_value = ''
-        mock_get.return_value = ''
+        mock_get.return_value = '', '', ''
         
         app.post_json('/', dict(video_path='http://some_error_path'), status=400)
 

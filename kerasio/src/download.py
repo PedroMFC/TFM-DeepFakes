@@ -6,7 +6,7 @@ def download_youtube(link, name):
         yt = YouTube(link) 
         d_video = yt.streams.first()
 
-        d_video.download("/home/kerasio/videos", filename=name) 
+        d_video.download("/home/kerasio/videos", filename=name+".mp4") 
 
     except: 
         print("Ha habido algún error")
