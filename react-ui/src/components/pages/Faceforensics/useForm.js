@@ -25,8 +25,7 @@ const useForm = (callback, callback2, validate, path) => {
       callback2("")
       var ip = await publicIp.v4()
       console.log(ip)
-      fetch("http://localhost:8081/" + path, {
-      //fetch("https://api-utoehvsqvq-ew.a.run.app/" + path, {
+      fetch("https://api-utoehvsqvq-ew.a.run.app/" + path, {
               "method": "POST",
               "headers": {
                   "content-type": "application/json",
