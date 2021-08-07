@@ -63,6 +63,16 @@ namespace FocaPluginExample
             this.buttonAgain3 = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.panel = new System.Windows.Forms.Panel();
+            this.panelKIOIMG = new System.Windows.Forms.Panel();
+            this.buttonKIOIMG = new System.Windows.Forms.Button();
+            this.URLModelKIOIMG = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.tamanioIMG = new System.Windows.Forms.TextBox();
+            this.URLKIOIMG = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.comboBoxLIME = new System.Windows.Forms.ComboBox();
             this.panelReverse.SuspendLayout();
             this.panelFaceforensics.SuspendLayout();
             this.panelKeras.SuspendLayout();
@@ -71,6 +81,7 @@ namespace FocaPluginExample
             this.panelFake.SuspendLayout();
             this.panelError.SuspendLayout();
             this.panel.SuspendLayout();
+            this.panelKIOIMG.SuspendLayout();
             this.SuspendLayout();
             // 
             // URLRELabel
@@ -104,7 +115,8 @@ namespace FocaPluginExample
             this.comboAlgoritmo.Items.AddRange(new object[] {
             "FaceForensics",
             "Reverse Engineering",
-            "Keras"});
+            "Keras",
+            "KerasIMG"});
             this.comboAlgoritmo.Location = new System.Drawing.Point(27, 33);
             this.comboAlgoritmo.Name = "comboAlgoritmo";
             this.comboAlgoritmo.Size = new System.Drawing.Size(121, 21);
@@ -247,7 +259,6 @@ namespace FocaPluginExample
             this.panelFaceforensics.Name = "panelFaceforensics";
             this.panelFaceforensics.Size = new System.Drawing.Size(700, 332);
             this.panelFaceforensics.TabIndex = 11;
-            this.panelFaceforensics.Paint += new System.Windows.Forms.PaintEventHandler(this.panelFaceforensics_Paint);
             // 
             // panelKeras
             // 
@@ -389,18 +400,113 @@ namespace FocaPluginExample
             // panel
             // 
             this.panel.Controls.Add(this.label1);
-            this.panel.Controls.Add(this.panelReverse);
             this.panel.Controls.Add(this.comboAlgoritmo);
+            this.panel.Controls.Add(this.panelKIOIMG);
+            this.panel.Controls.Add(this.panelFaceforensics);
+            this.panel.Controls.Add(this.panelKeras);
+            this.panel.Controls.Add(this.panelReverse);
             this.panel.Controls.Add(this.panelFake);
             this.panel.Controls.Add(this.panelError);
             this.panel.Controls.Add(this.panelLoading);
             this.panel.Controls.Add(this.panelReal);
-            this.panel.Controls.Add(this.panelFaceforensics);
-            this.panel.Controls.Add(this.panelKeras);
             this.panel.Location = new System.Drawing.Point(2, 2);
             this.panel.Name = "panel";
             this.panel.Size = new System.Drawing.Size(694, 432);
             this.panel.TabIndex = 18;
+            // 
+            // panelKIOIMG
+            // 
+            this.panelKIOIMG.Controls.Add(this.buttonKIOIMG);
+            this.panelKIOIMG.Controls.Add(this.URLModelKIOIMG);
+            this.panelKIOIMG.Controls.Add(this.label9);
+            this.panelKIOIMG.Controls.Add(this.label10);
+            this.panelKIOIMG.Controls.Add(this.tamanioIMG);
+            this.panelKIOIMG.Controls.Add(this.URLKIOIMG);
+            this.panelKIOIMG.Controls.Add(this.label11);
+            this.panelKIOIMG.Controls.Add(this.label12);
+            this.panelKIOIMG.Controls.Add(this.comboBoxLIME);
+            this.panelKIOIMG.Location = new System.Drawing.Point(4, 65);
+            this.panelKIOIMG.Name = "panelKIOIMG";
+            this.panelKIOIMG.Size = new System.Drawing.Size(700, 332);
+            this.panelKIOIMG.TabIndex = 18;
+            // 
+            // buttonKIOIMG
+            // 
+            this.buttonKIOIMG.Location = new System.Drawing.Point(20, 257);
+            this.buttonKIOIMG.Name = "buttonKIOIMG";
+            this.buttonKIOIMG.Size = new System.Drawing.Size(75, 23);
+            this.buttonKIOIMG.TabIndex = 8;
+            this.buttonKIOIMG.Text = "Procesar";
+            this.buttonKIOIMG.UseVisualStyleBackColor = true;
+            this.buttonKIOIMG.Click += new System.EventHandler(this.buttonKIOIMG_Click);
+            // 
+            // URLModelKIOIMG
+            // 
+            this.URLModelKIOIMG.Location = new System.Drawing.Point(16, 80);
+            this.URLModelKIOIMG.Name = "URLModelKIOIMG";
+            this.URLModelKIOIMG.Size = new System.Drawing.Size(648, 20);
+            this.URLModelKIOIMG.TabIndex = 12;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(13, 10);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(92, 13);
+            this.label9.TabIndex = 1;
+            this.label9.Text = "URL de la imagen";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(17, 59);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(125, 13);
+            this.label10.TabIndex = 10;
+            this.label10.Text = "URL del modelo (TFHub)";
+            // 
+            // tamanioIMG
+            // 
+            this.tamanioIMG.Location = new System.Drawing.Point(15, 134);
+            this.tamanioIMG.Name = "tamanioIMG";
+            this.tamanioIMG.Size = new System.Drawing.Size(80, 20);
+            this.tamanioIMG.TabIndex = 11;
+            // 
+            // URLKIOIMG
+            // 
+            this.URLKIOIMG.Location = new System.Drawing.Point(16, 27);
+            this.URLKIOIMG.Name = "URLKIOIMG";
+            this.URLKIOIMG.Size = new System.Drawing.Size(648, 20);
+            this.URLKIOIMG.TabIndex = 2;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(13, 168);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(57, 13);
+            this.label11.TabIndex = 4;
+            this.label11.Text = "Usar LIME";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(13, 116);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(109, 13);
+            this.label12.TabIndex = 9;
+            this.label12.Text = "Tamaño de la imagen";
+            // 
+            // comboBoxLIME
+            // 
+            this.comboBoxLIME.FormattingEnabled = true;
+            this.comboBoxLIME.Items.AddRange(new object[] {
+            "Sí",
+            "No"});
+            this.comboBoxLIME.Location = new System.Drawing.Point(15, 184);
+            this.comboBoxLIME.Name = "comboBoxLIME";
+            this.comboBoxLIME.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxLIME.TabIndex = 7;
             // 
             // Form1
             // 
@@ -426,6 +532,8 @@ namespace FocaPluginExample
             this.panelError.PerformLayout();
             this.panel.ResumeLayout(false);
             this.panel.PerformLayout();
+            this.panelKIOIMG.ResumeLayout(false);
+            this.panelKIOIMG.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -466,5 +574,15 @@ namespace FocaPluginExample
         private System.Windows.Forms.Button buttonAgain3;
         private System.Windows.Forms.Label label8;
         public System.Windows.Forms.Panel panel;
+        private System.Windows.Forms.Panel panelKIOIMG;
+        private System.Windows.Forms.Button buttonKIOIMG;
+        private System.Windows.Forms.TextBox URLModelKIOIMG;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox tamanioIMG;
+        private System.Windows.Forms.TextBox URLKIOIMG;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ComboBox comboBoxLIME;
     }
 }
