@@ -7,7 +7,7 @@ import deepfake_detection_test
 import connect_cache
 
 app = flask.Flask(__name__)
-app.config["DEBUG"] = True
+app.config["DEBUG"] = False
 
 @app.route('/', methods=['POST'])
 def home():
