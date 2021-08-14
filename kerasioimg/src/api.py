@@ -5,7 +5,7 @@ import image_clasification
 import os
 
 app = flask.Flask(__name__)
-app.config["DEBUG"] = True
+app.config["DEBUG"] = False
 
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/app/credentials/key.json'
 
