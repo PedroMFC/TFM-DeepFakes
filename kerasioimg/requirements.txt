@@ -1,4 +1,4 @@
-tensorflow==2.5
+tensorflow==2.5.1
 imutils==0.5.4
 opencv-python==4.5.1.48
 matplotlib==3.3.4

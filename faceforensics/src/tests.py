@@ -94,10 +94,10 @@ class TestMethods(unittest.TestCase):
         mock_get.return_value = '','',''
         
         resp = app.post_json('/', dict(video_path='http://some_path', start_frame=1, end_frame=2, model_path='ffpp_c40.pth', full=0), status=200)
-        assert resp.body == b'{\n  "perFake": 100, \n  "perReal": 0, \n  "result": [\n    {\n      "0": "fake"\n    }\n  ]\n}\n'
+        assert resp.body == b'{"perFake":100,"perReal":0,"result":[{"0":"fake"}]}\n'
 
         resp = app.post_json('/', dict(video_path='http://some_path', start_frame=1, end_frame=2, model_path='ffpp_c40.pth', full=1), status=200)
-        assert resp.body == b'{\n  "perFake": 100, \n  "perReal": 0, \n  "result": [\n    {\n      "0": "fake"\n    }, \n    {\n      "1": "fake"\n    }\n  ]\n}\n'
+        assert resp.body == b'{"perFake":100,"perReal":0,"result":[{"0":"fake"},{"1":"fake"}]}\n'
 
     @patch('download.download_youtube')
     @patch('detect.test_full_image_network')
@@ -111,10 +111,10 @@ class TestMethods(unittest.TestCase):
         mock_get.return_value = '','',''
         
         resp = app.post_json('/', dict(video_path='http://some_path', start_frame=1, end_frame=2, model_path='ffpp_c40.pth', full=0), status=200)
-        assert resp.body == b'{\n  "perFake": 100, \n  "perReal": 0, \n  "result": [\n    {\n      "0": "real"\n    }\n  ]\n}\n'
+        assert resp.body == b'{"perFake":100,"perReal":0,"result":[{"0":"real"}]}\n'
 
         resp = app.post_json('/', dict(video_path='http://some_path', start_frame=1, end_frame=2, model_path='ffpp_c40.pth', full=1), status=200)
-        assert resp.body == b'{\n  "perFake": 100, \n  "perReal": 0, \n  "result": [\n    {\n      "0": "real"\n    }, \n    {\n      "1": "real"\n    }\n  ]\n}\n'
+        assert resp.body == b'{"perFake":100,"perReal":0,"result":[{"0":"real"},{"1":"real"}]}\n'
 
 
 
