@@ -5,7 +5,7 @@ LABEL version="0.2.0"
 
 # Actualizamos e instalamos algunas librerías necesarias
 RUN apt-get update \
-    && apt-get install -y libgl1-mesa-dev build-essential libglib2.0-0 qt5-default 
+    && apt-get install -y libgl1-mesa-dev build-essential libglib2.0-0 
 
 # Tenemos que instalar cmake aparte para dblib
 COPY requirements.txt .
