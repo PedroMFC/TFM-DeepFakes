@@ -11,7 +11,7 @@ def get(path, service):
 
     data = r.json()
 
-    print("En cache " + data['result'])
+    # print("En cache " + data['result'])
     # print("Resultado cache: " + data.result)
 
     return data['result']

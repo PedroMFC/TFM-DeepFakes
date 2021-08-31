@@ -1,5 +1,6 @@
 import flask
 from flask import request, json, jsonify
+import requests
 import connect_cache 
 import image_clasification 
 import os
@@ -17,14 +18,18 @@ def home():
     image_size = 299
     lime = 0
 
+    print(requests.json)
+
     if 'image_path' in request.json and request.json['image_path'] != "":
         image_path = request.json['image_path']
     else:
+        print("No se ha proporcionado URL de la imagen")
         return {"Error": "No se ha proporcionado URL de la imagen"}, 400
 
     if 'model_path' in request.json and request.json['model_path'] != "":
         model_path = request.json['model_path']
     else:
+        print("No se ha proporcionado el modelo")
         return {"Error": "No se ha proporcionado URL del modelo"}, 400
 
     if 'image_size' in request.json and request.json['image_size'] > 0:

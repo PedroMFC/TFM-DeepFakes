@@ -10,10 +10,10 @@ def download_youtube(link, name):
         d_video.download("/home/kerasio/videos", filename=name) 
 
     except: 
-        print("Ha habido algún error")
+        print('Ha habido algún error al descargar el contenido')
         return -1 
 
-    print('Vídeo descargado') 
+    print('Contenido descargado correctamente')
     return 0
 
 def upload_blob(bucket_name, source_file_name, destination_blob_name):
