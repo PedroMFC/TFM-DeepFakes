@@ -2,6 +2,8 @@ import flask
 from flask import request, json, jsonify
 import os
 
+import requests
+
 import download
 import deepfake_detection_test
 import connect_cache
@@ -15,6 +17,8 @@ def home():
     image_path = ""
     model_path = "0_32000_model_31_70-23.pickle"
 
+    print(requests.json)
+
     if 'image_path' in request.json:
         image_path = request.json['image_path']
 
@@ -26,12 +30,10 @@ def home():
             model_path != "0_32000_model_29.pickle" and 
             model_path != "0_64000_model_30.pickle"
            ):
-
+            print("Modelo no encontrado")
             return {"Error": "El modelo no se encuentra disponible"}, 400
 
     download.downloadImage(image_path)
-
-    print('DESCARGADO')
 
     path = "/home/reverse/data_test/0/image.jpg"
     # Vemos si está en la cache

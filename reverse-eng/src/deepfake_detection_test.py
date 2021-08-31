@@ -55,7 +55,7 @@ def detect(model_path):
     param_savedir = '/home/reverse/runs'
     param_model_dir =  './models/' + model_path
 
-    print("Random Seed: ", param_seed)
+    # print("Random Seed: ", param_seed)
 
     torch.backends.deterministic = True
     torch.manual_seed(param_seed)
@@ -104,8 +104,8 @@ def detect(model_path):
     model_2.load_state_dict(state1['state_dict_class'])
 
 
-    print(len(test_set))
-    print(test_set.class_to_idx)
+    # print(len(test_set))
+    # print(test_set.class_to_idx)
     epochs=1
 
     for epoch in range(epochs):
@@ -118,7 +118,7 @@ def detect(model_path):
         for batch_idx_test, (inputs_test,labels_test) in enumerate(test_loader):
             out,loss,loss1,loss2,loss3,loss4,loss5, out_orig,features,residual,pred_1,scores=test( Variable(torch.FloatTensor(inputs_test)),Variable(torch.LongTensor(labels_test)))
 
-            print("Result: ", pred_1[0].cpu().numpy())
+            # print("Result: ", pred_1[0].cpu().numpy())
             resInt = pred_1[0].cpu().numpy().tolist()
             label = 'fake' if resInt == 1 else 'real'
 
