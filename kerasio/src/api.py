@@ -1,3 +1,4 @@
+import logging
 import flask
 from flask import request, json, jsonify
 import connect_cache 
@@ -13,6 +14,7 @@ def home():
 
     video_path = ""
 
+    print(request.json)
 
     if 'video_path' in request.json:
         video_path = request.json['video_path']
@@ -30,7 +32,8 @@ def home():
     cache_result, cache_perFake, cache_perReal = connect_cache.get(path, 'kerasio')
 
     if cache_result != '':
-         return {"result": [{"0": cache_result}], "perFake":cache_perFake, "perReal":cache_perReal}, 200
+        print("Video cached")
+        return {"result": [{"0": cache_result}], "perFake":cache_perFake, "perReal":cache_perReal}, 200
 
     result, perFake = video_clasification.detect(path)
     perReal = 100.0-perFake

@@ -10,6 +10,6 @@ def getHash(file):
             file_hash.update(fb) # Update the hash
             fb = f.read(BLOCK_SIZE) # Read the next block from the file
 
-    print (file_hash.hexdigest()) # Get the hexadecimal digest of the hash
+    print('Valor hash del archivo: ' + file_hash.hexdigest())
 
     return file_hash.hexdigest()
