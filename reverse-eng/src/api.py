@@ -17,7 +17,7 @@ def home():
     image_path = ""
     model_path = "0_32000_model_31_70-23.pickle"
 
-    print(requests.json)
+    print(request.json)
 
     if 'image_path' in request.json:
         image_path = request.json['image_path']

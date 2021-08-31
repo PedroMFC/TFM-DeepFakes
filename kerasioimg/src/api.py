@@ -18,7 +18,7 @@ def home():
     image_size = 299
     lime = 0
 
-    print(requests.json)
+    print(request.json)
 
     if 'image_path' in request.json and request.json['image_path'] != "":
         image_path = request.json['image_path']
