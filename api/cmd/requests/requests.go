@@ -62,8 +62,7 @@ func getUser(user string, client restclient.HTTPClient) []time.Time {
 		}
 		defer response.Body.Close()
 
-		log.Println("response Status:", response.Status)
-		log.Println("response Headers:", response.Header)
+		log.Println("response Status getUser:", response.Status)
 		body, _ := ioutil.ReadAll(response.Body)
 
 		if response.StatusCode == http.StatusOK {
@@ -99,6 +98,5 @@ func saveUser(user string, timestamps []time.Time, client restclient.HTTPClient)
 		}
 		defer response.Body.Close()
 
-		log.Println("response Status:", response.Status)
-		log.Println("response Headers:", response.Header)
+		log.Println("response Status saveUser:", response.Status)
 }

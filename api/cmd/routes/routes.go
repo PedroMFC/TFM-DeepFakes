@@ -114,24 +114,24 @@ func FaceForensicsLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		var jsonData []byte
 		var input VideoInput
 
+		log.Println("Llamada servicio FaceForensics")
+
 		
 		//log.Println(c.Request.Header.Get("X-REAL-IP"))
 		//log.Println(c.Request.RemoteAddr)
 
 		//ip := "127.0.0.1:46344"
 		ip, requestBody := getIP(c.Request)
-		log.Println("IP: ", ip)
 		pass := RequestLogic(ip, client)
 
 		if pass < 0{
+			log.Println("Se han sueperado el número máximo de intentos  para la IP: ", ip)
 			c.JSON(http.StatusForbidden, gin.H{
 				"Error": "Ha superado el máximo de intentos",
 			})
 		} else{
 			
 		json.Unmarshal([]byte(string(requestBody)), &input)
-
-		log.Println(input.EndFrame)
 
 		if strconv.Itoa(input.StartFrame) < strconv.Itoa(input.EndFrame){
 			jsonData = []byte(`{
@@ -163,7 +163,6 @@ func FaceForensicsLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		defer response.Body.Close()
 
 		log.Println("response Status:", response.Status)
-		log.Println("response Headers:", response.Header)
 		body, _ := ioutil.ReadAll(response.Body)
 
 		if response.StatusCode == http.StatusOK {
@@ -196,11 +195,13 @@ func KerasIOLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		var jsonData []byte
 		var input KerasIOInput
 
+		log.Println("Llamada servicio Keras vídeos")
+
 		ip, requestBody := getIP(c.Request)
-		log.Println("IP: ", ip)
 		pass := RequestLogic(ip, client)
 
 		if pass < 0{
+			log.Println("Se han sueperado el número máximo de intentos  para la IP: ", ip)
 			c.JSON(http.StatusForbidden, gin.H{
 				"Error": "Ha superado el máximo de intentos",
 			})
@@ -226,7 +227,6 @@ func KerasIOLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		defer response.Body.Close()
 
 		log.Println("response Status:", response.Status)
-		log.Println("response Headers:", response.Header)
 		body, _ := ioutil.ReadAll(response.Body)
 		//log.Println("response Body:", string(body))
 
@@ -261,11 +261,13 @@ func KerasIOImgLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		var jsonData []byte
 		var input KerasIOImgInput
 
+		log.Println("Llamada servicio Keras imágenes")
+
 		ip, requestBody := getIP(c.Request)
-		log.Println("IP: ", ip)
 		pass := RequestLogic(ip, client)
 
 		if pass < 0{
+			log.Println("Se han sueperado el número máximo de intentos  para la IP: ", ip)
 			c.JSON(http.StatusForbidden, gin.H{
 				"Error": "Ha superado el máximo de intentos",
 			})
@@ -294,7 +296,6 @@ func KerasIOImgLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		defer response.Body.Close()
 
 		log.Println("response Status:", response.Status)
-		log.Println("response Headers:", response.Header)
 		body, _ := ioutil.ReadAll(response.Body)
 		//log.Println("response Body:", string(body))
 
@@ -328,12 +329,13 @@ func ReverseLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		var jsonData []byte
 		var input ImageInput
 
+		log.Println("Llamada servicio Reverse Engineering")
 
 		ip, requestBody := getIP(c.Request)
-		log.Println("IP: ", ip)
 		pass := RequestLogic(ip, client)
 
 		if pass < 0{
+			log.Println("Se han sueperado el número máximo de intentos  para la IP: ", ip)
 			c.JSON(http.StatusForbidden, gin.H{
 				"Error": "Ha superado el máximo de intentos",
 			})
@@ -360,7 +362,6 @@ func ReverseLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		defer response.Body.Close()
 
 		log.Println("response Status:", response.Status)
-		log.Println("response Headers:", response.Header)
 		body, _ := ioutil.ReadAll(response.Body)
 		//log.Println("response Body:", string(body))
 
