@@ -9,8 +9,8 @@ def download_youtube(link, name):
         d_video.download("/home/faceforensics/videos", filename=name + ".mp4") 
 
     except: 
-        print("Ha habido algún error")
+        print('Ha habido algún error al descargar el vídeo')
         return -1 
 
-    print('Vídeo descargado') 
+    print('Vídeo descargado correctamente')
     return 0

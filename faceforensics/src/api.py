@@ -17,6 +17,8 @@ def home():
     end_frame = None
     full = 0
 
+    print(request.json)
+
     if 'video_path' in request.json:
         video_path = request.json['video_path']
 
@@ -24,6 +26,7 @@ def home():
         model_path = request.json['model_path']
 
         if model_path != "ffpp_c40.pth" and model_path != "ffpp_c23.pth":
+            print("Invalid model path")
             return {"Error": "El modelo no se encuentra disponible"}, 400
     else:
         model_path = "ffpp_c40.pth"
@@ -32,12 +35,14 @@ def home():
         start_frame = request.json['start_frame']
 
         if not isinstance(start_frame, int) or not start_frame >= 0:
+            print("Invalid start frame")
             return {"Error": "El parámetro 'start_frame' frame no es correcto"}, 400
 
     if 'end_frame' in request.json:
         end_frame = request.json['end_frame']
 
         if not isinstance(end_frame, int) or not end_frame >= 0:
+            print("Invalid end frame")
             return {"Error": "El parámetro 'end_frame' frame no es correcto"}, 400
 
     if 'full' in request.json:
@@ -56,7 +61,8 @@ def home():
     cache_result, cache_perFake, cache_perReal = connect_cache.get(path, 'faceforensics')
 
     if cache_result != '':
-         return {"result": [{"0": cache_result}], "perFake":cache_perFake, "perReal":cache_perReal}, 200
+        print("Video cached")
+        return {"result": [{"0": cache_result}], "perFake":cache_perFake, "perReal":cache_perReal}, 200
 
     result, result_fake = detect.test_full_image_network(path, "../pretrained_model/" + model_path, "", start_frame, end_frame, False)
 

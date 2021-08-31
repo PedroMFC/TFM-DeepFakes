@@ -48,7 +48,6 @@ class TransferModel(nn.Module):
             if not dropout:
                 self.model.last_linear = nn.Linear(num_ftrs, num_out_classes)
             else:
-                print('Using dropout', dropout)
                 self.model.last_linear = nn.Sequential(
                     nn.Dropout(p=dropout),
                     nn.Linear(num_ftrs, num_out_classes)
@@ -59,7 +58,6 @@ class TransferModel(nn.Module):
             if not dropout:
                 self.model.last_linear = nn.Linear(num_ftrs, num_out_classes)
             else:
-                print('Using dropout', dropout)
                 self.model.last_linear = nn.Sequential(
                     nn.Dropout(p=dropout),
                     nn.Linear(num_ftrs, num_out_classes)
