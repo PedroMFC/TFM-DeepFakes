@@ -62,6 +62,21 @@ Para llamar al servicio desplegado en Google Cloud utilizamos:
  > task request-api-gcr-kio  # Realizar la petición
 ```
 
+## Clasificación de imágenes con Keras
+
+Para la clasificación de imágenes con Keras debemos de indicar un modelo preentreanado y subido a [TensorFlow Hub](https://www.tensorflow.org/hub?hl=es-419). Este modelo tiene que estar entrenado de tal modo que las clase *fake* sea clasificada como 1 para el correcto funcionamiento. El código modificado en nuestro repositorio se encuentra en la carpeta [kerasioimg](./kerasioimg). Para ejecutarlo en local utilizamos las órdenes:
+
+```
+ > task docker-build-kio-img # Construir el contenedor
+ > task docker-run-kio-img   # Lanzar el contenedor 
+ > task request-api-kio-img  # Realizar la petición
+```
+
+Para llamar al servicio desplegado en Google Cloud utilizamos:
+
+```
+ > task request-api-gcr-kio-img  # Realizar la petición
+```
 
 ## Reverse Engineering
 
