@@ -73,7 +73,7 @@ const FormSend = ({ submitForm , setFinalResult }) => {
         <span></span>
 
         { values.file != '' ? (
-          <label style={{margin: "15px", color:"#ffffff"}}>Almacenado en: {values.file} </label>    
+          <label style={{margin: "15px", color:"#ffffff"}}>Almacenado en: https://storage.googleapis.com/imgs-mask/{values.file} </label>    
         ): []}
     
       </form>
