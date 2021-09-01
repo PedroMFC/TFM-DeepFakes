@@ -13,5 +13,7 @@ namespace FocaPluginExample.Models
         public float perFake { get; set; }
 
         public float perReal { get; set; }
+
+        public string file { get; set; }
     }
 }

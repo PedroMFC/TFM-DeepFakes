@@ -310,7 +310,11 @@ namespace FocaPluginExample
                 //MessageBox.Show(resultHttp);
                 var resultJSON = serializer.Deserialize<Models.Result>(resultHttp);
 
-                //MessageBox.Show(resultJSON.result[0]["0"]);
+                if (limeAux == 1)
+                {
+                    MessageBox.Show("Almacenado en: https://storage.googleapis.com/imgs-mask/" + resultJSON.file);
+                }
+                
                 //result.Text = resultHttp;
 
                 if (resultJSON.result[0]["0"] == "fake")

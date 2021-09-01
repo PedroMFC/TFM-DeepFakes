@@ -60,7 +60,6 @@ C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\obj\Debug\Deep
 C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\bin\Debug\BouncyCastle.Crypto.dll
 C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\bin\Debug\itextsharp.dll
 C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\bin\Debug\itextsharp.xml
-C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\bin\Debug\DeepFakesAnalisis.exe.config
-C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\bin\Debug\DeepFakesAnalisis.exe
-C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\obj\Debug\DeepFakesAnalisis.exe
-C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\obj\Debug\FocaPluginExample.csproj.AssemblyReference.cache
+C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\bin\Debug\DeepFakesAnalisis.dll.config
+C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\bin\Debug\DeepFakesAnalisis.dll
+C:\Users\pedro\Desktop\TFM-DeepFakes\pluginfoca\FocaPluginExample\obj\Debug\DeepFakesAnalisis.dll
