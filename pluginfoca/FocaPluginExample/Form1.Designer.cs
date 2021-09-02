@@ -89,9 +89,9 @@ namespace FocaPluginExample
             this.URLRELabel.AutoSize = true;
             this.URLRELabel.Location = new System.Drawing.Point(25, 10);
             this.URLRELabel.Name = "URLRELabel";
-            this.URLRELabel.Size = new System.Drawing.Size(92, 13);
+            this.URLRELabel.Size = new System.Drawing.Size(96, 13);
             this.URLRELabel.TabIndex = 0;
-            this.URLRELabel.Text = "URL de la imagen";
+            this.URLRELabel.Text = "URL de la imagen*";
             // 
             // URLREBox
             // 
@@ -119,7 +119,7 @@ namespace FocaPluginExample
             "KerasIMG"});
             this.comboAlgoritmo.Location = new System.Drawing.Point(27, 33);
             this.comboAlgoritmo.Name = "comboAlgoritmo";
-            this.comboAlgoritmo.Size = new System.Drawing.Size(121, 21);
+            this.comboAlgoritmo.Size = new System.Drawing.Size(142, 21);
             this.comboAlgoritmo.TabIndex = 8;
             this.comboAlgoritmo.SelectedIndexChanged += new System.EventHandler(this.comboAlgoritmo_SelectedIndexChanged);
             // 
@@ -154,7 +154,7 @@ namespace FocaPluginExample
             "0_64000_model_30.pickle"});
             this.BoxModelRE.Location = new System.Drawing.Point(28, 84);
             this.BoxModelRE.Name = "BoxModelRE";
-            this.BoxModelRE.Size = new System.Drawing.Size(121, 21);
+            this.BoxModelRE.Size = new System.Drawing.Size(203, 21);
             this.BoxModelRE.TabIndex = 4;
             // 
             // label1
@@ -240,9 +240,9 @@ namespace FocaPluginExample
             this.URLFFLabel.AutoSize = true;
             this.URLFFLabel.Location = new System.Drawing.Point(13, 10);
             this.URLFFLabel.Name = "URLFFLabel";
-            this.URLFFLabel.Size = new System.Drawing.Size(77, 13);
+            this.URLFFLabel.Size = new System.Drawing.Size(81, 13);
             this.URLFFLabel.TabIndex = 1;
-            this.URLFFLabel.Text = "URL del vídeo";
+            this.URLFFLabel.Text = "URL del vídeo*";
             // 
             // panelFaceforensics
             // 
@@ -292,9 +292,9 @@ namespace FocaPluginExample
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(12, 25);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(77, 13);
+            this.label4.Size = new System.Drawing.Size(81, 13);
             this.label4.TabIndex = 2;
-            this.label4.Text = "URL del vídeo";
+            this.label4.Text = "URL del vídeo*";
             // 
             // panelLoading
             // 
@@ -401,14 +401,14 @@ namespace FocaPluginExample
             // 
             this.panel.Controls.Add(this.label1);
             this.panel.Controls.Add(this.comboAlgoritmo);
-            this.panel.Controls.Add(this.panelKIOIMG);
-            this.panel.Controls.Add(this.panelFaceforensics);
-            this.panel.Controls.Add(this.panelKeras);
             this.panel.Controls.Add(this.panelReverse);
             this.panel.Controls.Add(this.panelFake);
             this.panel.Controls.Add(this.panelError);
             this.panel.Controls.Add(this.panelLoading);
             this.panel.Controls.Add(this.panelReal);
+            this.panel.Controls.Add(this.panelKIOIMG);
+            this.panel.Controls.Add(this.panelFaceforensics);
+            this.panel.Controls.Add(this.panelKeras);
             this.panel.Location = new System.Drawing.Point(2, 2);
             this.panel.Name = "panel";
             this.panel.Size = new System.Drawing.Size(694, 432);
@@ -452,18 +452,18 @@ namespace FocaPluginExample
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(13, 10);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(92, 13);
+            this.label9.Size = new System.Drawing.Size(96, 13);
             this.label9.TabIndex = 1;
-            this.label9.Text = "URL de la imagen";
+            this.label9.Text = "URL de la imagen*";
             // 
             // label10
             // 
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(17, 59);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(125, 13);
+            this.label10.Size = new System.Drawing.Size(129, 13);
             this.label10.TabIndex = 10;
-            this.label10.Text = "URL del modelo (TFHub)";
+            this.label10.Text = "URL del modelo (TFHub)*";
             // 
             // tamanioIMG
             // 
