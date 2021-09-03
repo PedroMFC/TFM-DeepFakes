@@ -12,7 +12,7 @@ Despliegue en Google Cloud de un sistema de microservicios para la detección de
 
 * [API](./api) - Servicio que proporciona la API para la detección de DeepFakes.
 * [FaceForensics](./faceforensics) - Servicio que proporciona la detección en videos usando el algoritmo [FaceForensics++](https://github.com/HongguLiu/Deepfake-Detection).
-* [Reverse Engineering](./reverse) - Servicio que proporciona la detección de rostros sintéticos en imágenes. Nos baso en la [esta implementación](https://github.com/vishal3477/Reverse_Engineering_GMs).
+* [Reverse Engineering](./reverse-eng) - Servicio que proporciona la detección de rostros sintéticos en imágenes. Nos baso en la [esta implementación](https://github.com/vishal3477/Reverse_Engineering_GMs).
 * [Keras vídeo](./kerasio) - Propuesta para la clasificación de vídeo con una red convolutiva y otra recurrente. [Video Classification with a CNN-RNN Architecture](https://keras.io/examples/vision/video_classification/)
 * [Keras imágenes](./kerasioimg) - Servicio para clasificación de imágenes usando una red alojada en TensorFlowHub.
 
