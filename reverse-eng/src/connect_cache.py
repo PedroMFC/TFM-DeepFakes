@@ -1,11 +1,12 @@
-
 from hash import getHash
 import requests
+
+URL_CH = 'https://cache-utoehvsqvq-ew.a.run.app'
 
 def get(path, service):
     hash_value = getHash(path)
 
-    url = 'https://cache-utoehvsqvq-ew.a.run.app/results/' + hash_value + '/' + service
+    url = URL_CH + '/results/' + hash_value + '/' + service
 
     r = requests.get(url)
 
@@ -19,7 +20,7 @@ def get(path, service):
 def send(path, result, service):
     hash_value = getHash(path)
 
-    url = 'https://cache-utoehvsqvq-ew.a.run.app/results'
+    url = URL_CH + '/results'
 
     data = {'sha': hash_value,
         'result':result,
