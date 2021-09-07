@@ -12,8 +12,10 @@ import (
 )
 
 
-const LIMIT_REQUESTS = 2
+const LIMIT_REQUESTS = 3
 const MINUTES_INTERVAL = 5
+
+const URL_CH = "https://cache-utoehvsqvq-ew.a.run.app"
 
 type Timestamps struct{
 	Timestamps []time.Time `json:"timestamps"`
@@ -52,7 +54,7 @@ func getUser(user string, client restclient.HTTPClient) []time.Time {
 		var request *http.Request
 		var result []time.Time
 
-		url := "https://cache-utoehvsqvq-ew.a.run.app/requests/"
+		url := URL_CH + "/requests/"
 		request, _ = http.NewRequest("GET", url + user, nil)
 		request.Header.Set("Content-Type", "application/json; charset=UTF-8")
 
@@ -83,7 +85,7 @@ func getUser(user string, client restclient.HTTPClient) []time.Time {
 func saveUser(user string, timestamps []time.Time, client restclient.HTTPClient){
 		var request *http.Request
 
-		url := "https://cache-utoehvsqvq-ew.a.run.app/requests/"
+		url := URL_CH + "/requests/"
 
 		postBody, _ := json.Marshal(Timestamps{
 			Timestamps:        timestamps,

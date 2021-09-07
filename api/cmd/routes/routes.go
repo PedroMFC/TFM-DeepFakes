@@ -17,6 +17,10 @@ import (
 	"github.com/tomasen/realip"
 )
 
+const URL_FF     = "https://faceforensics-utoehvsqvq-ew.a.run.app"
+const ULR_KIO    = "https://kerasio-utoehvsqvq-ew.a.run.app"
+const URL_KIOIMG = "https://kerasioimg-utoehvsqvq-ew.a.run.app"
+const URL_RE     = "https://reverse-utoehvsqvq-ew.a.run.app"
 
 var RequestLogic = requests.RequestLogic
 
@@ -150,7 +154,7 @@ func FaceForensicsLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		}
 			
 		log.Println(string(jsonData))
-		url = "https://faceforensics-utoehvsqvq-ew.a.run.app"
+		url = URL_FF
 		//url = "http://localhost:8080"
 
 		request, _ = http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
@@ -214,7 +218,7 @@ func KerasIOLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		}`)
  
 		log.Println(string(jsonData))
-		url = "https://kerasio-utoehvsqvq-ew.a.run.app"
+		url = ULR_KIO
 		//url = "http://localhost:8083"
 
 		request, _ = http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
@@ -283,7 +287,7 @@ func KerasIOImgLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		}`)
  
 		log.Println(string(jsonData))
-		url = "https://kerasioimg-utoehvsqvq-ew.a.run.app"
+		url = URL_KIOIMG
 		//url = "http://localhost:8085"
 
 		request, _ = http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
@@ -349,7 +353,7 @@ func ReverseLogic(client restclient.HTTPClient) gin.HandlerFunc{
 		}`)
  
 		log.Println(string(jsonData))
-		url = "https://reverse-utoehvsqvq-ew.a.run.app"
+		url = URL_RE
 		//url = "http://localhost:8082"
 
 		request, _ = http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
