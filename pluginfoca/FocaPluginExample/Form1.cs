@@ -12,6 +12,7 @@ namespace FocaPluginExample
 {
     public partial class Form1 : Form
     {
+        private string URL_API = "https://api-utoehvsqvq-ew.a.run.app"; 
         public Form1()
         {
             InitializeComponent();
@@ -103,7 +104,7 @@ namespace FocaPluginExample
         private async void buttonRE_Click(object sender, EventArgs e)
         {
             setLoading();
-            string url = "https://api-utoehvsqvq-ew.a.run.app/reverse";
+            string url = URL_API + "/reverse";
             //string url = "https://reverse-utoehvsqvq-ew.a.run.app";
             var client = new HttpClient();
 
@@ -157,7 +158,7 @@ namespace FocaPluginExample
         private async void buttonFF_Click(object sender, EventArgs e)
         {
             setLoading();
-            string url = "https://api-utoehvsqvq-ew.a.run.app/faceforensics";
+            string url = URL_API + "/faceforensics";
             //string url = "https://faceforensics-utoehvsqvq-ew.a.run.app";
             var client = new HttpClient();
             Models.PostFaceforensics post;
@@ -225,7 +226,7 @@ namespace FocaPluginExample
         private async void buttonKIO_Click(object sender, EventArgs e)
         {
             setLoading();
-            string url = "https://api-utoehvsqvq-ew.a.run.app/kerasio";
+            string url = URL_API + "/kerasio";
             //string url = "https://kerasio-utoehvsqvq-ew.a.run.app";
             var client = new HttpClient();
             Models.PostFaceforensics post;
@@ -272,7 +273,7 @@ namespace FocaPluginExample
         private async void buttonKIOIMG_Click(object sender, EventArgs e)
         {
             setLoading();
-            string url = "https://api-utoehvsqvq-ew.a.run.app/kerasioimg";
+            string url = URL_API + "/kerasioimg";
             //string url = "https://kerasioimg-utoehvsqvq-ew.a.run.app";
             var client = new HttpClient();
             Models.PostKerasIMG post;
