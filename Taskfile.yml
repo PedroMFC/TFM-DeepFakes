@@ -198,12 +198,12 @@ tasks:
     cmds:
       - curl -X POST -H "Content-Type:application/json" -d '{"video_path":"https://www.youtube.com/watch?v=xLecwguQOIc"}' https://api-utoehvsqvq-ew.a.run.app/kerasio
 
-  request-api-api-kio-img:
+  request-api-api-gcr-kio-img:
     desc: Petición para clasificación de imágenes con Keras en Google Cloud.
     summary: |
       Ejemplo de una petición al algoritmo de clasificación de imágenes con Keras disponible en Googgle Cloud.
     cmds:
-      - curl -X POST -H "Content-Type:application/json" -d '{"image_path":"https://i0.wp.com/post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/03/GettyImages-1092658864_hero-1024x575.jpg", "model_path":"https://tfhub.dev/google/imagenet/mobilenet_v3_small_100_224/classification/5", "image_size":224, "lime":1}' http://localhost:8081/kerasioimg
+      - curl -X POST -H "Content-Type:application/json" -d '{"image_path":"https://i0.wp.com/post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/03/GettyImages-1092658864_hero-1024x575.jpg", "model_path":"https://tfhub.dev/google/imagenet/mobilenet_v3_small_100_224/classification/5", "image_size":224, "lime":1}' https://api-utoehvsqvq-ew.a.run.app/kerasioimg
 
   gcloud-send-api:
     desc: CI/CD API entrada.
