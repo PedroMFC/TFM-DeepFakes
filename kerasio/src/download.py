@@ -4,7 +4,7 @@ def download_youtube(link, name):
     try: 
         # Creción del objeto usando Youtube
         yt = YouTube(link) 
-        d_video = yt.streams.first()
+        d_video = yt.streams.filter(adaptive=True).first()
 
         d_video.download("/home/kerasio/videos", filename=name+".mp4") 
 
